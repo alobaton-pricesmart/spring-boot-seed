@@ -30,7 +30,7 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
 	/**
 	 * Put here your public access endpoints...
 	 */
-	private static final String[] PUBLIC_ACCESS = new String[] { "/resetpassword**", "/updatepassword" };
+	private static final String[] PUBLIC_ACCESS = new String[] { "/reset-password**", "/update-password" };
 	/**
 	 * Put here your client access endpoints...
 	 */
@@ -110,7 +110,7 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
 				// Client credentials access...
 				.antMatchers(CLIENT_ACCESS).access("#oauth2.isClient()")
 				// Setup full authentication access...
-				.antMatchers("/oauth/userinfo", "/oauth/update-password/**", "/clients**", "/users**").authenticated()
+				.antMatchers("/oauth/user-info", "/oauth/update-password/**", "/clients**", "/users**").authenticated()
 				.antMatchers(FULL_AUTHENTICATION_ACCESS).authenticated();
 	}
 

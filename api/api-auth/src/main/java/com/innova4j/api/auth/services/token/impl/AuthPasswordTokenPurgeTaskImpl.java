@@ -33,7 +33,7 @@ public class AuthPasswordTokenPurgeTaskImpl implements AuthPurgeTask {
 	@Scheduled(cron = "${purge.cron.expression}")
 	public void purgeExpired() {
 		LocalDateTime now = LocalDateTime.now();
-		// TODO(alobaton): Delete by expires at.
+		repository.deleteByExpiresAtLessThan(now);
 	}
 
 }

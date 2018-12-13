@@ -13,6 +13,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.innova4j.api.auth.dto.AuthUserDto;
+
 /**
  * @author innova4j-team
  *
@@ -20,14 +22,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CustomUserDetails implements UserDetails {
 	private static final long serialVersionUID = -4402146711326898924L;
 
-	private AuthUser user;
+	private AuthUserDto user;
 
 	/**
 	 * Create custom user details from AuthUser
 	 * 
 	 * @param user
 	 */
-	public CustomUserDetails(@NotNull AuthUser user) {
+	public CustomUserDetails(@NotNull AuthUserDto user) {
 		this.user = user;
 	}
 

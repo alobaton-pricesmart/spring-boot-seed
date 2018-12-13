@@ -6,9 +6,11 @@ package com.innova4j.api.auth.services.token.impl;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -19,12 +21,10 @@ import com.google.common.collect.ImmutableMap;
 import com.innova4j.api.auth.AuthConstants;
 import com.innova4j.api.auth.dao.AuthRefreshTokenRepository;
 import com.innova4j.api.auth.dao.AuthTokenRepository;
-import com.innova4j.api.auth.domain.AuthClientDetails;
 import com.innova4j.api.auth.domain.AuthRefreshToken;
 import com.innova4j.api.auth.domain.AuthRefreshTokenId;
 import com.innova4j.api.auth.domain.AuthToken;
 import com.innova4j.api.auth.domain.AuthTokenId;
-import com.innova4j.api.auth.domain.AuthUser;
 import com.innova4j.api.auth.services.encoder.HashEncoder;
 import com.innova4j.api.commons.utils.DateUtils;
 
@@ -65,10 +65,17 @@ public class CustomTokenStore implements TokenStore {
 	 */
 	@Override
 	public OAuth2Authentication readAuthentication(String token) {
-		AuthToken result = tokenRepository.customGet(
-				ImmutableMap.<String, Object>builder().put(AuthConstants.TOKEN_ID, encoder.encode(token)).build());
+		AuthTokenId id = new AuthTokenId();
+		id.setTokenId(encoder.encode(token));
 
-		return result != null ? result.getAuthentication() : null;
+		AuthToken domain = new AuthToken();
+		domain.setId(id);
+
+		Example<AuthToken> example = Example.of(domain);
+
+		Optional<AuthToken> optional = tokenRepository.findOne(example);
+
+		return optional.isPresent() ? optional.get().getAuthentication() : null;
 	}
 
 	/*
@@ -121,10 +128,17 @@ public class CustomTokenStore implements TokenStore {
 	 */
 	@Override
 	public OAuth2AccessToken readAccessToken(String tokenValue) {
-		AuthToken result = tokenRepository.customGet(
-				ImmutableMap.<String, Object>builder().put(AuthConstants.TOKEN_ID, encoder.encode(tokenValue)).build());
+		AuthTokenId id = new AuthTokenId();
+		id.setTokenId(encoder.encode(tokenValue));
 
-		return result != null ? result.getToken() : null;
+		AuthToken domain = new AuthToken();
+		domain.setId(id);
+
+		Example<AuthToken> example = Example.of(domain);
+
+		Optional<AuthToken> optional = tokenRepository.findOne(example);
+
+		return optional.isPresent() ? optional.get().getToken() : null;
 	}
 
 	/*
@@ -180,10 +194,17 @@ public class CustomTokenStore implements TokenStore {
 	 */
 	@Override
 	public OAuth2RefreshToken readRefreshToken(String tokenValue) {
-		AuthRefreshToken result = refreshTokenRepository.customGet(
-				ImmutableMap.<String, Object>builder().put(AuthConstants.TOKEN_ID, encoder.encode(tokenValue)).build());
+		AuthRefreshTokenId id = new AuthRefreshTokenId();
+		id.setTokenId(encoder.encode(tokenValue));
 
-		return result != null ? result.getToken() : null;
+		AuthRefreshToken domain = new AuthRefreshToken();
+		domain.setId(id);
+
+		Example<AuthRefreshToken> example = Example.of(domain);
+
+		Optional<AuthRefreshToken> optional = refreshTokenRepository.findOne(example);
+
+		return optional.isPresent() ? optional.get().getToken() : null;
 	}
 
 	/*
@@ -195,10 +216,17 @@ public class CustomTokenStore implements TokenStore {
 	 */
 	@Override
 	public OAuth2Authentication readAuthenticationForRefreshToken(OAuth2RefreshToken token) {
-		AuthRefreshToken result = refreshTokenRepository.customGet(ImmutableMap.<String, Object>builder()
-				.put(AuthConstants.TOKEN_ID, encoder.encode(token.getValue())).build());
+		AuthRefreshTokenId id = new AuthRefreshTokenId();
+		id.setTokenId(encoder.encode(token.getValue()));
 
-		return result != null ? result.getAuthentication() : null;
+		AuthRefreshToken domain = new AuthRefreshToken();
+		domain.setId(id);
+
+		Example<AuthRefreshToken> example = Example.of(domain);
+
+		Optional<AuthRefreshToken> optional = refreshTokenRepository.findOne(example);
+
+		return optional.isPresent() ? optional.get().getAuthentication() : null;
 	}
 
 	/*
@@ -224,6 +252,7 @@ public class CustomTokenStore implements TokenStore {
 	 */
 	@Override
 	public void removeAccessTokenUsingRefreshToken(OAuth2RefreshToken refreshToken) {
+
 		refreshTokenRepository.customDelete(ImmutableMap.<String, Object>builder()
 				.put(AuthConstants.REFRESH_TOKEN_ID, encoder.encode(refreshToken.getValue())).build());
 	}
@@ -238,10 +267,18 @@ public class CustomTokenStore implements TokenStore {
 	@Override
 	public OAuth2AccessToken getAccessToken(OAuth2Authentication authentication) {
 		String authenticationId = encoder.encode(authenticationKeyGenerator.extractKey(authentication));
-		AuthToken result = tokenRepository.customGet(
-				ImmutableMap.<String, Object>builder().put(AuthConstants.AUTHENTICATION_ID, authenticationId).build());
 
-		return result != null ? result.getToken() : null;
+		AuthTokenId id = new AuthTokenId();
+		id.setAuthenticationId(authenticationId);
+
+		AuthToken domain = new AuthToken();
+		domain.setId(id);
+
+		Example<AuthToken> example = Example.of(domain);
+
+		Optional<AuthToken> optional = tokenRepository.findOne(example);
+
+		return optional.isPresent() ? optional.get().getToken() : null;
 	}
 
 	/*
@@ -252,8 +289,16 @@ public class CustomTokenStore implements TokenStore {
 	 */
 	@Override
 	public Collection<OAuth2AccessToken> findTokensByClientIdAndUserName(String clientId, String userName) {
-		List<AuthToken> result = tokenRepository.customGetAll(ImmutableMap.<String, Object>builder()
-				.put(AuthUser.NICKNAME, userName).put(AuthClientDetails.CLIENT_ID, clientId).build());
+		AuthTokenId id = new AuthTokenId();
+		id.setClientId(clientId);
+		id.setNickname(userName);
+
+		AuthToken domain = new AuthToken();
+		domain.setId(id);
+
+		Example<AuthToken> example = Example.of(domain);
+
+		List<AuthToken> result = tokenRepository.findAll(example);
 
 		return result.stream().map(token -> token.getToken()).collect(Collectors.toList());
 	}
@@ -266,8 +311,15 @@ public class CustomTokenStore implements TokenStore {
 	 */
 	@Override
 	public Collection<OAuth2AccessToken> findTokensByClientId(String clientId) {
-		List<AuthToken> result = tokenRepository.customGetAll(
-				ImmutableMap.<String, Object>builder().put(AuthClientDetails.CLIENT_ID, clientId).build());
+		AuthTokenId id = new AuthTokenId();
+		id.setClientId(clientId);
+
+		AuthToken domain = new AuthToken();
+		domain.setId(id);
+
+		Example<AuthToken> example = Example.of(domain);
+
+		List<AuthToken> result = tokenRepository.findAll(example);
 
 		return result.stream().map(token -> token.getToken()).collect(Collectors.toList());
 	}

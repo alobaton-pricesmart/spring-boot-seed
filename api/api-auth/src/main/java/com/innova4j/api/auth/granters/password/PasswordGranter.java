@@ -24,6 +24,7 @@ import com.innova4j.api.auth.AuthConstants;
 import com.innova4j.api.auth.domain.AuthPasswordToken;
 import com.innova4j.api.auth.domain.AuthUser;
 import com.innova4j.api.auth.domain.CustomUserDetails;
+import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.encoder.HashEncoder;
 import com.innova4j.api.auth.services.token.AuthPasswordTokenService;
 import com.innova4j.api.auth.services.user.AuthUserService;
@@ -85,7 +86,7 @@ public class PasswordGranter extends AbstractTokenGranter {
 			throw new UnauthorizedUserException("Authorization code has expired.");
 		}
 
-		AuthUser user = userService.customGet(ImmutableMap.<String, Object>builder()
+		AuthUserDto user = userService.customGet(ImmutableMap.<String, Object>builder()
 				.put(AuthUser.NICKNAME, passwordToken.getId().getNickname()).build());
 		CustomUserDetails userDetails = new CustomUserDetails(user);
 

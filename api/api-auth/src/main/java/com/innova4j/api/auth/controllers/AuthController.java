@@ -3,9 +3,6 @@
  */
 package com.innova4j.api.auth.controllers;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -23,8 +20,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.innova4j.api.auth.domain.AuthUser;
+import com.google.common.collect.ImmutableMap;
+import com.innova4j.api.auth.AuthConstants;
 import com.innova4j.api.auth.dto.AuthPasswordDto;
+import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.user.AuthUserService;
 
 /**
@@ -36,7 +35,7 @@ import com.innova4j.api.auth.services.user.AuthUserService;
 public class AuthController {
 
 	@Autowired
-	private AuthUserService userService;
+	private AuthUserService service;
 
 	@Autowired
 	private BCryptPasswordEncoder encoder;
@@ -47,24 +46,24 @@ public class AuthController {
 	 * @param token The token.
 	 * @return The user information.
 	 */
-	@GetMapping("/userinfo")
-	public @ResponseBody AuthUser userInfo(OAuth2Authentication authentication) {
+	@GetMapping("/user-info")
+	public @ResponseBody AuthUserDto userInfo(OAuth2Authentication authentication) {
 		final OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
 
-		String accessToken = details.getTokenValue();
+		String token = details.getTokenValue();
 
-		return null;
-
+		return service.customGet(ImmutableMap.<String, Object>builder().put(AuthConstants.TOKEN_ID, token).build());
 	}
 
 	/**
-	 * Reset password.
+	 * Recovery password.
 	 * 
 	 * @param nicknme The nicknme.
 	 * @return
 	 */
-	@GetMapping("/recoverypassword")
+	@GetMapping("/recovery-password")
 	public void recoveryPassword(@Valid @RequestParam String nickname) {
+
 	}
 
 	/**
@@ -74,15 +73,18 @@ public class AuthController {
 	 * @param passwordDto
 	 * @return
 	 */
-	@PostMapping("/resetpassword")
-	public @ResponseBody Map<String, String> resetPassword(OAuth2Authentication authentication,
+	@PostMapping("/reset-password")
+	public @ResponseBody AuthUserDto resetPassword(OAuth2Authentication authentication,
 			@Valid @RequestBody AuthPasswordDto passwordDto) {
 		final OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
 
-		String accessToken = details.getTokenValue();
+		String token = details.getTokenValue();
 
-		Map<String, String> response = new HashMap<String, String>();
-		return response;
+		AuthUserDto user = service
+				.customGet(ImmutableMap.<String, Object>builder().put(AuthConstants.TOKEN_ID, token).build());
+		user.setPassword(encoder.encode(passwordDto.getPassword()));
+
+		return service.update(user);
 
 	}
 
@@ -90,17 +92,17 @@ public class AuthController {
 	 * 
 	 * Update user password.
 	 * 
-	 * @param userId
+	 * @param id
 	 * @param passwordDto
 	 * @return
 	 */
-	@PostMapping("/updatepassword/{userId}")
+	@PostMapping("/update-password/{id}")
 	@PreAuthorize("")
-	public @ResponseBody AuthUser resetPassword(@PathVariable @NotNull String userId,
+	public @ResponseBody AuthUserDto resetPassword(@PathVariable @NotNull String id,
 			@Valid @RequestBody AuthPasswordDto passwordDto) {
-		AuthUser user = userService.get(userId);
+		AuthUserDto user = service.get(id);
 		user.setPassword(encoder.encode(passwordDto.getPassword()));
 
-		return userService.update(user);
+		return service.update(user);
 	}
 }

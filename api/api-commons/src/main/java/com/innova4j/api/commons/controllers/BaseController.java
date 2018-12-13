@@ -4,7 +4,6 @@
 package com.innova4j.api.commons.controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,7 +46,7 @@ public interface BaseController<T> {
 	 * @param parameters
 	 */
 	@GetMapping
-	public @ResponseBody List<T> getAll(@RequestParam Map<String, Object> parameters);
+	public @ResponseBody List<T> getAll(@Valid T dto);
 
 	/**
 	 * Update <T>.

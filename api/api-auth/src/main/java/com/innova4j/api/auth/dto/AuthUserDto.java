@@ -4,6 +4,7 @@
 package com.innova4j.api.auth.dto;
 
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.innova4j.api.auth.domain.AuthUser;
 import com.innova4j.api.commons.dto.BaseDto;
 
 /**
@@ -21,6 +23,23 @@ import com.innova4j.api.commons.dto.BaseDto;
  */
 @JsonInclude(Include.NON_NULL)
 public class AuthUserDto extends BaseDto {
+
+	public static final Function<AuthUser, AuthUserDto> CONVERTER = new Function<AuthUser, AuthUserDto>() {
+		@Override
+		public AuthUserDto apply(AuthUser t) {
+			AuthUserDto dto = new AuthUserDto();
+			dto.setNickname(t.getNickname());
+			dto.setName(t.getName());
+			dto.setLastName(t.getLastName());
+			dto.setEmail(t.getEmail());
+			dto.setRoles(t.getRoles());
+			dto.setEnabled(t.isEnabled());
+			dto.setCreated(t.getCreated());
+			dto.setLastModified(t.getLastModified());
+
+			return dto;
+		}
+	};
 
 	@NotNull
 	private String nickname;
@@ -148,5 +167,4 @@ public class AuthUserDto extends BaseDto {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
-
 }

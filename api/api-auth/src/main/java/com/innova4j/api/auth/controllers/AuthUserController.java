@@ -4,7 +4,6 @@
 package com.innova4j.api.auth.controllers;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -12,11 +11,9 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.innova4j.api.auth.domain.builder.AuthUserBuilder;
 import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.user.AuthUserService;
 import com.innova4j.api.commons.controllers.BasePagedController;
@@ -32,48 +29,35 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	@Autowired
 	private AuthUserService service;
 
-	@Autowired
-	private BCryptPasswordEncoder encoder;
-
 	@Override
 	public AuthUserDto create(@Valid AuthUserDto dto) {
-		AuthUserBuilder builder = new AuthUserBuilder().nickname(dto.getNickname()).name(dto.getName())
-				.lastName(dto.getLastName()).email(dto.getEmail()).roles(dto.getRoles())
-				.password(encoder.encode(dto.getPassword())).locked(Boolean.FALSE).enabled(Boolean.TRUE);
-
-		service.create(builder.build());
-
-		return dto;
+		return service.create(dto);
 	}
 
 	@Override
 	public AuthUserDto get(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return service.get(id);
 	}
 
 	@Override
-	public List<AuthUserDto> getAll(Map<String, Object> parameters) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<AuthUserDto> getAll(@Valid AuthUserDto dto) {
+		return service.getAll(dto);
 	}
 
 	@Override
 	public AuthUserDto update(String id, @Valid AuthUserDto dto) {
-		// TODO Auto-generated method stub
-		return null;
+		dto.setNickname(id);
+		return service.update(dto);
 	}
 
 	@Override
 	public void delete(String id) {
-		// TODO Auto-generated method stub
-
+		service.delete(id);
 	}
 
 	@Override
-	public Page<AuthUserDto> getAll(Map<String, Object> parameters, @NotNull Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<AuthUserDto> getAll(@Valid AuthUserDto dto, @NotNull Pageable pageable) {
+		return service.getAll(dto, pageable);
 	}
 
 }

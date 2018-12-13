@@ -1,66 +1,66 @@
 /**
  * 
  */
-package com.innova4j.api.auth.services.token.impl;
+package com.innova4j.api.auth.services.client.impl;
 
 import java.util.List;
 import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
-import com.innova4j.api.auth.domain.AuthToken;
-import com.innova4j.api.auth.services.token.AuthTokenService;
+import com.innova4j.api.auth.dto.AuthClientDetailsDto;
+import com.innova4j.api.auth.services.client.AuthClientDetailsService;
 
 /**
  * @author innova4j-team
  *
  */
-public class AuthTokenServiceImpl implements AuthTokenService {
+public class AuthClientDetailsServiceImpl implements AuthClientDetailsService{
 
 	@Override
-	public AuthToken create(AuthToken domain) {
+	public AuthClientDetailsDto create(AuthClientDetailsDto dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AuthToken get(String id) {
+	public AuthClientDetailsDto get(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AuthToken customGet(@NotNull Map<String, Object> pk) {
+	public AuthClientDetailsDto customGet(@NotNull Map<String, Object> pk) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<AuthToken> getAll() {
+	public List<AuthClientDetailsDto> getAll() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<AuthToken> getAll(Map<String, Object> parameters) {
+	public List<AuthClientDetailsDto> getAll(AuthClientDetailsDto dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AuthToken update(AuthToken domain) {
+	public AuthClientDetailsDto update(AuthClientDetailsDto dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AuthToken customUpdate(Map<String, Object> domain) {
+	public AuthClientDetailsDto customUpdate(Map<String, Object> dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AuthToken delete(String id) {
+	public AuthClientDetailsDto delete(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -70,5 +70,7 @@ public class AuthTokenServiceImpl implements AuthTokenService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	
 
 }

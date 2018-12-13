@@ -18,7 +18,7 @@ import com.innova4j.api.auth.services.token.AuthPasswordTokenService;
 public class AuthPasswordTokenServiceImpl implements AuthPasswordTokenService {
 
 	@Override
-	public AuthPasswordToken create(AuthPasswordToken domain) {
+	public AuthPasswordToken create(AuthPasswordToken dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -42,19 +42,19 @@ public class AuthPasswordTokenServiceImpl implements AuthPasswordTokenService {
 	}
 
 	@Override
-	public List<AuthPasswordToken> getAll(Map<String, Object> parameters) {
+	public List<AuthPasswordToken> getAll(AuthPasswordToken dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AuthPasswordToken update(AuthPasswordToken domain) {
+	public AuthPasswordToken update(AuthPasswordToken dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AuthPasswordToken customUpdate(Map<String, Object> domain) {
+	public AuthPasswordToken customUpdate(Map<String, Object> dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -70,5 +70,7 @@ public class AuthPasswordTokenServiceImpl implements AuthPasswordTokenService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	
 
 }

@@ -19,10 +19,10 @@ public interface BaseService<T> {
 	/**
 	 * Creates a <T>.
 	 * 
-	 * @param domain The <T>.
+	 * @param dto The <T>.
 	 * @return The created <T>.
 	 */
-	public T create(T domain);
+	T create(T dto);
 
 	/**
 	 * Get a <T>
@@ -30,50 +30,51 @@ public interface BaseService<T> {
 	 * @param id The id.
 	 * @return The <T>.
 	 */
-	public T get(String id);
+	T get(String id);
 
 	/**
 	 * 
 	 * @param pk
 	 * @return
 	 */
-	public T customGet(@NotNull Map<String, Object> pk);
+	T customGet(@NotNull Map<String, Object> pk);
 
 	/**
 	 * Get all <T>.
 	 * 
 	 * @return
 	 */
-	public List<T> getAll();
+	List<T> getAll();
 
 	/**
-	 * Get all <T>.
+	 * Get all <T>
 	 * 
+	 * @param dto
 	 * @return
 	 */
-	public List<T> getAll(Map<String, Object> parameters);
+	List<T> getAll(T dto);
 
 	/**
 	 * Update a <T>
 	 * 
-	 * @param domain The <T>
+	 * @param dto The <T>
 	 * @return The updated <T>
 	 */
-	public T update(T domain);
+	T update(T dto);
 
 	/**
 	 * 
-	 * @param domain
+	 * @param dto
 	 * @return The updated <T>
 	 */
-	public T customUpdate(Map<String, Object> domain);
+	T customUpdate(Map<String, Object> dto);
 
 	/**
 	 * Delte a <T>
 	 * 
 	 * @param id The id
 	 */
-	public T delete(String id);
+	T delete(String id);
 
 	/**
 	 * True if exists by id.
@@ -81,6 +82,6 @@ public interface BaseService<T> {
 	 * @param id The id.
 	 * @return True if exists, false otherwise.
 	 */
-	public boolean exists(String id);
+	boolean exists(String id);
 
 }
