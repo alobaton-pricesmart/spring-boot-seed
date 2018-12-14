@@ -30,7 +30,7 @@ public class AuthPasswordTokenServiceImpl implements AuthPasswordTokenService {
 	}
 
 	@Override
-	public AuthPasswordToken customGet(@NotNull Map<String, Object> pk) {
+	public AuthPasswordToken customGet(@NotNull AuthPasswordToken dto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -70,7 +70,5 @@ public class AuthPasswordTokenServiceImpl implements AuthPasswordTokenService {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
-	
 
 }

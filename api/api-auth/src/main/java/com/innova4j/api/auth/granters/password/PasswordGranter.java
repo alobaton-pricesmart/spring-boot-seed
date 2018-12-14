@@ -19,10 +19,8 @@ import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.token.AbstractTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
-import com.google.common.collect.ImmutableMap;
-import com.innova4j.api.auth.AuthConstants;
 import com.innova4j.api.auth.domain.AuthPasswordToken;
-import com.innova4j.api.auth.domain.AuthUser;
+import com.innova4j.api.auth.domain.AuthPasswordTokenId;
 import com.innova4j.api.auth.domain.CustomUserDetails;
 import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.encoder.HashEncoder;
@@ -38,8 +36,8 @@ public class PasswordGranter extends AbstractTokenGranter {
 	private static final String AUTH_PASSWORD_GRANT_TYPE = "auth_password";
 	private static final String PASSWORD_TOKEN_PARAM = "password_token";
 
-	private AuthPasswordTokenService passwordTokenService;
 	private AuthUserService userService;
+	private AuthPasswordTokenService passwordTokenService;
 	private HashEncoder encoder;
 
 	public PasswordGranter(@NotNull AuthorizationServerTokenServices tokenServices,
@@ -80,14 +78,23 @@ public class PasswordGranter extends AbstractTokenGranter {
 		Map<String, String> params = tokenRequest.getRequestParameters();
 
 		String token = params.containsKey(PASSWORD_TOKEN_PARAM) ? params.get(PASSWORD_TOKEN_PARAM) : StringUtils.EMPTY;
-		AuthPasswordToken passwordToken = passwordTokenService.customGet(
-				ImmutableMap.<String, Object>builder().put(AuthConstants.TOKEN, encoder.encode(token)).build());
+
+		AuthPasswordTokenId id = new AuthPasswordTokenId();
+		id.setToken(encoder.encode(token));
+
+		AuthPasswordToken passwordToken = new AuthPasswordToken();
+		passwordToken.setId(id);
+
+		passwordToken = passwordTokenService.customGet(passwordToken);
 		if (passwordToken.isExpired()) {
 			throw new UnauthorizedUserException("Authorization code has expired.");
 		}
 
-		AuthUserDto user = userService.customGet(ImmutableMap.<String, Object>builder()
-				.put(AuthUser.NICKNAME, passwordToken.getId().getNickname()).build());
+		AuthUserDto user = new AuthUserDto();
+		user.setNickname(passwordToken.getId().getNickname());
+
+		user = userService.customGet(user);
+
 		CustomUserDetails userDetails = new CustomUserDetails(user);
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),

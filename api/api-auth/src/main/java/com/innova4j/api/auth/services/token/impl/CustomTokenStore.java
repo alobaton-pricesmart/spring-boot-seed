@@ -5,7 +5,6 @@ package com.innova4j.api.auth.services.token.impl;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -94,29 +93,30 @@ public class CustomTokenStore implements TokenStore {
 
 		String authenticationId = encoder.encode(authenticationKeyGenerator.extractKey(authentication));
 
-		Map<String, Object> pk = ImmutableMap.<String, Object>builder()
-				.put(AuthConstants.AUTHENTICATION_ID, authenticationId).build();
-		if (refreshTokenRepository.customExists(pk)) {
-			refreshTokenRepository.customDelete(pk);
+		AuthTokenId id = new AuthTokenId();
+		id.setAuthenticationId(authenticationId);
+
+		AuthToken domain = new AuthToken();
+		domain.setId(id);
+
+		Example<AuthToken> example = Example.of(domain);
+
+		if (tokenRepository.exists(example)) {
+			tokenRepository.customDelete(ImmutableMap.<String, Object>builder()
+					.put(AuthConstants.AUTHENTICATION_ID, authenticationId).build());
 		}
 
-		AuthToken aToken = new AuthToken();
-
-		AuthTokenId id = new AuthTokenId();
 		id.setNickname(authentication.isClientOnly() ? null : authentication.getName());
 		id.setClientId(authentication.getOAuth2Request().getClientId());
 		id.setTokenId(encoder.encode(token.getValue()));
-		id.setAuthenticationId(authenticationId);
 		id.setRefreshTokenId(
 				encoder.encode(token.getRefreshToken() != null ? token.getRefreshToken().getValue() : null));
 
-		aToken.setId(id);
+		domain.setToken(token);
+		domain.setAuthentication(authentication);
+		domain.setExpiresAt(DateUtils.toLocalDateTime(token.getExpiration()));
 
-		aToken.setToken(token);
-		aToken.setAuthentication(authentication);
-		aToken.setExpiresAt(DateUtils.toLocalDateTime(token.getExpiration()));
-
-		tokenRepository.save(aToken);
+		tokenRepository.save(domain);
 	}
 
 	/*
@@ -166,24 +166,25 @@ public class CustomTokenStore implements TokenStore {
 	public void storeRefreshToken(OAuth2RefreshToken refreshToken, OAuth2Authentication authentication) {
 		String authenticationId = encoder.encode(authenticationKeyGenerator.extractKey(authentication));
 
-		Map<String, Object> pk = ImmutableMap.<String, Object>builder()
-				.put(AuthConstants.AUTHENTICATION_ID, authenticationId).build();
-		if (refreshTokenRepository.customExists(pk)) {
-			refreshTokenRepository.customDelete(pk);
-		}
-
-		AuthRefreshToken arToken = new AuthRefreshToken();
-
 		AuthRefreshTokenId id = new AuthRefreshTokenId();
-		id.setTokenId(encoder.encode(refreshToken.getValue()));
 		id.setAuthenticationId(authenticationId);
 
-		arToken.setId(id);
+		AuthRefreshToken domain = new AuthRefreshToken();
+		domain.setId(id);
 
-		arToken.setToken(refreshToken);
-		arToken.setAuthentication(authentication);
+		Example<AuthRefreshToken> example = Example.of(domain);
 
-		refreshTokenRepository.save(arToken);
+		if (refreshTokenRepository.exists(example)) {
+			refreshTokenRepository.customDelete(ImmutableMap.<String, Object>builder()
+					.put(AuthConstants.AUTHENTICATION_ID, authenticationId).build());
+		}
+
+		id.setTokenId(encoder.encode(refreshToken.getValue()));
+
+		domain.setToken(refreshToken);
+		domain.setAuthentication(authentication);
+
+		refreshTokenRepository.save(domain);
 	}
 
 	/*
@@ -252,7 +253,6 @@ public class CustomTokenStore implements TokenStore {
 	 */
 	@Override
 	public void removeAccessTokenUsingRefreshToken(OAuth2RefreshToken refreshToken) {
-
 		refreshTokenRepository.customDelete(ImmutableMap.<String, Object>builder()
 				.put(AuthConstants.REFRESH_TOKEN_ID, encoder.encode(refreshToken.getValue())).build());
 	}

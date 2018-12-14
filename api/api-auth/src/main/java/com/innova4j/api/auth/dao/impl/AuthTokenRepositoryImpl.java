@@ -17,29 +17,16 @@ import com.innova4j.api.auth.domain.AuthToken;
 public class AuthTokenRepositoryImpl implements CustomAuthTokenRepository {
 
 	@Override
-	public AuthToken customSave(@NotNull AuthToken domain) {
+	public AuthToken customSave(@NotNull Map<String, Object> domain) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AuthToken customGet(@NotNull Map<String, Object> pk) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void customDelete(@NotNull Map<String, Object> pk) {
+	public void customDelete(@NotNull Map<String, Object> domain) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
-	public boolean customExists(@NotNull Map<String, Object> pk) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	
-
 }

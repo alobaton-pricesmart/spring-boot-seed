@@ -13,11 +13,7 @@ import javax.validation.constraints.NotNull;
  */
 public interface BaseCustomRepository<T> {
 
-	T customSave(@NotNull T domain);
+	T customSave(@NotNull Map<String, Object> domain);
 
-	T customGet(@NotNull Map<String, Object> pk);
-
-	void customDelete(@NotNull Map<String, Object> pk);
-
-	boolean customExists(@NotNull Map<String, Object> pk);
+	void customDelete(@NotNull Map<String, Object> domain);
 }

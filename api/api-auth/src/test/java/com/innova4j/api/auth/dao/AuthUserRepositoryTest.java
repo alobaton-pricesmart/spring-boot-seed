@@ -125,5 +125,4 @@ public class AuthUserRepositoryTest {
 
 		Assert.assertArrayEquals(expected.toArray(), actuals.toArray());
 	}
-
 }

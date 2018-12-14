@@ -11,8 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.google.common.collect.ImmutableMap;
-import com.innova4j.api.auth.domain.AuthUser;
 import com.innova4j.api.auth.domain.CustomUserDetails;
 import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.user.AuthUserService;
@@ -34,8 +32,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		AuthUserDto user = service
-				.customGet(ImmutableMap.<String, Object>builder().put(AuthUser.NICKNAME, username).build());
+		AuthUserDto user = new AuthUserDto();
+		user.setNickname(username);
+
+		user = service.customGet(user);
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("Username %s not found", username));
 		}

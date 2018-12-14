@@ -37,7 +37,7 @@ public interface BaseService<T> {
 	 * @param pk
 	 * @return
 	 */
-	T customGet(@NotNull Map<String, Object> pk);
+	T customGet(@NotNull T dto);
 
 	/**
 	 * Get all <T>.

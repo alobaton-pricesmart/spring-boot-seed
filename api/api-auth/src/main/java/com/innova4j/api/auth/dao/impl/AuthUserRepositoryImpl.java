@@ -7,17 +7,17 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
-import com.innova4j.api.auth.dao.CustomAuthRefreshTokenRepository;
-import com.innova4j.api.auth.domain.AuthRefreshToken;
+import com.innova4j.api.auth.dao.CustomAuthUserRepository;
+import com.innova4j.api.auth.domain.AuthUser;
 
 /**
  * @author innova4j-team
  *
  */
-public class AuthRefreshTokenRepositoryImpl implements CustomAuthRefreshTokenRepository {
+public class AuthUserRepositoryImpl implements CustomAuthUserRepository {
 
 	@Override
-	public AuthRefreshToken customSave(@NotNull Map<String, Object> domain) {
+	public AuthUser customSave(@NotNull Map<String, Object> domain) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -25,6 +25,6 @@ public class AuthRefreshTokenRepositoryImpl implements CustomAuthRefreshTokenRep
 	@Override
 	public void customDelete(@NotNull Map<String, Object> domain) {
 		// TODO Auto-generated method stub
-
+		
 	}
 }

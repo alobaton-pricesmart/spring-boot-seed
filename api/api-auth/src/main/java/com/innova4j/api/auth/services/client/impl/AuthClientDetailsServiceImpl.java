@@ -5,9 +5,14 @@ package com.innova4j.api.auth.services.client.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.ClientDetails;
+
+import com.innova4j.api.auth.domain.AuthClientDetails;
 import com.innova4j.api.auth.dto.AuthClientDetailsDto;
 import com.innova4j.api.auth.services.client.AuthClientDetailsService;
 
@@ -15,62 +20,72 @@ import com.innova4j.api.auth.services.client.AuthClientDetailsService;
  * @author innova4j-team
  *
  */
-public class AuthClientDetailsServiceImpl implements AuthClientDetailsService{
+public class AuthClientDetailsServiceImpl implements AuthClientDetailsService {
+
+	@Autowired
+	private CustomClientDetailsService service;
 
 	@Override
 	public AuthClientDetailsDto create(AuthClientDetailsDto dto) {
-		// TODO Auto-generated method stub
-		return null;
+		ClientDetails domain = AuthClientDetails.CONVERTER.apply(dto);
+
+		service.addClientDetails(domain);
+
+		return dto;
 	}
 
 	@Override
 	public AuthClientDetailsDto get(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		AuthClientDetails domain = (AuthClientDetails) service.loadClientByClientId(id);
+
+		return AuthClientDetailsDto.CONVERTER.apply(domain);
 	}
 
 	@Override
-	public AuthClientDetailsDto customGet(@NotNull Map<String, Object> pk) {
-		// TODO Auto-generated method stub
-		return null;
+	public AuthClientDetailsDto customGet(@NotNull AuthClientDetailsDto dto) {
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public List<AuthClientDetailsDto> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return service.listClientDetails().stream().map(AuthClientDetailsDto.CONVERTER)
+				.collect(Collectors.<AuthClientDetailsDto>toList());
 	}
 
 	@Override
 	public List<AuthClientDetailsDto> getAll(AuthClientDetailsDto dto) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public AuthClientDetailsDto update(AuthClientDetailsDto dto) {
-		// TODO Auto-generated method stub
-		return null;
+		service.updateClientDetails(AuthClientDetails.CONVERTER.apply(dto));
+
+		return get(dto.getClientId());
 	}
 
 	@Override
 	public AuthClientDetailsDto customUpdate(Map<String, Object> dto) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
 	public AuthClientDetailsDto delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		AuthClientDetailsDto dto = AuthClientDetailsDto.CONVERTER.apply(service.loadClientByClientId(id));
+
+		service.removeClientDetails(id);
+
+		return dto;
 	}
 
 	@Override
 	public boolean exists(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			service.loadClientByClientId(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
-
-	
 
 }

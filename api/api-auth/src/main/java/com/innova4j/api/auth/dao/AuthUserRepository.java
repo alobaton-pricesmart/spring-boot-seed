@@ -13,6 +13,6 @@ import com.innova4j.api.auth.domain.AuthUser;
  *
  */
 @Repository
-public interface AuthUserRepository extends JpaRepository<AuthUser, String> {
+public interface AuthUserRepository extends JpaRepository<AuthUser, String>, CustomAuthUserRepository {
 
 }

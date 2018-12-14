@@ -6,6 +6,7 @@ package com.innova4j.api.auth.domain;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.innova4j.api.auth.dto.AuthClientDetailsDto;
 import com.innova4j.api.commons.domain.BaseDomain;
 
 /**
@@ -33,6 +35,15 @@ public class AuthClientDetails extends BaseDomain implements ClientDetails {
 	private static final long serialVersionUID = 808870501996988945L;
 
 	public static final String CLIENT_ID = "clientId";
+
+	public static final Function<AuthClientDetailsDto, ClientDetails> CONVERTER = new Function<AuthClientDetailsDto, ClientDetails>() {
+		@Override
+		public ClientDetails apply(AuthClientDetailsDto t) {
+			AuthClientDetails domain = new AuthClientDetails();
+
+			return domain;
+		}
+	};
 
 	@Id
 	@NotNull

@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.google.common.collect.ImmutableMap;
-import com.innova4j.api.auth.AuthConstants;
 import com.innova4j.api.auth.dto.AuthPasswordDto;
 import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.user.AuthUserService;
@@ -52,7 +50,7 @@ public class AuthController {
 
 		String token = details.getTokenValue();
 
-		return service.customGet(ImmutableMap.<String, Object>builder().put(AuthConstants.TOKEN_ID, token).build());
+		return service.getByAccessToken(token);
 	}
 
 	/**
@@ -80,12 +78,10 @@ public class AuthController {
 
 		String token = details.getTokenValue();
 
-		AuthUserDto user = service
-				.customGet(ImmutableMap.<String, Object>builder().put(AuthConstants.TOKEN_ID, token).build());
+		AuthUserDto user = service.getByAccessToken(token);
 		user.setPassword(encoder.encode(passwordDto.getPassword()));
 
 		return service.update(user);
-
 	}
 
 	/**

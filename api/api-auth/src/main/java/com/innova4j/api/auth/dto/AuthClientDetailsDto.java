@@ -5,8 +5,11 @@ package com.innova4j.api.auth.dto;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.validation.constraints.NotNull;
+
+import org.springframework.security.oauth2.provider.ClientDetails;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -19,6 +22,15 @@ import com.fasterxml.jackson.annotation.JsonProperty.Access;
  */
 @JsonInclude(Include.NON_NULL)
 public class AuthClientDetailsDto {
+
+	public static final Function<ClientDetails, AuthClientDetailsDto> CONVERTER = new Function<ClientDetails, AuthClientDetailsDto>() {
+		@Override
+		public AuthClientDetailsDto apply(ClientDetails t) {
+			AuthClientDetailsDto dto = new AuthClientDetailsDto();
+
+			return dto;
+		}
+	};
 
 	@NotNull
 	private String clientId;
