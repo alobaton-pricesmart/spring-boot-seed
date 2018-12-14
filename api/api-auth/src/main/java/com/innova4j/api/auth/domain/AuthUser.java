@@ -8,11 +8,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.commons.domain.BaseDomain;
@@ -56,6 +59,7 @@ public class AuthUser extends BaseDomain implements Serializable {
 	@Email
 	private String email;
 	@NotNull
+	@ElementCollection(targetClass = String.class)
 	private Set<String> roles;
 	@NotNull
 	private String password;
@@ -192,6 +196,17 @@ public class AuthUser extends BaseDomain implements Serializable {
 		return "AuthUser [nickname=" + nickname + ", name=" + name + ", lastName=" + lastName + ", email=" + email
 				+ ", roles=" + roles + ", password=" + password + ", locked=" + locked + ", enabled=" + enabled
 				+ ", created=" + created + ", lastModified=" + lastModified + "]";
+	}
+
+	@Override
+	public boolean equals(Object arg0) {
+		AuthUser user = (AuthUser) arg0;
+
+		return new EqualsBuilder().append(nickname, user.getNickname()).append(name, user.getName())
+				.append(lastName, user.getLastName()).append(email, user.getEmail())
+				.append(password, user.getPassword()).append(roles, user.getRoles()).append(locked, user.isLocked())
+				.append(enabled, user.isEnabled()).append(created, user.getCreated())
+				.append(lastModified, user.getLastModified()).build();
 	}
 
 }

@@ -5,6 +5,7 @@ package com.innova4j.api.auth.domain;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,8 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
+import com.innova4j.api.commons.domain.Converter;
+
 /**
  * @author innova4j-team
  *
@@ -22,9 +25,10 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 @Table(name = "auth_token")
 public class AuthToken {
 
+	@EmbeddedId
 	private AuthTokenId id;
 	@NotNull
-	private OAuth2AccessToken token;
+	private String token;
 	@NotNull
 	private String authentication;
 	@NotNull
@@ -49,14 +53,18 @@ public class AuthToken {
 	 * @return the token
 	 */
 	public OAuth2AccessToken getToken() {
-		return token;
+		try {
+			return Converter.deserialize(token);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
 	 * @param token the token to set
 	 */
 	public void setToken(OAuth2AccessToken token) {
-		this.token = token;
+		this.token = Converter.serialize(token);
 	}
 
 	/**
@@ -64,7 +72,7 @@ public class AuthToken {
 	 */
 	public OAuth2Authentication getAuthentication() {
 		try {
-			return OAuth2AuthenticationConverter.deserialize(authentication);
+			return Converter.deserialize(authentication);
 		} catch (Exception e) {
 			return null;
 		}
@@ -74,7 +82,7 @@ public class AuthToken {
 	 * @param authentication the authentication to set
 	 */
 	public void setAuthentication(OAuth2Authentication authentication) {
-		this.authentication = OAuth2AuthenticationConverter.serialize(authentication);
+		this.authentication = Converter.serialize(authentication);
 	}
 
 	/**

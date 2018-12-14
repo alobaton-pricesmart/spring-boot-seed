@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.innova4j.api</groupId>
 	<artifactId>api</artifactId>
@@ -11,7 +13,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.1.RELEASE</version>
-		<relativePath/>
+		<relativePath />
 	</parent>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -31,7 +33,9 @@
 		<org.aspectj.version>1.9.1</org.aspectj.version>
 		<commons.lang3.version>3.8.1</commons.lang3.version>
 		<commons.csv.version>1.6</commons.csv.version>
+		<commons.codec.version>1.11</commons.codec.version>
 		<guava.version>27.0-jre</guava.version>
+		<h2.version>1.4.197</h2.version>
 	</properties>
 	<modules>
 		<module>api-app</module>
@@ -40,8 +44,8 @@
 		<module>api-message</module>
 		<module>api-loader</module>
 		<module>api-commons</module>
-    <module>api-masters</module>
-  </modules>
+		<module>api-masters</module>
+	</modules>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -129,6 +133,13 @@
 				<artifactId>spring-boot-starter-data-jpa</artifactId>
 				<version>${spring.boot.starter.data.jpa}</version>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+				<scope>test</scope>
+			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
 			<dependency>
 				<groupId>org.aspectj</groupId>
@@ -152,6 +163,12 @@
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-csv</artifactId>
 				<version>${commons.csv.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
+			<dependency>
+				<groupId>commons-codec</groupId>
+				<artifactId>commons-codec</artifactId>
+				<version>${commons.codec.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 			<dependency>

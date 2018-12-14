@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
+import com.innova4j.api.commons.domain.Converter;
+
 /**
  * @author innova4j-team
  *
@@ -22,7 +24,7 @@ public class AuthRefreshToken {
 	@EmbeddedId
 	private AuthRefreshTokenId id;
 	@NotNull
-	private OAuth2RefreshToken token;
+	private String token;
 	@NotNull
 	private String authentication;
 
@@ -44,14 +46,18 @@ public class AuthRefreshToken {
 	 * @return the token
 	 */
 	public OAuth2RefreshToken getToken() {
-		return token;
+		try {
+			return Converter.deserialize(token);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
 	 * @param token the token to set
 	 */
 	public void setToken(OAuth2RefreshToken token) {
-		this.token = token;
+		this.token = Converter.serialize(token);
 	}
 
 	/**
@@ -59,7 +65,7 @@ public class AuthRefreshToken {
 	 */
 	public OAuth2Authentication getAuthentication() {
 		try {
-			return OAuth2AuthenticationConverter.deserialize(authentication);
+			return Converter.deserialize(authentication);
 		} catch (Exception e) {
 			return null;
 		}
@@ -69,7 +75,7 @@ public class AuthRefreshToken {
 	 * @param authentication the authentication to set
 	 */
 	public void setAuthentication(OAuth2Authentication authentication) {
-		this.authentication = OAuth2AuthenticationConverter.serialize(authentication);
+		this.authentication = Converter.serialize(authentication);
 	}
 
 	/*

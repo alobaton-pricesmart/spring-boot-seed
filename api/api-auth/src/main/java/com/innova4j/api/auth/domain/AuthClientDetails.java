@@ -7,8 +7,10 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -36,6 +38,7 @@ public class AuthClientDetails extends BaseDomain implements ClientDetails {
 	@NotNull
 	private String clientId;
 	@NotNull
+	@ElementCollection(targetClass = String.class)
 	private Set<String> resourceIds;
 	@NotNull
 	private boolean secretRequired;
@@ -45,18 +48,24 @@ public class AuthClientDetails extends BaseDomain implements ClientDetails {
 	@NotNull
 	private boolean scoped;
 	@NotNull
+	@ElementCollection(targetClass = String.class)
 	private Set<String> scope;
 	@NotNull
+	@ElementCollection(targetClass = String.class)
 	private Set<String> authorizedGrantTypes;
 	@NotNull
+	@ElementCollection(targetClass = String.class)
 	private Set<String> registeredRedirectUri;
 	@NotNull
+	@ElementCollection(targetClass = String.class)
 	private Set<String> authorities;
 	@NotNull
 	private Integer accessTokenValiditySeconds;
 	@NotNull
 	private Integer refreshTokenValiditySeconds;
 	private boolean autoApprove;
+	@ElementCollection(targetClass = String.class)
+	@MapKeyColumn()
 	private Map<String, Object> additionalInformation;
 
 	/**
