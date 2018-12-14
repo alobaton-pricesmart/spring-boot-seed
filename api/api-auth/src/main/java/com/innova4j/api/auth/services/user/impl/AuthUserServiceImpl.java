@@ -108,9 +108,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 	@Override
 	public AuthUserDto customUpdate(Map<String, Object> dto) {
-		AuthUser user = repository.customSave(dto);
-
-		return AuthUserDto.CONVERTER.apply(user);
+		throw new UnsupportedOperationException();
 	}
 
 	@Override

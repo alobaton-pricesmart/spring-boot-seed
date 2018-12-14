@@ -1,7 +1,7 @@
 package com.innova4j.api.auth.services.client.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,11 +120,8 @@ public class CustomClientDetailsService implements ClientDetailsService, ClientR
 	 */
 	@Override
 	public List<ClientDetails> listClientDetails() {
-		List<AuthClientDetails> details = repository.findAll();
-		List<ClientDetails> result = new ArrayList<ClientDetails>();
-		result.addAll(details);
-
-		return result;
+		return repository.findAll().stream().map(det -> (ClientDetails) det)
+				.collect(Collectors.<ClientDetails>toList());
 	}
 
 	/*

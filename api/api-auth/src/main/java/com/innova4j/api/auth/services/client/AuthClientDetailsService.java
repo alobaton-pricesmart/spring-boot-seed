@@ -10,6 +10,6 @@ import com.innova4j.api.commons.service.BaseService;
  * @author innova4j-team
  *
  */
-public interface AuthClientDetailsService extends BaseService<AuthClientDetailsDto> {
+public interface AuthClientDetailsService extends BaseService<AuthClientDetailsDto, String> {
 
 }

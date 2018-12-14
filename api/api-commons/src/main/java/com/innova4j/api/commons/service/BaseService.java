@@ -13,8 +13,9 @@ import javax.validation.constraints.NotNull;
  * @author innova4j-team
  *
  * @param <T>
+ * @param <I>
  */
-public interface BaseService<T> {
+public interface BaseService<T, I> {
 
 	/**
 	 * Creates a <T>.
@@ -27,10 +28,10 @@ public interface BaseService<T> {
 	/**
 	 * Get a <T>
 	 * 
-	 * @param id The id.
+	 * @param id The <I>.
 	 * @return The <T>.
 	 */
-	T get(String id);
+	T get(I id);
 
 	/**
 	 * 
@@ -72,9 +73,9 @@ public interface BaseService<T> {
 	/**
 	 * Delte a <T>
 	 * 
-	 * @param id The id
+	 * @param id The <I>
 	 */
-	T delete(String id);
+	T delete(I id);
 
 	/**
 	 * True if exists by id.

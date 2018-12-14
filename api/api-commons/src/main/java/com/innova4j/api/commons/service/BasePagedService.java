@@ -10,8 +10,9 @@ import org.springframework.data.domain.Pageable;
  * @author innova4j-team
  * 
  * @param <T>
+ * @param <I>
  */
-public interface BasePagedService<T> extends BaseService<T> {
+public interface BasePagedService<T, I> extends BaseService<T, I> {
 
 	Page<T> getAll(T dto, Pageable pageable);
 }

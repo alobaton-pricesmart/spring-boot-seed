@@ -8,8 +8,15 @@ import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+
+import com.innova4j.api.auth.dao.AuthPasswordTokenRepository;
 import com.innova4j.api.auth.domain.AuthPasswordToken;
+import com.innova4j.api.auth.domain.AuthPasswordTokenId;
 import com.innova4j.api.auth.services.token.AuthPasswordTokenService;
+import com.innova4j.api.commons.exception.RegisterNotFoundException;
 
 /**
  * @author innova4j-team
@@ -17,58 +24,61 @@ import com.innova4j.api.auth.services.token.AuthPasswordTokenService;
  */
 public class AuthPasswordTokenServiceImpl implements AuthPasswordTokenService {
 
+	@Autowired
+	private AuthPasswordTokenRepository repository;
+
 	@Override
 	public AuthPasswordToken create(AuthPasswordToken dto) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.save(dto);
 	}
 
 	@Override
-	public AuthPasswordToken get(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public AuthPasswordToken get(AuthPasswordTokenId id) {
+		return repository.getOne(id);
 	}
 
 	@Override
 	public AuthPasswordToken customGet(@NotNull AuthPasswordToken dto) {
-		// TODO Auto-generated method stub
-		return null;
+		Example<AuthPasswordToken> example = Example.of(dto);
+
+		return repository.findOne(example).orElseThrow(
+				() -> new RegisterNotFoundException(AuthPasswordToken.class, Strings.EMPTY, dto.toString()));
 	}
 
 	@Override
 	public List<AuthPasswordToken> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.findAll();
 	}
 
 	@Override
 	public List<AuthPasswordToken> getAll(AuthPasswordToken dto) {
-		// TODO Auto-generated method stub
-		return null;
+		Example<AuthPasswordToken> example = Example.of(dto);
+
+		return repository.findAll(example);
 	}
 
 	@Override
 	public AuthPasswordToken update(AuthPasswordToken dto) {
-		// TODO Auto-generated method stub
-		return null;
+		return repository.save(dto);
 	}
 
 	@Override
 	public AuthPasswordToken customUpdate(Map<String, Object> dto) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
-	public AuthPasswordToken delete(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public AuthPasswordToken delete(AuthPasswordTokenId id) {
+		AuthPasswordToken domain = get(id);
+
+		repository.deleteById(id);
+
+		return domain;
 	}
 
 	@Override
 	public boolean exists(String id) {
-		// TODO Auto-generated method stub
-		return false;
+		throw new UnsupportedOperationException();
 	}
 
 }
