@@ -36,6 +36,7 @@
 		<commons.codec.version>1.11</commons.codec.version>
 		<guava.version>27.0-jre</guava.version>
 		<h2.version>1.4.197</h2.version>
+		<jooq.version>3.11.7</jooq.version>
 	</properties>
 	<modules>
 		<module>api-app</module>
@@ -132,6 +133,12 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-data-jpa</artifactId>
 				<version>${spring.boot.starter.data.jpa}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.jooq/jooq -->
+			<dependency>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq</artifactId>
+				<version>${jooq.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
 			<dependency>

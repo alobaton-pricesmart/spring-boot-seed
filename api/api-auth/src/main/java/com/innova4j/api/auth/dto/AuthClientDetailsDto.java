@@ -6,9 +6,11 @@ package com.innova4j.api.auth.dto;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -27,6 +29,21 @@ public class AuthClientDetailsDto {
 		@Override
 		public AuthClientDetailsDto apply(ClientDetails t) {
 			AuthClientDetailsDto dto = new AuthClientDetailsDto();
+
+			dto.setClientId(t.getClientId());
+			dto.setResourceIds(t.getResourceIds());
+			dto.setSecretRequired(t.isSecretRequired());
+			dto.setClientSecret(t.getClientSecret());
+			dto.setScoped(t.isScoped());
+			dto.setScope(t.getScope());
+			dto.setAuthorizedGrantTypes(t.getAuthorizedGrantTypes());
+			dto.setRegisteredRedirectUri(t.getRegisteredRedirectUri());
+			dto.setAuthorities(t.getAuthorities().stream().map(authority -> authority.getAuthority())
+					.collect(Collectors.<String>toSet()));
+			dto.setAccessTokenValiditySeconds(t.getAccessTokenValiditySeconds());
+			dto.setRefreshTokenValiditySeconds(t.getRefreshTokenValiditySeconds());
+			dto.setAutoApprove(t.isAutoApprove(Strings.EMPTY));
+			dto.setAdditionalInformation(t.getAdditionalInformation());
 
 			return dto;
 		}

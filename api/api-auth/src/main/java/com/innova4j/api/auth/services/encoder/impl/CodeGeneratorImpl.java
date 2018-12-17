@@ -17,22 +17,13 @@ import com.innova4j.api.auth.services.encoder.CodeType;
 @Service
 public class CodeGeneratorImpl implements CodeGenerator {
 
-	/**
-	 * Sizes.
-	 */
 	private static final int NUMERIC_SIZE = 10;
 	private static final int ALPHA_SIZE = 26;
 	private static final int ALPHANUMERIC_SIZE = NUMERIC_SIZE + ALPHA_SIZE;
 
-	/**
-	 * Symbols.
-	 */
 	private static final char[] NUMERIC_SYMBOLS = new char[NUMERIC_SIZE];
 	private static final char[] ALPHANUMERIC_SYMBOLS = new char[ALPHANUMERIC_SIZE];
 
-	/**
-	 * Initialize size in static context.
-	 */
 	static {
 		for (int i = 0; i < NUMERIC_SIZE; i++) {
 			NUMERIC_SYMBOLS[i] = (char) ('0' + i);

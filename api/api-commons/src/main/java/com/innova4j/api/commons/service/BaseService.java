@@ -78,11 +78,11 @@ public interface BaseService<T, I> {
 	T delete(I id);
 
 	/**
-	 * True if exists by id.
+	 * True if exists by <I>.
 	 * 
-	 * @param id The id.
+	 * @param id The <I>.
 	 * @return True if exists, false otherwise.
 	 */
-	boolean exists(String id);
+	boolean exists(I id);
 
 }

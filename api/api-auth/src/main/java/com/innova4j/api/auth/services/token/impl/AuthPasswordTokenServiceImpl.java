@@ -77,8 +77,8 @@ public class AuthPasswordTokenServiceImpl implements AuthPasswordTokenService {
 	}
 
 	@Override
-	public boolean exists(String id) {
-		throw new UnsupportedOperationException();
+	public boolean exists(AuthPasswordTokenId id) {
+		return repository.existsById(id);
 	}
 
 }

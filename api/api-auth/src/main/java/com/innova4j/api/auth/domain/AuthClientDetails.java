@@ -41,6 +41,20 @@ public class AuthClientDetails extends BaseDomain implements ClientDetails {
 		public ClientDetails apply(AuthClientDetailsDto t) {
 			AuthClientDetails domain = new AuthClientDetails();
 
+			domain.setClientId(t.getClientId());
+			domain.setResourceIds(t.getResourceIds());
+			domain.setSecretRequired(t.isSecretRequired());
+			domain.setClientSecret(t.getClientSecret());
+			domain.setScoped(t.isScoped());
+			domain.setScope(t.getScope());
+			domain.setAuthorizedGrantTypes(t.getAuthorizedGrantTypes());
+			domain.setRegisteredRedirectUri(t.getRegisteredRedirectUri());
+			domain.setAuthorities(t.getAuthorities());
+			domain.setAccessTokenValiditySeconds(t.getAccessTokenValiditySeconds());
+			domain.setRefreshTokenValiditySeconds(t.getRefreshTokenValiditySeconds());
+			domain.setAutoApprove(t.isAutoApprove());
+			domain.setAdditionalInformation(t.getAdditionalInformation());
+
 			return domain;
 		}
 	};
