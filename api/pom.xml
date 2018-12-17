@@ -26,6 +26,7 @@
 		<jackson.annotations.version>2.9.6</jackson.annotations.version>
 		<javax.validation.version>2.0.1.Final</javax.validation.version>
 		<spring.security.oauth2.version>2.3.4.RELEASE</spring.security.oauth2.version>
+		<spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
 		<spring.boot.starter.data.jpa>2.1.1.RELEASE</spring.boot.starter.data.jpa>
 		<spring.boot.starter.thymeleaf.version>2.0.4.RELEASE</spring.boot.starter.thymeleaf.version>
 		<thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
@@ -127,6 +128,12 @@
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
 				<version>${spring.security.oauth2.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-jwt</artifactId>
+				<version>${spring.security.jwt.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
 			<dependency>

@@ -18,14 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.innova4j.api.auth.AuthConstants;
-import com.innova4j.api.auth.dao.AuthTokenRepository;
 import com.innova4j.api.auth.dao.AuthUserRepository;
-import com.innova4j.api.auth.domain.AuthToken;
-import com.innova4j.api.auth.domain.AuthTokenId;
 import com.innova4j.api.auth.domain.AuthUser;
 import com.innova4j.api.auth.dto.AuthUserDto;
-import com.innova4j.api.auth.services.encoder.HashEncoder;
 import com.innova4j.api.auth.services.user.AuthUserService;
 import com.innova4j.api.commons.exception.RegisterNotFoundException;
 
@@ -38,12 +33,6 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 	@Autowired
 	private AuthUserRepository repository;
-
-	@Autowired
-	private AuthTokenRepository tokenRepository;
-
-	@Autowired
-	private HashEncoder encoder;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -124,21 +113,4 @@ public class AuthUserServiceImpl implements AuthUserService {
 	public boolean exists(String id) {
 		return repository.existsById(id);
 	}
-
-	@Override
-	public AuthUserDto getByAccessToken(String token) {
-		AuthTokenId id = new AuthTokenId();
-		id.setTokenId(encoder.encode(token));
-
-		AuthToken t = new AuthToken();
-		t.setId(id);
-
-		Example<AuthToken> example = Example.of(t);
-
-		t = tokenRepository.findOne(example)
-				.orElseThrow(() -> new RegisterNotFoundException(AuthToken.class, AuthConstants.TOKEN_ID, token));
-
-		return get(t.getId().getNickname());
-	}
-
 }

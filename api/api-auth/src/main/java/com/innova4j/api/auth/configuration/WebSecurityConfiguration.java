@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.innova4j.api.app.configuration.auth;
+package com.innova4j.api.auth.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

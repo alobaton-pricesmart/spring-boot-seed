@@ -11,6 +11,4 @@ import com.innova4j.api.commons.service.BasePagedService;
  *
  */
 public interface AuthUserService extends BasePagedService<AuthUserDto, String> {
-
-	AuthUserDto getByAccessToken(String token);
 }

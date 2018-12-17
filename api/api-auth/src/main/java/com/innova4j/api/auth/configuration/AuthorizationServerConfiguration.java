@@ -1,4 +1,4 @@
-package com.innova4j.api.app.configuration.auth;
+package com.innova4j.api.auth.configuration;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -28,14 +29,16 @@ import org.springframework.security.oauth2.provider.error.DefaultWebResponseExce
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.innova4j.api.auth.granters.password.PasswordGranter;
 import com.innova4j.api.auth.granters.password.PasswordGranterBuilder;
 import com.innova4j.api.auth.services.client.impl.CustomClientDetailsService;
 import com.innova4j.api.auth.services.encoder.HashEncoder;
 import com.innova4j.api.auth.services.token.AuthPasswordTokenService;
-import com.innova4j.api.auth.services.token.impl.CustomTokenStore;
 import com.innova4j.api.auth.services.user.AuthUserService;
 
 /**
@@ -64,9 +67,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	private AuthUserService userService;
 
 	@Autowired
-	private CustomTokenStore tokenStore;
-
-	@Autowired
 	private AuthPasswordTokenService passwordTokenService;
 
 	@Autowired
@@ -76,37 +76,36 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
 
-	/**
-	 * 
-	 * @return The client details service.
-	 */
 	@Bean
 	public ClientDetailsService clientDetailsService() {
 		return clientDetailsService;
 	}
 
-	/**
-	 * 
-	 * @return The token store.
-	 */
-	@Bean
-	public TokenStore tokenStore() {
-		return tokenStore;
-	}
-
-	/**
-	 * 
-	 * @return The authentication key generator.
-	 */
 	@Bean
 	public AuthenticationKeyGenerator authenticationKeyGenerator() {
 		return new DefaultAuthenticationKeyGenerator();
 	}
 
-	/**
-	 * 
-	 * @return The exception translator.
-	 */
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+		return converter;
+	}
+
+	@Bean
+	public TokenStore tokenStore() {
+		return new JwtTokenStore(accessTokenConverter());
+	}
+
+	@Bean
+	@Primary
+	public DefaultTokenServices tokenServices() {
+		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+		defaultTokenServices.setTokenStore(tokenStore());
+		defaultTokenServices.setSupportRefreshToken(Boolean.TRUE);
+		return defaultTokenServices;
+	}
+
 	@Bean
 	public WebResponseExceptionTranslator<OAuth2Exception> webResponseExceptionTranslator() {
 		return new DefaultWebResponseExceptionTranslator() {
@@ -148,9 +147,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	 */
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.tokenStore(tokenStore()).authenticationManager(authenticationManager)
-				.userDetailsService(userDetailsService).tokenGranter(tokenGranter(endpoints))
-				.exceptionTranslator(webResponseExceptionTranslator());
+		endpoints.tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter())
+				.authenticationManager(authenticationManager).userDetailsService(userDetailsService)
+				.tokenGranter(tokenGranter(endpoints)).exceptionTranslator(webResponseExceptionTranslator());
 	}
 
 	/**

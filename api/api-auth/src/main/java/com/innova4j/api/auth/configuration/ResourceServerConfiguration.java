@@ -1,18 +1,23 @@
 /**
  * 
  */
-package com.innova4j.api.app.configuration.auth;
+package com.innova4j.api.auth.configuration;
 
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -25,7 +30,7 @@ import org.springframework.web.filter.CorsFilter;
  */
 @Configuration
 @EnableResourceServer
-public class RestApiResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
 	/**
 	 * Put here your public access endpoints...
@@ -43,10 +48,6 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
 	@Value("${app.name}")
 	private String resourceId;
 
-	/**
-	 * 
-	 * @return The CORS configuration source.
-	 */
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
@@ -59,22 +60,33 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
 		return source;
 	}
 
-	/**
-	 * 
-	 * @return The CORS filter.
-	 */
 	@Bean
 	public CorsFilter corsFilter() {
 		return new CorsFilter(corsConfigurationSource());
 	}
 
-	/**
-	 * 
-	 * @return The custom CORS filter
-	 */
 	@Bean
 	public CustomCorsFilter customCorsFilter() {
 		return new CustomCorsFilter();
+	}
+
+	@Bean
+	public TokenStore tokenStore() {
+		return new JwtTokenStore(accessTokenConverter());
+	}
+
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
+		return converter;
+	}
+
+	@Bean
+	@Primary
+	public DefaultTokenServices tokenServices() {
+		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+		defaultTokenServices.setTokenStore(tokenStore());
+		return defaultTokenServices;
 	}
 
 	/*
@@ -86,7 +98,7 @@ public class RestApiResourceServerConfiguration extends ResourceServerConfigurer
 	 */
 	@Override
 	public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-		resources.resourceId(resourceId);
+		resources.resourceId(resourceId).tokenServices(tokenServices());
 	}
 
 	/*

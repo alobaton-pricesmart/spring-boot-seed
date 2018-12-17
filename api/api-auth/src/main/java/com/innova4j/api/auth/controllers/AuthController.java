@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
-import org.springframework.security.oauth2.provider.authentication.OAuth2AuthenticationDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.innova4j.api.auth.domain.CustomUserDetails;
 import com.innova4j.api.auth.dto.AuthPasswordDto;
 import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.user.AuthUserService;
@@ -46,11 +46,15 @@ public class AuthController {
 	 */
 	@GetMapping("/user-info")
 	public @ResponseBody AuthUserDto userInfo(OAuth2Authentication authentication) {
-		final OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
+		String nickname = null;
+		if (authentication.getPrincipal() instanceof CustomUserDetails) {
+			CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+			nickname = userDetails.getUsername();
+		} else if (authentication.getPrincipal() instanceof String) {
+			nickname = (String) authentication.getPrincipal();
+		}
 
-		String token = details.getTokenValue();
-
-		return service.getByAccessToken(token);
+		return service.get(nickname);
 	}
 
 	/**
@@ -61,7 +65,7 @@ public class AuthController {
 	 */
 	@GetMapping("/recovery-password")
 	public void recoveryPassword(@Valid @RequestParam String nickname) {
-
+		// TODO(alobaton): Implement password recovery.
 	}
 
 	/**
@@ -74,11 +78,16 @@ public class AuthController {
 	@PostMapping("/reset-password")
 	public @ResponseBody AuthUserDto resetPassword(OAuth2Authentication authentication,
 			@Valid @RequestBody AuthPasswordDto passwordDto) {
-		final OAuth2AuthenticationDetails details = (OAuth2AuthenticationDetails) authentication.getDetails();
+		// The authentication is seted in the PasswordGranter.
+		String nickname = null;
+		if (authentication.getPrincipal() instanceof CustomUserDetails) {
+			CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+			nickname = userDetails.getUsername();
+		} else if (authentication.getPrincipal() instanceof String) {
+			nickname = (String) authentication.getPrincipal();
+		}
 
-		String token = details.getTokenValue();
-
-		AuthUserDto user = service.getByAccessToken(token);
+		AuthUserDto user = service.get(nickname);
 		user.setPassword(encoder.encode(passwordDto.getPassword()));
 
 		return service.update(user);
