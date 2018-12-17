@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
 
-import com.innova4j.api.email.configuration.EmailThymeleafConfiguration;
 import com.innova4j.api.email.service.EmailService;
 import com.innova4j.api.email.service.impl.EmailServiceImpl;
 
@@ -17,7 +16,7 @@ import com.innova4j.api.email.service.impl.EmailServiceImpl;
  *
  */
 @Configuration
-@Import({ EmailThymeleafConfiguration.class, com.innova4j.api.email.configuration.EmailConfiguration.class })
+@Import({ com.innova4j.api.email.configuration.EmailConfiguration.class })
 @PropertySource("classpath:/email/email.properties")
 public class EmailConfiguration {
 	/**

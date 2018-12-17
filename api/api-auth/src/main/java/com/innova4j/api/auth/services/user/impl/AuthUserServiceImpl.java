@@ -3,26 +3,36 @@
  */
 package com.innova4j.api.auth.services.user.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 
+import com.innova4j.api.auth.dao.AuthPasswordTokenRepository;
 import com.innova4j.api.auth.dao.AuthUserRepository;
+import com.innova4j.api.auth.domain.AuthPasswordToken;
+import com.innova4j.api.auth.domain.AuthPasswordTokenId;
 import com.innova4j.api.auth.domain.AuthUser;
 import com.innova4j.api.auth.dto.AuthUserDto;
+import com.innova4j.api.auth.services.encoder.HashEncoder;
 import com.innova4j.api.auth.services.user.AuthUserService;
 import com.innova4j.api.commons.exception.RegisterNotFoundException;
+import com.innova4j.api.email.EmailContentBuilder;
+import com.innova4j.api.email.service.EmailService;
 
 /**
  * @author innova4j-team
@@ -31,11 +41,29 @@ import com.innova4j.api.commons.exception.RegisterNotFoundException;
 @Service
 public class AuthUserServiceImpl implements AuthUserService {
 
+	@Value("${auth.password.validitySeconds:1800}")
+	private int validitySeconds;
+
+	@Value("${spring.email.from}")
+	private String from;
+
 	@Autowired
 	private AuthUserRepository repository;
 
 	@Autowired
+	private AuthPasswordTokenRepository passwordTokenRepository;
+
+	@Autowired
+	private HashEncoder encoder;
+
+	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+
+	@Autowired
+	private TemplateEngine emailTemplateEngine;
+
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public Page<AuthUserDto> getAll(AuthUserDto dto, Pageable pageable) {
@@ -113,4 +141,36 @@ public class AuthUserServiceImpl implements AuthUserService {
 	public boolean exists(String id) {
 		return repository.existsById(id);
 	}
+
+	@Override
+	public void resetPassword(String nickname) {
+		AuthUser user = new AuthUser();
+		user.setNickname(nickname);
+
+		Example<AuthUser> example = Example.of(user);
+
+		user = repository.findOne(example)
+				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, AuthUser.NICKNAME, nickname));
+
+		AuthPasswordTokenId id = new AuthPasswordTokenId();
+		id.setNickname(nickname);
+
+		String token = UUID.randomUUID().toString();
+		id.setToken(encoder.encode(token));
+
+		AuthPasswordToken passwordToken = new AuthPasswordToken();
+		passwordToken.setId(id);
+
+		LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(validitySeconds);
+		passwordToken.setExpiresAt(expiresAt);
+
+		passwordToken = passwordTokenRepository.save(passwordToken);
+
+		// TODO(alobaton): Create password reset template
+		EmailContentBuilder builder = new EmailContentBuilder().emailTemplateEngine(emailTemplateEngine)
+				.template("template").parameter("key", "value");
+
+		emailService.sendEmail(user.getEmail(), from, "Subject", builder.build(), Boolean.TRUE);
+	}
+
 }

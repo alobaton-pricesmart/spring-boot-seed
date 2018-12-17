@@ -65,7 +65,7 @@ public class AuthController {
 	 */
 	@GetMapping("/recovery-password")
 	public void recoveryPassword(@Valid @RequestParam String nickname) {
-		// TODO(alobaton): Implement password recovery.
+		service.resetPassword(nickname);
 	}
 
 	/**
