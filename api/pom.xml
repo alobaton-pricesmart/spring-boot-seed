@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.innova4j.api</groupId>
 	<artifactId>api</artifactId>
@@ -11,7 +13,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.1.RELEASE</version>
-		<relativePath/>
+		<relativePath />
 	</parent>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -45,8 +47,8 @@
 		<module>api-loader</module>
 		<module>api-commons</module>
 		<module>api-masters</module>
-    <module>api-settings</module>
-  </modules>
+		<module>api-settings</module>
+	</modules>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -79,6 +81,18 @@
 				<artifactId>api-loader</artifactId>
 				<version>${project.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.innova4j.api</groupId>
+				<artifactId>api-masters</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.innova4j.api</groupId>
+				<artifactId>api-settings</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<!-- Import your app modules here... -->
+			<!-- Import your app modules here... -->
 			<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 			<dependency>
 				<groupId>log4j</groupId>
