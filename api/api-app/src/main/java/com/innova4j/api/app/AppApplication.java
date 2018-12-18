@@ -11,7 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
 // Exclude EmbeddedMongoAutoConfiguration since it is used only for tests.
 // @SpringBootApplication(exclude = { EmbeddedMongoAutoConfiguration.class })
 // Put your base packages here...
-@ComponentScan(lazyInit = true, basePackages = { "com.innova4j.api.auth.controllers" })
+@ComponentScan(lazyInit = true, basePackages = { "com.innova4j.api.auth.controllers",
+		"com.innova4j.api.masters.controllers", "com.innova4j.api.settings.controllers" })
 public class AppApplication {
 
 	public static void main(String[] args) {
