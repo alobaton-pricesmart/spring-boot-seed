@@ -1,0 +1,21 @@
+version: "2.2"
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile_dev
+    container_name: spring-boot-seed-dev
+    image: spring-boot-seed/dev
+    volumes:
+      - ./api:/home/spring-boot-seed/api
+    networks:
+      - dev-network
+    ports:
+      - 8080:8080
+      - 10001:10001
+    mem_limit: 768m
+    cpu_percent: 60
+
+networks:
+  dev-network: {}

@@ -51,9 +51,6 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 	private static final Log LOGGER = LogFactory.getLog(AuthorizationServerConfiguration.class);
 
-	@Value("${spring.profiles.active:local}")
-	private String activeProfile;
-
 	@Value("${auth.code.secret}")
 	private String secret;
 
@@ -111,13 +108,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 		return new DefaultWebResponseExceptionTranslator() {
 			@Override
 			public ResponseEntity<OAuth2Exception> translate(Exception e) throws Exception {
-				if ("local".equals(activeProfile)) {
-					StringWriter sw = new StringWriter();
-					PrintWriter pw = new PrintWriter(sw);
-					e.printStackTrace(pw);
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				e.printStackTrace(pw);
 
-					LOGGER.debug(sw.toString());
-				}
+				LOGGER.debug(sw.toString());
 
 				ResponseEntity<OAuth2Exception> response = super.translate(e);
 				return response;

@@ -1,0 +1,12 @@
+# IDEs and editors
+.idea
+.vscode
+.project
+.classpath
+*.launch
+.settings/
+.editorconfig
+
+#System Files
+.DS_Store
+Thumbs.db
