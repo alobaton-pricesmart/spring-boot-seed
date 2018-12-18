@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.innova4j.api.commons.controllers.BasePagedController;
 import com.innova4j.api.masters.dto.MasterDto;
@@ -18,6 +20,8 @@ import com.innova4j.api.masters.dto.MasterDto;
  * @author innova4j-team
  *
  */
+@RestController
+@RequestMapping("/masters")
 public class MasterController implements BasePagedController<MasterDto> {
 
 	@Override

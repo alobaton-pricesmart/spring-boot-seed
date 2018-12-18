@@ -20,6 +20,10 @@
 			<groupId>com.innova4j.api</groupId>
 			<artifactId>api-email</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.innova4j.api</groupId>
+			<artifactId>api-message</artifactId>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

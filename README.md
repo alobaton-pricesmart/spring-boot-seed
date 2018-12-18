@@ -8,6 +8,9 @@ Provides fast, reliable and extensible starter for the development of Java proje
 - i18n support.
 - Production and development builds.
 - Provides full Docker support for both development and production environment.
+- Application masters module.
+- Application settings module.
+- Application loader module.
 
 ## Contributors
 

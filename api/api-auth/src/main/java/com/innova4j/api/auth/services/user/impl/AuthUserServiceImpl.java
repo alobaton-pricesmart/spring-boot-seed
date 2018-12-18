@@ -48,13 +48,13 @@ public class AuthUserServiceImpl implements AuthUserService {
 	private String from;
 
 	@Autowired
-	private AuthUserRepository repository;
+	private AuthUserRepository userRepository;
 
 	@Autowired
 	private AuthPasswordTokenRepository passwordTokenRepository;
 
 	@Autowired
-	private HashEncoder encoder;
+	private HashEncoder hashEncoder;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -69,7 +69,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 	public Page<AuthUserDto> getAll(AuthUserDto dto, Pageable pageable) {
 		Example<AuthUser> example = Example.of(AuthUser.CONVERTER.apply(dto));
 
-		Page<AuthUser> result = repository.findAll(example, pageable);
+		Page<AuthUser> result = userRepository.findAll(example, pageable);
 
 		return new PageImpl<AuthUserDto>(
 				result.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
@@ -80,14 +80,14 @@ public class AuthUserServiceImpl implements AuthUserService {
 	public AuthUserDto create(AuthUserDto dto) {
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-		AuthUser user = repository.save(AuthUser.CONVERTER.apply(dto));
+		AuthUser user = userRepository.save(AuthUser.CONVERTER.apply(dto));
 
 		return AuthUserDto.CONVERTER.apply(user);
 	}
 
 	@Override
 	public AuthUserDto get(String id) {
-		AuthUser user = repository.getOne(id);
+		AuthUser user = userRepository.getOne(id);
 
 		return AuthUserDto.CONVERTER.apply(user);
 	}
@@ -96,7 +96,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 	public AuthUserDto customGet(@NotNull AuthUserDto dto) {
 		Example<AuthUser> example = Example.of(AuthUser.CONVERTER.apply(dto));
 
-		AuthUser user = repository.findOne(example)
+		AuthUser user = userRepository.findOne(example)
 				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, Strings.EMPTY, dto.toString()));
 
 		return AuthUserDto.CONVERTER.apply(user);
@@ -104,21 +104,21 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 	@Override
 	public List<AuthUserDto> getAll() {
-		return repository.findAll().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList());
+		return userRepository.findAll().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList());
 	}
 
 	@Override
 	public List<AuthUserDto> getAll(AuthUserDto dto) {
 		Example<AuthUser> example = Example.of(AuthUser.CONVERTER.apply(dto));
 
-		List<AuthUser> result = repository.findAll(example);
+		List<AuthUser> result = userRepository.findAll(example);
 
 		return result.stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList());
 	}
 
 	@Override
 	public AuthUserDto update(AuthUserDto dto) {
-		AuthUser user = repository.save(AuthUser.CONVERTER.apply(dto));
+		AuthUser user = userRepository.save(AuthUser.CONVERTER.apply(dto));
 
 		return AuthUserDto.CONVERTER.apply(user);
 	}
@@ -132,14 +132,14 @@ public class AuthUserServiceImpl implements AuthUserService {
 	public AuthUserDto delete(String id) {
 		AuthUserDto dto = get(id);
 
-		repository.deleteById(id);
+		userRepository.deleteById(id);
 
 		return dto;
 	}
 
 	@Override
 	public boolean exists(String id) {
-		return repository.existsById(id);
+		return userRepository.existsById(id);
 	}
 
 	@Override
@@ -149,14 +149,14 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 		Example<AuthUser> example = Example.of(user);
 
-		user = repository.findOne(example)
+		user = userRepository.findOne(example)
 				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, AuthUser.NICKNAME, nickname));
 
 		AuthPasswordTokenId id = new AuthPasswordTokenId();
 		id.setNickname(nickname);
 
 		String token = UUID.randomUUID().toString();
-		id.setToken(encoder.encode(token));
+		id.setToken(hashEncoder.encode(token));
 
 		AuthPasswordToken passwordToken = new AuthPasswordToken();
 		passwordToken.setId(id);

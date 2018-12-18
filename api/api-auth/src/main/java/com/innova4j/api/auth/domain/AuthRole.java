@@ -3,12 +3,17 @@
  */
 package com.innova4j.api.auth.domain;
 
+import java.util.Map;
+
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.innova4j.api.commons.domain.BaseDomain;
+import com.innova4j.api.message.MessageConstants;
 
 /**
  * @author innova4j-team
@@ -21,7 +26,14 @@ public class AuthRole extends BaseDomain {
 	@Id
 	@NotNull
 	private String id;
-	private String description;
+	@NotNull
+	@ElementCollection(targetClass = String.class)
+	@MapKeyColumn(name = MessageConstants.LOCALE)
+	private Map<String, String> name;
+	@NotNull
+	@ElementCollection(targetClass = String.class)
+	@MapKeyColumn(name = MessageConstants.LOCALE)
+	private Map<String, String> description;
 	private String parentId;
 	private String view;
 	private String create;
@@ -42,17 +54,19 @@ public class AuthRole extends BaseDomain {
 		this.id = id;
 	}
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
+	public Map<String, String> getName() {
+		return name;
+	}
+
+	public void setName(Map<String, String> name) {
+		this.name = name;
+	}
+
+	public Map<String, String> getDescription() {
 		return description;
 	}
 
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(String description) {
+	public void setDescription(Map<String, String> description) {
 		this.description = description;
 	}
 
@@ -126,16 +140,11 @@ public class AuthRole extends BaseDomain {
 		this.remove = remove;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "AuthRole [id=" + id + ", description=" + description + ", parentId=" + parentId + ", view=" + view
-				+ ", create=" + create + ", edit=" + edit + ", remove=" + remove + ", created=" + created
-				+ ", lastModified=" + lastModified + "]";
+		return "AuthRole [id=" + id + ", name=" + name + ", description=" + description + ", parentId=" + parentId
+				+ ", view=" + view + ", create=" + create + ", edit=" + edit + ", remove=" + remove + ", created="
+				+ created + ", lastModified=" + lastModified + "]";
 	}
 
 }

@@ -20,5 +20,9 @@
 			<groupId>com.innova4j.api</groupId>
 			<artifactId>api-commons</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.innova4j.api</groupId>
+			<artifactId>api-message</artifactId>
+		</dependency>
 	</dependencies>
 </project>
