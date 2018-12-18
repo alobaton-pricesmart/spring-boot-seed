@@ -44,26 +44,26 @@ public class MasterServiceImpl implements MasterService {
 
 	@Override
 	public MasterDto create(MasterDto dto) {
-		Master master = repository.save(Master.CONVERTER.apply(dto));
+		Master domain = repository.save(Master.CONVERTER.apply(dto));
 
-		return MasterDto.CONVERTER.apply(master);
+		return MasterDto.CONVERTER.apply(domain);
 	}
 
 	@Override
 	public MasterDto get(String id) {
-		Master master = repository.getOne(id);
+		Master domain = repository.getOne(id);
 
-		return MasterDto.CONVERTER.apply(master);
+		return MasterDto.CONVERTER.apply(domain);
 	}
 
 	@Override
 	public MasterDto customGet(@NotNull MasterDto dto) {
 		Example<Master> example = Example.of(Master.CONVERTER.apply(dto));
 
-		Master master = repository.findOne(example)
+		Master domain = repository.findOne(example)
 				.orElseThrow(() -> new RegisterNotFoundException(Master.class, Strings.EMPTY, dto.toString()));
 
-		return MasterDto.CONVERTER.apply(master);
+		return MasterDto.CONVERTER.apply(domain);
 	}
 
 	@Override

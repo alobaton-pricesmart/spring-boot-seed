@@ -80,26 +80,26 @@ public class AuthUserServiceImpl implements AuthUserService {
 	public AuthUserDto create(AuthUserDto dto) {
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-		AuthUser user = userRepository.save(AuthUser.CONVERTER.apply(dto));
+		AuthUser domain = userRepository.save(AuthUser.CONVERTER.apply(dto));
 
-		return AuthUserDto.CONVERTER.apply(user);
+		return AuthUserDto.CONVERTER.apply(domain);
 	}
 
 	@Override
 	public AuthUserDto get(String id) {
-		AuthUser user = userRepository.getOne(id);
+		AuthUser domain = userRepository.getOne(id);
 
-		return AuthUserDto.CONVERTER.apply(user);
+		return AuthUserDto.CONVERTER.apply(domain);
 	}
 
 	@Override
 	public AuthUserDto customGet(@NotNull AuthUserDto dto) {
 		Example<AuthUser> example = Example.of(AuthUser.CONVERTER.apply(dto));
 
-		AuthUser user = userRepository.findOne(example)
+		AuthUser domain = userRepository.findOne(example)
 				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, Strings.EMPTY, dto.toString()));
 
-		return AuthUserDto.CONVERTER.apply(user);
+		return AuthUserDto.CONVERTER.apply(domain);
 	}
 
 	@Override
@@ -118,9 +118,9 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 	@Override
 	public AuthUserDto update(AuthUserDto dto) {
-		AuthUser user = userRepository.save(AuthUser.CONVERTER.apply(dto));
+		AuthUser domain = userRepository.save(AuthUser.CONVERTER.apply(dto));
 
-		return AuthUserDto.CONVERTER.apply(user);
+		return AuthUserDto.CONVERTER.apply(domain);
 	}
 
 	@Override
@@ -144,12 +144,12 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 	@Override
 	public void resetPassword(String nickname) {
-		AuthUser user = new AuthUser();
-		user.setNickname(nickname);
+		AuthUser domain = new AuthUser();
+		domain.setNickname(nickname);
 
-		Example<AuthUser> example = Example.of(user);
+		Example<AuthUser> example = Example.of(domain);
 
-		user = userRepository.findOne(example)
+		domain = userRepository.findOne(example)
 				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, AuthUser.NICKNAME, nickname));
 
 		AuthPasswordTokenId id = new AuthPasswordTokenId();
@@ -170,7 +170,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 		EmailContentBuilder builder = new EmailContentBuilder().emailTemplateEngine(emailTemplateEngine)
 				.template("template").parameter("key", "value");
 
-		emailService.sendEmail(user.getEmail(), from, "Subject", builder.build(), Boolean.TRUE);
+		emailService.sendEmail(domain.getEmail(), from, "Subject", builder.build(), Boolean.TRUE);
 	}
 
 }

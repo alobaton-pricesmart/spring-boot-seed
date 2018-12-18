@@ -8,9 +8,11 @@ import java.util.Set;
 import java.util.function.Function;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.innova4j.api.commons.domain.BaseDomain;
@@ -21,6 +23,8 @@ import com.innova4j.api.message.MessageConstants;
  * @author innova4j-team
  *
  */
+@Entity
+@Table(name = "master")
 public class Master extends BaseDomain {
 
 	public static final Function<MasterDto, Master> CONVERTER = new Function<MasterDto, Master>() {

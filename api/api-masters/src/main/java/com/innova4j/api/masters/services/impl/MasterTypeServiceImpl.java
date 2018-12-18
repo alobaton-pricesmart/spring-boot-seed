@@ -44,26 +44,26 @@ public class MasterTypeServiceImpl implements MasterTypeService {
 
 	@Override
 	public MasterTypeDto create(MasterTypeDto dto) {
-		MasterType masterType = repository.save(MasterType.CONVERTER.apply(dto));
+		MasterType domain = repository.save(MasterType.CONVERTER.apply(dto));
 
-		return MasterTypeDto.CONVERTER.apply(masterType);
+		return MasterTypeDto.CONVERTER.apply(domain);
 	}
 
 	@Override
 	public MasterTypeDto get(String id) {
-		MasterType masterType = repository.getOne(id);
+		MasterType domain = repository.getOne(id);
 
-		return MasterTypeDto.CONVERTER.apply(masterType);
+		return MasterTypeDto.CONVERTER.apply(domain);
 	}
 
 	@Override
 	public MasterTypeDto customGet(@NotNull MasterTypeDto dto) {
 		Example<MasterType> example = Example.of(MasterType.CONVERTER.apply(dto));
 
-		MasterType masterType = repository.findOne(example)
+		MasterType domain = repository.findOne(example)
 				.orElseThrow(() -> new RegisterNotFoundException(MasterType.class, Strings.EMPTY, dto.toString()));
 
-		return MasterTypeDto.CONVERTER.apply(masterType);
+		return MasterTypeDto.CONVERTER.apply(domain);
 	}
 
 	@Override
@@ -82,9 +82,9 @@ public class MasterTypeServiceImpl implements MasterTypeService {
 
 	@Override
 	public MasterTypeDto update(MasterTypeDto dto) {
-		MasterType masterType = repository.save(MasterType.CONVERTER.apply(dto));
+		MasterType domain = repository.save(MasterType.CONVERTER.apply(dto));
 
-		return MasterTypeDto.CONVERTER.apply(masterType);
+		return MasterTypeDto.CONVERTER.apply(domain);
 	}
 
 	@Override
