@@ -38,12 +38,6 @@ public class AuthController {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
-	/**
-	 * Returns user information from the token.
-	 * 
-	 * @param token The token.
-	 * @return The user information.
-	 */
 	@GetMapping("/user-info")
 	public @ResponseBody AuthUserDto userInfo(OAuth2Authentication authentication) {
 		String nickname = null;
@@ -57,24 +51,11 @@ public class AuthController {
 		return service.get(nickname);
 	}
 
-	/**
-	 * Recovery password.
-	 * 
-	 * @param nicknme The nicknme.
-	 * @return
-	 */
 	@GetMapping("/recovery-password")
 	public void recoveryPassword(@Valid @RequestParam String nickname) {
 		service.resetPassword(nickname);
 	}
 
-	/**
-	 * Reset the password.
-	 * 
-	 * @param authentication
-	 * @param passwordDto
-	 * @return
-	 */
 	@PostMapping("/reset-password")
 	public @ResponseBody AuthUserDto resetPassword(OAuth2Authentication authentication,
 			@Valid @RequestBody AuthPasswordDto passwordDto) {
@@ -93,14 +74,6 @@ public class AuthController {
 		return service.update(user);
 	}
 
-	/**
-	 * 
-	 * Update user password.
-	 * 
-	 * @param id
-	 * @param passwordDto
-	 * @return
-	 */
 	@PostMapping("/update-password/{id}")
 	@PreAuthorize("")
 	public @ResponseBody AuthUserDto resetPassword(@PathVariable @NotNull String id,

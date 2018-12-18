@@ -8,13 +8,17 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.innova4j.api.commons.controllers.BasePagedController;
 import com.innova4j.api.masters.dto.MasterTypeDto;
+import com.innova4j.api.masters.services.MasterTypeService;
 
 /**
  * @author innova4j-team
@@ -24,40 +28,39 @@ import com.innova4j.api.masters.dto.MasterTypeDto;
 @RequestMapping("/master-types")
 public class MasterTypeController implements BasePagedController<MasterTypeDto> {
 
+	@Autowired
+	private MasterTypeService service;
+
 	@Override
-	public MasterTypeDto create(@Valid MasterTypeDto dto) {
-		// TODO Auto-generated method stub
-		return null;
+	public MasterTypeDto create(@Valid @RequestBody MasterTypeDto dto) {
+		return service.create(dto);
 	}
 
 	@Override
-	public MasterTypeDto get(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public MasterTypeDto get(@PathVariable String id) {
+		return service.get(id);
 	}
 
 	@Override
-	public List<MasterTypeDto> getAll(@Valid MasterTypeDto dto) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<MasterTypeDto> getAll(@Valid @RequestBody MasterTypeDto dto) {
+		return service.getAll(dto);
 	}
 
 	@Override
-	public MasterTypeDto update(String id, @Valid MasterTypeDto dto) {
-		// TODO Auto-generated method stub
-		return null;
+	public MasterTypeDto update(@PathVariable String id, @Valid @RequestBody MasterTypeDto dto) {
+		dto.setId(id);
+
+		return service.update(dto);
 	}
 
 	@Override
-	public void delete(String id) {
-		// TODO Auto-generated method stub
-
+	public void delete(@PathVariable String id) {
+		service.delete(id);
 	}
 
 	@Override
-	public Page<MasterTypeDto> getAll(@Valid MasterTypeDto dto, @NotNull Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+	public Page<MasterTypeDto> getAll(@Valid @RequestBody MasterTypeDto dto, @NotNull Pageable pageable) {
+		return service.getAll(dto, pageable);
 	}
 
 }

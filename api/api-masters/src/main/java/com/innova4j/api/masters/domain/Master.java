@@ -27,6 +27,10 @@ public class Master extends BaseDomain {
 		@Override
 		public Master apply(MasterDto t) {
 			Master domain = new Master();
+			domain.setId(t.getId());
+			domain.setName(t.getName());
+			domain.setMasterTypes(t.getMasterTypes());
+			domain.setAttributes(t.getAttributes());
 
 			return domain;
 		}

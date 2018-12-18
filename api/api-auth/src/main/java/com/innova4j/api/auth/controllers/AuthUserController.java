@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,33 +32,33 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	private AuthUserService service;
 
 	@Override
-	public AuthUserDto create(@Valid AuthUserDto dto) {
+	public AuthUserDto create(@Valid @RequestBody AuthUserDto dto) {
 		return service.create(dto);
 	}
 
 	@Override
-	public AuthUserDto get(String id) {
+	public AuthUserDto get(@PathVariable String id) {
 		return service.get(id);
 	}
 
 	@Override
-	public List<AuthUserDto> getAll(@Valid AuthUserDto dto) {
+	public List<AuthUserDto> getAll(@Valid @RequestBody AuthUserDto dto) {
 		return service.getAll(dto);
 	}
 
 	@Override
-	public AuthUserDto update(String id, @Valid AuthUserDto dto) {
+	public AuthUserDto update(@PathVariable String id, @Valid @RequestBody AuthUserDto dto) {
 		dto.setNickname(id);
 		return service.update(dto);
 	}
 
 	@Override
-	public void delete(String id) {
+	public void delete(@PathVariable String id) {
 		service.delete(id);
 	}
 
 	@Override
-	public Page<AuthUserDto> getAll(@Valid AuthUserDto dto, @NotNull Pageable pageable) {
+	public Page<AuthUserDto> getAll(@Valid @RequestBody AuthUserDto dto, @NotNull Pageable pageable) {
 		return service.getAll(dto, pageable);
 	}
 

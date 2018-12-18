@@ -5,16 +5,33 @@ package com.innova4j.api.masters.dto;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.validation.constraints.NotNull;
 
 import com.innova4j.api.commons.dto.BaseDto;
+import com.innova4j.api.masters.domain.MasterType;
 
 /**
  * @author innova4j-team
  *
  */
 public class MasterTypeDto extends BaseDto {
+
+	public static final Function<MasterType, MasterTypeDto> CONVERTER = new Function<MasterType, MasterTypeDto>() {
+		@Override
+		public MasterTypeDto apply(MasterType t) {
+			MasterTypeDto dto = new MasterTypeDto();
+			dto.setId(t.getId());
+			dto.setName(t.getName());
+			dto.setDescription(t.getDescription());
+			dto.setAttributes(t.getAttributes());
+			dto.setCreated(t.getCreated());
+			dto.setLastModified(t.getLastModified());
+
+			return dto;
+		}
+	};
 
 	@NotNull
 	private String id;
