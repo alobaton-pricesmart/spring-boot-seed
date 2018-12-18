@@ -5,6 +5,7 @@ package com.innova4j.api.masters.domain;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.GeneratedValue;
@@ -13,6 +14,7 @@ import javax.persistence.MapKeyColumn;
 import javax.validation.constraints.NotNull;
 
 import com.innova4j.api.commons.domain.BaseDomain;
+import com.innova4j.api.masters.dto.MasterDto;
 import com.innova4j.api.message.MessageConstants;
 
 /**
@@ -20,6 +22,15 @@ import com.innova4j.api.message.MessageConstants;
  *
  */
 public class Master extends BaseDomain {
+
+	public static final Function<MasterDto, Master> CONVERTER = new Function<MasterDto, Master>() {
+		@Override
+		public Master apply(MasterDto t) {
+			Master domain = new Master();
+
+			return domain;
+		}
+	};
 
 	@Id
 	@NotNull
