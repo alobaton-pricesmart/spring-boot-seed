@@ -42,6 +42,7 @@ The application provides full Docker support. You can use it for both developmen
 To start the container, use:
 
 ```bash
+$ cp .env.dev .env
 $ docker-compose -f docker-compose.dev.yml up -d
 ```
 
@@ -54,6 +55,7 @@ It is self-contained, and can therefore be pushed to a Docker registry to be dep
 To start the container, use:
 
 ```bash
+$ cp .env.prod .env
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
 
