@@ -11,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public abstract class BaseDomain {

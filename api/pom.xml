@@ -28,9 +28,7 @@
 		<spring.security.oauth2.version>2.3.4.RELEASE</spring.security.oauth2.version>
 		<spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
 		<spring.boot.starter.data.jpa>2.1.1.RELEASE</spring.boot.starter.data.jpa>
-		<spring.boot.starter.thymeleaf.version>2.0.4.RELEASE</spring.boot.starter.thymeleaf.version>
-		<thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
-		<thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
+		<spring.boot.starter.thymeleaf.version>2.1.1.RELEASE</spring.boot.starter.thymeleaf.version>
 		<org.aspectj.version>1.9.1</org.aspectj.version>
 		<commons.lang3.version>3.8.1</commons.lang3.version>
 		<commons.csv.version>1.6</commons.csv.version>
@@ -38,6 +36,7 @@
 		<guava.version>27.0-jre</guava.version>
 		<h2.version>1.4.197</h2.version>
 		<jooq.version>3.11.7</jooq.version>
+		<mysql.connector.java.version>5.1.47</mysql.connector.java.version>
 	</properties>
 	<modules>
 		<module>api-app</module>
@@ -51,6 +50,7 @@
 	</modules>
 	<dependencyManagement>
 		<dependencies>
+			<!-- Import your app modules here... -->
 			<dependency>
 				<groupId>com.innova4j.api</groupId>
 				<artifactId>api-app</artifactId>
@@ -91,7 +91,6 @@
 				<artifactId>api-settings</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<!-- Import your app modules here... -->
 			<!-- Import your app modules here... -->
 			<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 			<dependency>
@@ -154,6 +153,12 @@
 				<artifactId>spring-boot-starter-data-jpa</artifactId>
 				<version>${spring.boot.starter.data.jpa}</version>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-thymeleaf</artifactId>
+				<version>${spring.boot.starter.thymeleaf.version}</version>
+			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.jooq/jooq -->
 			<dependency>
 				<groupId>org.jooq</groupId>
@@ -202,6 +207,12 @@
 				<groupId>com.google.guava</groupId>
 				<artifactId>guava</artifactId>
 				<version>${guava.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.connector.java.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

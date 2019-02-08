@@ -12,7 +12,7 @@ import com.innova4j.api.auth.domain.AuthPasswordToken;
 import com.innova4j.api.auth.domain.AuthPasswordTokenId;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Repository

@@ -13,7 +13,7 @@ import com.innova4j.api.commons.dto.BaseDto;
 import com.innova4j.api.masters.domain.MasterType;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class MasterTypeDto extends BaseDto {

@@ -6,7 +6,7 @@ package com.innova4j.api.loader;
 import org.springframework.boot.SpringApplication;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class LoaderApplication {

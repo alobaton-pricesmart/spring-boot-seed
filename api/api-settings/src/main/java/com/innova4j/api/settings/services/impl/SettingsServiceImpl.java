@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import com.innova4j.api.commons.exception.RegisterNotFoundException;
 import com.innova4j.api.settings.dao.SettingsRepository;
@@ -20,9 +21,10 @@ import com.innova4j.api.settings.dto.SettingsDto;
 import com.innova4j.api.settings.services.SettingsService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
+@Service
 public class SettingsServiceImpl implements SettingsService {
 
 	@Autowired

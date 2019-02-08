@@ -7,7 +7,7 @@ import com.innova4j.api.auth.dto.AuthClientDetailsDto;
 import com.innova4j.api.commons.service.BaseService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface AuthClientDetailsService extends BaseService<AuthClientDetailsDto, String> {

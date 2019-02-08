@@ -7,6 +7,6 @@
 .settings/
 .editorconfig
 
-#System Files
+#System files
 .DS_Store
 Thumbs.db

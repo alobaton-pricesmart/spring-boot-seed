@@ -11,6 +11,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.ClientRegistrationService;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
+import org.springframework.stereotype.Service;
 
 import com.innova4j.api.auth.dao.AuthClientDetailsRepository;
 import com.innova4j.api.auth.domain.AuthClientDetails;
@@ -18,9 +19,10 @@ import com.innova4j.api.commons.exception.RegisterNotFoundException;
 
 /**
  * 
- * @author innova4j-team
+ * @author alobaton
  *
  */
+@Service
 public class CustomClientDetailsService implements ClientDetailsService, ClientRegistrationService {
 
 	@Autowired

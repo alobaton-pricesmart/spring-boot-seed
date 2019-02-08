@@ -25,7 +25,7 @@ import com.innova4j.api.auth.dto.AuthClientDetailsDto;
 import com.innova4j.api.commons.domain.BaseDomain;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Entity

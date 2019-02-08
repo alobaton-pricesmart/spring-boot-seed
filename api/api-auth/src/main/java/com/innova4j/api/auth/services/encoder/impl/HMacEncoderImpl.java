@@ -18,7 +18,7 @@ import com.innova4j.api.auth.services.encoder.HMacEncoder;
 
 /**
  * 
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Service

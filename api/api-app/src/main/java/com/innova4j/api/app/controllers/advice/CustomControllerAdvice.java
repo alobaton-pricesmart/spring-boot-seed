@@ -17,7 +17,7 @@ import com.innova4j.api.commons.exception.RegisterNotFoundException;
 import com.innova4j.api.message.service.MessageService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @ControllerAdvice

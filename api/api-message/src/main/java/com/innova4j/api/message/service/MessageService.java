@@ -6,7 +6,7 @@ package com.innova4j.api.message.service;
 import java.util.Locale;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface MessageService {

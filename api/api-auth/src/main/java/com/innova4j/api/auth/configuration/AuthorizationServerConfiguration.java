@@ -10,10 +10,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -22,17 +20,14 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
-import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.error.DefaultWebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.error.WebResponseExceptionTranslator;
 import org.springframework.security.oauth2.provider.token.AuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.innova4j.api.auth.granters.password.PasswordGranter;
 import com.innova4j.api.auth.granters.password.PasswordGranterBuilder;
@@ -42,7 +37,7 @@ import com.innova4j.api.auth.services.token.AuthPasswordTokenService;
 import com.innova4j.api.auth.services.user.AuthUserService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Configuration
@@ -51,11 +46,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 	private static final Log LOGGER = LogFactory.getLog(AuthorizationServerConfiguration.class);
 
-	@Value("${auth.code.secret}")
-	private String secret;
-
 	@Autowired
-	private CustomClientDetailsService clientDetailsService;
+	private CustomClientDetailsService customClientDetailsService;
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -73,34 +65,15 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
 
-	@Bean
-	public ClientDetailsService clientDetailsService() {
-		return clientDetailsService;
-	}
+	@Autowired
+	private TokenStore tokenStore;
+
+	@Autowired
+	private JwtAccessTokenConverter accessTokenConverter;
 
 	@Bean
 	public AuthenticationKeyGenerator authenticationKeyGenerator() {
 		return new DefaultAuthenticationKeyGenerator();
-	}
-
-	@Bean
-	public JwtAccessTokenConverter accessTokenConverter() {
-		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-		return converter;
-	}
-
-	@Bean
-	public TokenStore tokenStore() {
-		return new JwtTokenStore(accessTokenConverter());
-	}
-
-	@Bean
-	@Primary
-	public DefaultTokenServices tokenServices() {
-		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-		defaultTokenServices.setTokenStore(tokenStore());
-		defaultTokenServices.setSupportRefreshToken(Boolean.TRUE);
-		return defaultTokenServices;
 	}
 
 	@Bean
@@ -129,7 +102,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	 */
 	@Override
 	public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-		clients.withClientDetails(clientDetailsService());
+		clients.withClientDetails(customClientDetailsService);
 	}
 
 	/*
@@ -142,7 +115,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	 */
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter())
+		endpoints.tokenStore(tokenStore).accessTokenConverter(accessTokenConverter)
 				.authenticationManager(authenticationManager).userDetailsService(userDetailsService)
 				.tokenGranter(tokenGranter(endpoints)).exceptionTranslator(webResponseExceptionTranslator());
 	}

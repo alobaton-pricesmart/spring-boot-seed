@@ -16,7 +16,7 @@ import com.innova4j.api.commons.domain.BaseDomain;
 import com.innova4j.api.message.MessageConstants;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Entity

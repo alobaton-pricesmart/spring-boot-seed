@@ -11,7 +11,7 @@ import com.innova4j.api.auth.services.encoder.CodeGenerator;
 import com.innova4j.api.auth.services.encoder.CodeType;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Service

@@ -4,7 +4,7 @@
 package com.innova4j.api.commons.dto;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public enum Status {

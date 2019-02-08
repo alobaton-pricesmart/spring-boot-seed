@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +24,7 @@ import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.user.AuthUserService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @RestController
@@ -36,7 +35,7 @@ public class AuthController {
 	private AuthUserService service;
 
 	@Autowired
-	private BCryptPasswordEncoder encoder;
+	private BCryptPasswordEncoder passwordEncoder;
 
 	@GetMapping("/user-info")
 	public @ResponseBody AuthUserDto userInfo(OAuth2Authentication authentication) {
@@ -69,17 +68,16 @@ public class AuthController {
 		}
 
 		AuthUserDto user = service.get(nickname);
-		user.setPassword(encoder.encode(passwordDto.getPassword()));
+		user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
 
 		return service.update(user);
 	}
 
 	@PostMapping("/update-password/{id}")
-	@PreAuthorize("")
 	public @ResponseBody AuthUserDto resetPassword(@PathVariable @NotNull String id,
 			@Valid @RequestBody AuthPasswordDto passwordDto) {
 		AuthUserDto user = service.get(id);
-		user.setPassword(encoder.encode(passwordDto.getPassword()));
+		user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
 
 		return service.update(user);
 	}

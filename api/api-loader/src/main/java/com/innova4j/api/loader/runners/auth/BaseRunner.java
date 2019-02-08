@@ -9,7 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Component

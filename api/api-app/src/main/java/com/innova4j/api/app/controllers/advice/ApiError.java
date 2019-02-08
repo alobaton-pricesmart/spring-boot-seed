@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class ApiError {

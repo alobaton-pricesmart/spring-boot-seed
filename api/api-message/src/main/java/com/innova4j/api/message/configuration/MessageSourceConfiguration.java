@@ -13,7 +13,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import com.innova4j.api.message.MessageConstants;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 // Import this configuration in your main module.

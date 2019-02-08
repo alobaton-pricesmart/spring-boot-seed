@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Service

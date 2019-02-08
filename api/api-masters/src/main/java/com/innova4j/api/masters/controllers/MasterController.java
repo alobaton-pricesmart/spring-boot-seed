@@ -21,7 +21,7 @@ import com.innova4j.api.masters.dto.MasterDto;
 import com.innova4j.api.masters.services.MasterService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @RestController

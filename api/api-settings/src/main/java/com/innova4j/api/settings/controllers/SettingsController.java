@@ -18,7 +18,7 @@ import com.innova4j.api.settings.dto.SettingsDto;
 import com.innova4j.api.settings.services.SettingsService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @RestController

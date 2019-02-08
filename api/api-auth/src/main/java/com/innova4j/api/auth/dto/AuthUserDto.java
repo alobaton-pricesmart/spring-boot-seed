@@ -18,7 +18,7 @@ import com.innova4j.api.commons.dto.BaseDto;
 
 /**
  * 
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @JsonInclude(Include.NON_NULL)

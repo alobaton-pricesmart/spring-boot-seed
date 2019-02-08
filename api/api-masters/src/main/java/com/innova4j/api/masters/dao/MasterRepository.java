@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.innova4j.api.masters.domain.Master;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface MasterRepository extends JpaRepository<Master, String> {

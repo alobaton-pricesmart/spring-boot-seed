@@ -6,7 +6,7 @@ package com.innova4j.api.commons.exception;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  * @param <T>
  *
  */

@@ -9,7 +9,7 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Embeddable

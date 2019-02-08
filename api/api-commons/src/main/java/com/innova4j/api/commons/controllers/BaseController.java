@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  * @param <T> DTO
  */
 @RestController

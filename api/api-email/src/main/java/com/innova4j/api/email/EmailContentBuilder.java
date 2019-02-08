@@ -13,7 +13,7 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class EmailContentBuilder {

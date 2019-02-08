@@ -21,7 +21,7 @@ import com.innova4j.api.auth.services.user.AuthUserService;
 import com.innova4j.api.commons.controllers.BasePagedController;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @RestController

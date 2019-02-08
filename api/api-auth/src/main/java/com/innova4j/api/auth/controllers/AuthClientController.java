@@ -18,7 +18,7 @@ import com.innova4j.api.auth.services.client.AuthClientDetailsService;
 import com.innova4j.api.commons.controllers.BaseController;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @RestController

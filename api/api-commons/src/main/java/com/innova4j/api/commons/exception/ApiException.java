@@ -4,7 +4,7 @@
 package com.innova4j.api.commons.exception;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class ApiException extends RuntimeException {

@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import com.innova4j.api.auth.dto.AuthUserDto;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class CustomUserDetails implements UserDetails {

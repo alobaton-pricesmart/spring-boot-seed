@@ -8,7 +8,7 @@ import java.time.ZoneId;
 import java.util.Date;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class DateUtils {

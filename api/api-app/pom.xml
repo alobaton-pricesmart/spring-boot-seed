@@ -14,6 +14,7 @@
 	<description>app module</description>
 	<packaging>jar</packaging>
 	<dependencies>
+		<!-- Import your app modules here... -->
 		<dependency>
 			<groupId>com.innova4j.api</groupId>
 			<artifactId>api-auth</artifactId>
@@ -38,7 +39,6 @@
 			<groupId>com.innova4j.api</groupId>
 			<artifactId>api-settings</artifactId>
 		</dependency>
-		<!-- Import your app modules here... -->
 		<!-- Import your app modules here... -->
 		<!-- https://mvnrepository.com/artifact/log4j/log4j -->
 		<dependency>
@@ -99,6 +99,17 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
 	</dependencies>
 	<build>

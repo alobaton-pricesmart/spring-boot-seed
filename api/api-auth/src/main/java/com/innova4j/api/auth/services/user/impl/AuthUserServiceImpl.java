@@ -35,16 +35,16 @@ import com.innova4j.api.email.EmailContentBuilder;
 import com.innova4j.api.email.service.EmailService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Service
 public class AuthUserServiceImpl implements AuthUserService {
 
-	@Value("${auth.password.validitySeconds:1800}")
+	@Value("${auth.password.validitySeconds}")
 	private int validitySeconds;
 
-	@Value("${spring.email.from}")
+	@Value("${email.from}")
 	private String from;
 
 	@Autowired

@@ -26,7 +26,7 @@ import com.innova4j.api.auth.configuration.AuthConfigurationTest;
 import com.innova4j.api.auth.domain.AuthUser;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @RunWith(SpringRunner.class)
@@ -57,7 +57,7 @@ public class AuthUserRepositoryTest {
 	}
 
 	@Test
-	public void create() {
+	public void testCreate() {
 		AuthUser user = new AuthUser();
 		user.setNickname("test");
 		user.setName("NAME");
@@ -69,12 +69,12 @@ public class AuthUserRepositoryTest {
 	}
 
 	@Test
-	public void get() {
+	public void testGet() {
 		Assert.assertNotNull(repository.getOne("setup"));
 	}
 
 	@Test
-	public void customGet() {
+	public void testCustomGet() {
 		AuthUser user = new AuthUser();
 		user.setNickname("setup");
 		user.setName("SETUP");
@@ -93,7 +93,7 @@ public class AuthUserRepositoryTest {
 	}
 
 	@Test
-	public void customGetAll() {
+	public void testCustomGetAll() {
 		List<AuthUser> expected = new ArrayList<>();
 
 		AuthUser other = new AuthUser();

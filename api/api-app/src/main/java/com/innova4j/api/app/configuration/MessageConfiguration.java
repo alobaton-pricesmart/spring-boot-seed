@@ -12,7 +12,7 @@ import com.innova4j.api.message.service.MessageService;
 import com.innova4j.api.message.service.impl.MessageServiceImpl;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Configuration

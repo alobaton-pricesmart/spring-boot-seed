@@ -11,7 +11,7 @@ import com.innova4j.api.commons.dto.BaseDto;
 import com.innova4j.api.settings.domain.Settings;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class SettingsDto extends BaseDto {
@@ -34,7 +34,7 @@ public class SettingsDto extends BaseDto {
 	private String id;
 	private String description;
 	@NotNull
-	private Object value;
+	private String value;
 
 	/**
 	 * @return the id
@@ -67,14 +67,14 @@ public class SettingsDto extends BaseDto {
 	/**
 	 * @return the value
 	 */
-	public Object getValue() {
+	public String getValue() {
 		return value;
 	}
 
 	/**
 	 * @param value the value to set
 	 */
-	public void setValue(Object value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

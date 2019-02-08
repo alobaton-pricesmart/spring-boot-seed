@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Configuration

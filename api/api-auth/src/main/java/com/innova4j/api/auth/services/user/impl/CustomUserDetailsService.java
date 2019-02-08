@@ -10,15 +10,17 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import com.innova4j.api.auth.domain.CustomUserDetails;
 import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.auth.services.user.AuthUserService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
+@Service
 public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired

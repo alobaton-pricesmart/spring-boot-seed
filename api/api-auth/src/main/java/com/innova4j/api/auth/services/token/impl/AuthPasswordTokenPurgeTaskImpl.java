@@ -14,7 +14,7 @@ import com.innova4j.api.auth.dao.AuthPasswordTokenRepository;
 import com.innova4j.api.auth.services.token.AuthPurgeTask;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Service

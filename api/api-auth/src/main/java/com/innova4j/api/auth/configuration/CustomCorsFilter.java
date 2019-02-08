@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Component

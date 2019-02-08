@@ -4,7 +4,7 @@
 package com.innova4j.api.auth.services.encoder;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface HMacEncoder {

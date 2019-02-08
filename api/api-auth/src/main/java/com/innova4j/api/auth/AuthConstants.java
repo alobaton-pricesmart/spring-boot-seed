@@ -6,7 +6,7 @@ package com.innova4j.api.auth;
 import org.apache.commons.codec.digest.HmacAlgorithms;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class AuthConstants {

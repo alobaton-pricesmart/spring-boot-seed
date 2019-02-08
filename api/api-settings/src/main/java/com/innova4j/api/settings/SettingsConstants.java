@@ -4,7 +4,7 @@
 package com.innova4j.api.settings;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class SettingsConstants {

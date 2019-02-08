@@ -15,7 +15,7 @@ import com.innova4j.api.commons.domain.BaseDomain;
 import com.innova4j.api.settings.dto.SettingsDto;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Entity
@@ -40,7 +40,7 @@ public class Settings extends BaseDomain {
 	private String id;
 	private String description;
 	@NotNull
-	private Object value;
+	private String value;
 
 	/**
 	 * @return the id
@@ -73,14 +73,14 @@ public class Settings extends BaseDomain {
 	/**
 	 * @return the value
 	 */
-	public Object getValue() {
+	public String getValue() {
 		return value;
 	}
 
 	/**
 	 * @param value the value to set
 	 */
-	public void setValue(Object value) {
+	public void setValue(String value) {
 		this.value = value;
 	}
 

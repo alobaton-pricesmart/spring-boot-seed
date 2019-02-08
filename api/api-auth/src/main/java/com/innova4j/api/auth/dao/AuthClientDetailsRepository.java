@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.innova4j.api.auth.domain.AuthClientDetails;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Repository

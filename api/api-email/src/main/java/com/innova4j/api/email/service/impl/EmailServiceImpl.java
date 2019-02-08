@@ -15,7 +15,7 @@ import org.springframework.scheduling.annotation.Async;
 import com.innova4j.api.email.service.EmailService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class EmailServiceImpl implements EmailService {

@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface BaseCustomRepository<T> {

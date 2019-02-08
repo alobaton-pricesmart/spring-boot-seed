@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.stereotype.Service;
 
 import com.innova4j.api.auth.dao.AuthPasswordTokenRepository;
 import com.innova4j.api.auth.domain.AuthPasswordToken;
@@ -19,9 +20,10 @@ import com.innova4j.api.auth.services.token.AuthPasswordTokenService;
 import com.innova4j.api.commons.exception.RegisterNotFoundException;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
+@Service
 public class AuthPasswordTokenServiceImpl implements AuthPasswordTokenService {
 
 	@Autowired

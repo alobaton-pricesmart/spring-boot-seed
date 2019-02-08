@@ -7,7 +7,7 @@ import com.innova4j.api.commons.service.BasePagedService;
 import com.innova4j.api.masters.dto.MasterTypeDto;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface MasterTypeService extends BasePagedService<MasterTypeDto, String> {

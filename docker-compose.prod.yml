@@ -28,6 +28,7 @@ services:
       - MYSQL_DATABASE=api-db
       - MYSQL_USER=api-user
       - MYSQL_PASSWORD=api-password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - ./mysql/db:/var/lib/mysql
       - ./mysql/dmp:/var/lib/mydmp

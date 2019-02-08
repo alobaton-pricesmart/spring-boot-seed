@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 
- * @author innova4j-team
+ * @author alobaton
  * 
  * @param <T>
  * @param <D>

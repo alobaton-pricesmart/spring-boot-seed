@@ -7,7 +7,7 @@ import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.commons.service.BasePagedService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface AuthUserService extends BasePagedService<AuthUserDto, String> {

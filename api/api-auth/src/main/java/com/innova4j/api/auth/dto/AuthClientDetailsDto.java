@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @JsonInclude(Include.NON_NULL)

@@ -9,7 +9,7 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Configuration

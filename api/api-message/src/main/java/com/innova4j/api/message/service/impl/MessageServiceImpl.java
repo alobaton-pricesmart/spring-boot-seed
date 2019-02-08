@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import com.innova4j.api.message.service.MessageService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Service

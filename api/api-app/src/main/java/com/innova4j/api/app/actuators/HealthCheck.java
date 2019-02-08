@@ -8,7 +8,7 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Component

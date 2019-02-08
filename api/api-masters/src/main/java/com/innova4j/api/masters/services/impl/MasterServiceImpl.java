@@ -15,6 +15,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.innova4j.api.commons.exception.RegisterNotFoundException;
 import com.innova4j.api.masters.dao.MasterRepository;
@@ -23,9 +24,10 @@ import com.innova4j.api.masters.dto.MasterDto;
 import com.innova4j.api.masters.services.MasterService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
+@Service
 public class MasterServiceImpl implements MasterService {
 
 	@Autowired

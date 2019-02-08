@@ -5,6 +5,7 @@ package com.innova4j.api.auth.configuration;
 
 import java.util.Arrays;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Configuration
@@ -39,14 +40,17 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	/**
 	 * Put here your client access endpoints...
 	 */
-	private static final String[] CLIENT_ACCESS = new String[] {};
+	// private static final String[] CLIENT_ACCESS = new String[] {};
 	/**
 	 * Put here your full authentication access endpoints...
 	 */
-	private static final String[] FULL_AUTHENTICATION_ACCESS = new String[] {};
+	// private static final String[] FULL_AUTHENTICATION_ACCESS = new String[] {};
 
 	@Value("${app.name}")
 	private String resourceId;
+	
+	@Autowired
+	private CustomCorsFilter customCorsFilter;
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
@@ -66,11 +70,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	}
 
 	@Bean
-	public CustomCorsFilter customCorsFilter() {
-		return new CustomCorsFilter();
-	}
-
-	@Bean
 	public TokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
 	}
@@ -86,6 +85,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	public DefaultTokenServices tokenServices() {
 		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
 		defaultTokenServices.setTokenStore(tokenStore());
+		defaultTokenServices.setSupportRefreshToken(Boolean.TRUE);
 		return defaultTokenServices;
 	}
 
@@ -114,16 +114,19 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				// CORS...
 				.csrf().disable()
 				// Filters...
-				.addFilterBefore(customCorsFilter(), SessionManagementFilter.class)
+				.addFilterBefore(customCorsFilter, SessionManagementFilter.class)
 				// OAuth OPTIONS requests...
 				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
 				// Public access...
 				.antMatchers(PUBLIC_ACCESS).permitAll()
 				// Client credentials access...
-				.antMatchers(CLIENT_ACCESS).access("#oauth2.isClient()")
+				// .antMatchers(CLIENT_ACCESS).access("#oauth2.isClient()")
+				// Set up admin access...
+				.antMatchers("/clients**", "/masters**", "/settings**").authenticated()
 				// Setup full authentication access...
-				.antMatchers("/oauth/user-info", "/oauth/update-password/**", "/clients**", "/users**").authenticated()
-				.antMatchers(FULL_AUTHENTICATION_ACCESS).authenticated();
+				.antMatchers("/oauth/user-info", "/oauth/update-password/**", "/users**").authenticated()
+		// .antMatchers(FULL_AUTHENTICATION_ACCESS).authenticated()
+		;
 	}
 
 }

@@ -17,7 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.innova4j.api.auth.services.user.impl.CustomUserDetailsService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 @Configuration
@@ -26,7 +26,7 @@ import com.innova4j.api.auth.services.user.impl.CustomUserDetailsService;
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private CustomUserDetailsService userDetailsService;
+	private CustomUserDetailsService customUserDetailsService;
 
 	/*
 	 * (non-Javadoc)
@@ -37,7 +37,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	@Bean
 	protected UserDetailsService userDetailsService() {
-		return userDetailsService;
+		return customUserDetailsService;
 	}
 
 	@Bean

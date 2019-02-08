@@ -14,7 +14,7 @@ import com.innova4j.api.auth.services.token.AuthPasswordTokenService;
 import com.innova4j.api.auth.services.user.AuthUserService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public class PasswordGranterBuilder {

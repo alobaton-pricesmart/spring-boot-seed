@@ -8,7 +8,7 @@ import com.innova4j.api.auth.domain.AuthPasswordTokenId;
 import com.innova4j.api.commons.service.BaseService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface AuthPasswordTokenService extends BaseService<AuthPasswordToken, AuthPasswordTokenId> {

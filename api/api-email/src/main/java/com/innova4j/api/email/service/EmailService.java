@@ -6,7 +6,7 @@ package com.innova4j.api.email.service;
 import org.springframework.scheduling.annotation.Async;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
 public interface EmailService {

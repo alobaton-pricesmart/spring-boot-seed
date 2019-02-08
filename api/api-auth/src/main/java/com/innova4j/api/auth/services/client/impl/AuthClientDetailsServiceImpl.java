@@ -11,15 +11,17 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.ClientDetails;
+import org.springframework.stereotype.Service;
 
 import com.innova4j.api.auth.domain.AuthClientDetails;
 import com.innova4j.api.auth.dto.AuthClientDetailsDto;
 import com.innova4j.api.auth.services.client.AuthClientDetailsService;
 
 /**
- * @author innova4j-team
+ * @author alobaton
  *
  */
+@Service
 public class AuthClientDetailsServiceImpl implements AuthClientDetailsService {
 
 	@Autowired
