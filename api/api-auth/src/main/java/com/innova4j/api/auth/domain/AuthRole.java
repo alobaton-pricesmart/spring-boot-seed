@@ -5,15 +5,15 @@ package com.innova4j.api.auth.domain;
 
 import java.util.Map;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
+
 import com.innova4j.api.commons.domain.BaseDomain;
-import com.innova4j.api.message.MessageConstants;
 
 /**
  * @author alobaton
@@ -25,19 +25,32 @@ public class AuthRole extends BaseDomain {
 
 	@Id
 	@NotNull
+	@Column(name = "id")
 	private String id;
+
 	@NotNull
-	@ElementCollection(targetClass = String.class)
-	@MapKeyColumn(name = MessageConstants.LOCALE)
+	@Type(type = "json")
+	@Column(name = "name", columnDefinition = "json")
 	private Map<String, String> name;
+
 	@NotNull
-	@ElementCollection(targetClass = String.class)
-	@MapKeyColumn(name = MessageConstants.LOCALE)
+	@Type(type = "json")
+	@Column(name = "description", columnDefinition = "json")
 	private Map<String, String> description;
+
+	@Column(name = "parent_id")
 	private String parentId;
+
+	@Column(name = "view")
 	private String view;
+
+	@Column(name = "create")
 	private String create;
+
+	@Column(name = "edit")
 	private String edit;
+
+	@Column(name = "remove")
 	private String remove;
 
 	/**

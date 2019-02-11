@@ -7,17 +7,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
+
 import com.innova4j.api.commons.domain.BaseDomain;
 import com.innova4j.api.masters.dto.MasterDto;
-import com.innova4j.api.message.MessageConstants;
 
 /**
  * @author alobaton
@@ -43,15 +43,21 @@ public class Master extends BaseDomain {
 	@Id
 	@NotNull
 	@GeneratedValue
+	@Column(name = "id")
 	private String id;
+
 	@NotNull
-	@ElementCollection(targetClass = String.class)
-	@MapKeyColumn(name = MessageConstants.LOCALE)
+	@Type(type = "json")
+	@Column(name = "name", columnDefinition = "json")
 	private Map<String, String> name;
+
 	@NotNull
-	@ElementCollection(targetClass = String.class)
+	@Type(type = "json")
+	@Column(name = "master_types", columnDefinition = "json")
 	private Set<String> masterTypes;
-	@ElementCollection(targetClass = String.class)
+
+	@Type(type = "json")
+	@Column(name = "attributes", columnDefinition = "json")
 	private Map<String, Object> attributes;
 
 	public String getId() {

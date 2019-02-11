@@ -23,7 +23,7 @@ In order to start the seed use:
 $ git clone --depth 1 https://github.com/alobaton/spring-boot-seed.git
 $ cd spring-boot-seed
 
-$ mvn clean install -Dspring.profiles.active=dev
+$ mvn clean install -Dspring.profiles.active=dev -Dflyway.configFiles=src/main/environment/dev/resources/dao/flyway.conf
 
 $ cd api-app
 

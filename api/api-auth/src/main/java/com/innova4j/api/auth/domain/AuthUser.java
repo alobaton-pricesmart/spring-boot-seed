@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,6 +16,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.hibernate.annotations.Type;
 
 import com.innova4j.api.auth.dto.AuthUserDto;
 import com.innova4j.api.commons.domain.BaseDomain;
@@ -51,19 +52,34 @@ public class AuthUser extends BaseDomain implements Serializable {
 
 	@Id
 	@NotNull
+	@Column(name = "nickname")
 	private String nickname;
+
 	@NotNull
+	@Column(name = "name")
 	private String name;
+
+	@Column(name = "last_name")
 	private String lastName;
+
 	@NotNull
 	@Email
+	@Column(name = "email")
 	private String email;
+
 	@NotNull
-	@ElementCollection(targetClass = String.class)
+	@Type(type = "json")
+	@Column(name = "roles", columnDefinition = "json")
 	private Set<String> roles;
+
 	@NotNull
+	@Column(name = "password")
 	private String password;
+
+	@Column(name = "locked")
 	private boolean locked;
+
+	@Column(name = "enabled")
 	private boolean enabled;
 
 	/**

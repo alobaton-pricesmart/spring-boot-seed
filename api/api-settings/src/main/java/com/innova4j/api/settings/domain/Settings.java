@@ -5,6 +5,7 @@ package com.innova4j.api.settings.domain;
 
 import java.util.function.Function;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -37,9 +38,14 @@ public class Settings extends BaseDomain {
 	@Id
 	@NotNull
 	@GeneratedValue
+	@Column(name = "id")
 	private String id;
+
+	@Column(name = "description")
 	private String description;
+
 	@NotNull
+	@Column(name = "value")
 	private String value;
 
 	/**

@@ -8,13 +8,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.ClientDetails;
@@ -61,35 +62,51 @@ public class AuthClientDetails extends BaseDomain implements ClientDetails {
 
 	@Id
 	@NotNull
+	@Column(name = "client_id")
 	private String clientId;
+
 	@NotNull
-	@ElementCollection(targetClass = String.class)
+	@Type(type = "json")
+	@Column(name = "resource_ids", columnDefinition = "json")
 	private Set<String> resourceIds;
-	@NotNull
+
+	@Column(name = "secret_required")
 	private boolean secretRequired;
-	@NotNull
+
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@Column(name = "client_secret")
 	private String clientSecret;
-	@NotNull
+
+	@Column(name = "scoped")
 	private boolean scoped;
-	@NotNull
-	@ElementCollection(targetClass = String.class)
+
+	@Type(type = "json")
+	@Column(name = "scope", columnDefinition = "json")
 	private Set<String> scope;
-	@NotNull
-	@ElementCollection(targetClass = String.class)
+
+	@Type(type = "json")
+	@Column(name = "authorized_grant_types", columnDefinition = "json")
 	private Set<String> authorizedGrantTypes;
-	@NotNull
-	@ElementCollection(targetClass = String.class)
+
+	@Type(type = "json")
+	@Column(name = "registered_redirect_uri", columnDefinition = "json")
 	private Set<String> registeredRedirectUri;
-	@NotNull
-	@ElementCollection(targetClass = String.class)
+
+	@Type(type = "json")
+	@Column(name = "authorities", columnDefinition = "json")
 	private Set<String> authorities;
-	@NotNull
+
+	@Column(name = "access_token_validity_seconds")
 	private Integer accessTokenValiditySeconds;
-	@NotNull
+
+	@Column(name = "refresh_token_validity_seconds")
 	private Integer refreshTokenValiditySeconds;
+
+	@Column(name = "auto_approve")
 	private boolean autoApprove;
-	@ElementCollection(targetClass = String.class)
+
+	@Type(type = "json")
+	@Column(name = "additional_information", columnDefinition = "json")
 	@MapKeyColumn()
 	private Map<String, Object> additionalInformation;
 
