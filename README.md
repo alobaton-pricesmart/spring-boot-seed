@@ -14,8 +14,6 @@ Provides fast, reliable and extensible starter for the development of Java proje
 
 ## How to start
 
-This seed project is tested with v8.10.0.
-
 In order to start the seed use:
 
 
