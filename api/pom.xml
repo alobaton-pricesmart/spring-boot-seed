@@ -34,11 +34,13 @@
 		<spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
 		<spring.boot.starter.data.jpa>2.1.1.RELEASE</spring.boot.starter.data.jpa>
 		<spring.boot.starter.thymeleaf.version>2.1.1.RELEASE</spring.boot.starter.thymeleaf.version>
-		<h2.version>1.4.197</h2.version>
+		<hsqldb.version>2.4.1</hsqldb.version>
 		<jooq.version>3.11.7</jooq.version>
+		<h2.version>1.4.197</h2.version>
 		<mysql.connector.java.version>5.1.47</mysql.connector.java.version>
 		<flyway.version>5.2.4</flyway.version>
 		<flyway.spring.test.version>5.2.1</flyway.spring.test.version>
+		<hibernate.version>5.4.1.Final</hibernate.version>
 	</properties>
 	<modules>
 		<module>api-app</module>
@@ -167,13 +169,6 @@
 				<artifactId>jooq</artifactId>
 				<version>${jooq.version}</version>
 			</dependency>
-			<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-			<dependency>
-				<groupId>com.h2database</groupId>
-				<artifactId>h2</artifactId>
-				<version>${h2.version}</version>
-				<scope>test</scope>
-			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjrt -->
 			<dependency>
 				<groupId>org.aspectj</groupId>
@@ -228,6 +223,19 @@
 				<artifactId>flyway-spring-test</artifactId>
 				<version>${flyway.spring.test.version}</version>
 				<scope>test</scope>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+				<scope>test</scope>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-java8 -->
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-java8</artifactId>
+				<version>${hibernate.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

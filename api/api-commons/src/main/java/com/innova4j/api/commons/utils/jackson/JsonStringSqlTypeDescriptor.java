@@ -17,11 +17,9 @@ import org.hibernate.type.descriptor.sql.BasicBinder;
  *
  */
 public class JsonStringSqlTypeDescriptor extends AbstractJsonSqlTypeDescriptor {
+	
+	private static final long serialVersionUID = 6453422243130827146L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1788769202339524489L;
 	public static final JsonStringSqlTypeDescriptor INSTANCE = new JsonStringSqlTypeDescriptor();
 
 	@Override

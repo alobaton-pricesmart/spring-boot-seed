@@ -11,17 +11,13 @@ import org.hibernate.usertype.DynamicParameterizedType;
  * @author alobaton
  */
 public class JsonTypeDescriptor extends AbstractTypeDescriptor<Object> implements DynamicParameterizedType {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8666956013494578061L;
+
 	private Class<?> jsonObjectClass;
 
 	@Override
 	public void setParameterValues(Properties parameters) {
 		jsonObjectClass = ((ParameterType) parameters.get(PARAMETER_TYPE)).getReturnedClass();
-
 	}
 
 	@SuppressWarnings("serial")
@@ -62,12 +58,15 @@ public class JsonTypeDescriptor extends AbstractTypeDescriptor<Object> implement
 		if (value == null) {
 			return null;
 		}
+
 		if (String.class.isAssignableFrom(type)) {
 			return (X) toString(value);
 		}
+
 		if (Object.class.isAssignableFrom(type)) {
 			return (X) JacksonUtil.toJsonNode(toString(value));
 		}
+
 		throw unknownUnwrap(type);
 	}
 
@@ -76,6 +75,7 @@ public class JsonTypeDescriptor extends AbstractTypeDescriptor<Object> implement
 		if (value == null) {
 			return null;
 		}
+
 		return fromString(value.toString());
 	}
 

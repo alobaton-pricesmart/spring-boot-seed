@@ -4,7 +4,6 @@
 package com.innova4j.api.loader.runners.auth.loaders;
 
 import java.util.Arrays;
-import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -39,7 +38,7 @@ public class AuthUserLoader {
 		user.setLastName(lastName);
 		user.setEmail(email);
 		user.setPassword(passwordEncoder.encode(password));
-		user.setRoles(new HashSet<String>(Arrays.asList(role)));
+		user.setRoles(Arrays.asList(role));
 
 		repository.save(user);
 	}

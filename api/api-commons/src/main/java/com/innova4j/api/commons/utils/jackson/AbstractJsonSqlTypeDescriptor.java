@@ -20,9 +20,6 @@ import org.hibernate.type.descriptor.sql.SqlTypeDescriptor;
  */
 public abstract class AbstractJsonSqlTypeDescriptor implements SqlTypeDescriptor {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7505140509135741989L;
 
 	@Override

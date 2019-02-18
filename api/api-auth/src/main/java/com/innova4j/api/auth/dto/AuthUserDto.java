@@ -3,7 +3,7 @@
  */
 package com.innova4j.api.auth.dto;
 
-import java.util.Set;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.validation.constraints.Email;
@@ -50,7 +50,7 @@ public class AuthUserDto extends BaseDto {
 	@Email
 	private String email;
 	@NotNull
-	private Set<String> roles;
+	private List<String> roles;
 	@JsonProperty(access = Access.WRITE_ONLY)
 	private String password;
 	private boolean locked;
@@ -115,14 +115,14 @@ public class AuthUserDto extends BaseDto {
 	/**
 	 * @return the roles
 	 */
-	public Set<String> getRoles() {
+	public List<String> getRoles() {
 		return roles;
 	}
 
 	/**
 	 * @param roles the roles to set
 	 */
-	public void setRoles(Set<String> roles) {
+	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
 

@@ -4,8 +4,8 @@
 package com.innova4j.api.auth.domain;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
 
 import javax.persistence.Column;
@@ -70,7 +70,7 @@ public class AuthUser extends BaseDomain implements Serializable {
 	@NotNull
 	@Type(type = "json")
 	@Column(name = "roles", columnDefinition = "json")
-	private Set<String> roles;
+	private List<String> roles;
 
 	@NotNull
 	@Column(name = "password")
@@ -141,20 +141,20 @@ public class AuthUser extends BaseDomain implements Serializable {
 	/**
 	 * @return the roles
 	 */
-	public Set<String> getRoles() {
+	public List<String> getRoles() {
 		return roles;
 	}
 
 	/**
 	 * @param roles the roles to set
 	 */
-	public void setRoles(Set<String> roles) {
+	public void setRoles(List<String> roles) {
 		this.roles = roles;
 	}
 
 	public void addRole(String role) {
 		if (this.roles == null) {
-			this.roles = new HashSet<String>();
+			this.roles = new ArrayList<String>();
 		}
 
 		this.roles.add(role);

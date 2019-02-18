@@ -5,7 +5,7 @@ package com.innova4j.api.auth.domain;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
@@ -41,7 +41,7 @@ public class CustomUserDetails implements UserDetails {
 	 */
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		Set<String> roles = this.user.getRoles();
+		List<String> roles = this.user.getRoles();
 		if (roles == null) {
 			return Collections.emptyList();
 		}

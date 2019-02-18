@@ -13,10 +13,6 @@ import org.hibernate.usertype.DynamicParameterizedType;
  *
  */
 public class JsonStringType extends AbstractSingleColumnStandardBasicType<Object> implements DynamicParameterizedType {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 965453813114523627L;
 
 	public JsonStringType() {
