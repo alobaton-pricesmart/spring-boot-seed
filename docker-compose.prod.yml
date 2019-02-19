@@ -25,9 +25,9 @@ services:
     container_name: spring-boot-seed-db-prod
     hostname: db.prod.local
     environment:
-      - MYSQL_DATABASE=api-db
-      - MYSQL_USER=api-user
-      - MYSQL_PASSWORD=api-password
+      - MYSQL_DATABASE=prod-db
+      - MYSQL_USER=prod-user
+      - MYSQL_PASSWORD=prod-password
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - ./mysql/db:/var/lib/mysql

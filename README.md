@@ -23,7 +23,7 @@ $ cd spring-boot-seed
 
 $ mvn clean install -Dspring.profiles.active=dev -Dflyway.configFiles=src/main/environment/dev/resources/dao/flyway.conf
 
-$ cd api-app
+$ cd admin
 
 $ mvn spring-boot:run -Dspring.profiles.active=dev
 

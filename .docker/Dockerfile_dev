@@ -15,7 +15,7 @@ COPY api ./api/
 
 RUN cd api && \
     mvn clean install -Dspring.profiles.active=dev --batch-mode --errors --debug && \
-    mv ./api-app/target/app*.jar /app.jar
+    mv ./admin/target/app*.jar /app.jar
  
 ENV JAVA_OPTS="-XX:+UseG1GC \
 	-d64 \

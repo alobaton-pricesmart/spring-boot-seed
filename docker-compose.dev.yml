@@ -25,9 +25,9 @@ services:
     container_name: spring-boot-seed-db-dev
     hostname: db.dev.local
     environment:
-      - MYSQL_DATABASE=api-db
-      - MYSQL_USER=api-user
-      - MYSQL_PASSWORD=api-password
+      - MYSQL_DATABASE=dev-db
+      - MYSQL_USER=dev-user
+      - MYSQL_PASSWORD=dev-password
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
     volumes:
       - ./mysql/db:/var/lib/mysql
