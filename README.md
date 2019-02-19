@@ -16,7 +16,6 @@ Provides fast, reliable and extensible starter for the development of Java proje
 
 In order to start the seed use:
 
-
 ```bash
 $ git clone --depth 1 https://github.com/alobaton/spring-boot-seed.git
 $ cd spring-boot-seed
