@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://spring.io/img/homepage/icon-spring-boot.svg" width="300" title="hover text">
+</p>
+
 # spring-boot-seed
 
 Provides fast, reliable and extensible starter for the development of Java projects using Spring Boot.
