@@ -1,0 +1,19 @@
+language: java
+jdk:
+  - oraclejdk8
+
+addons:
+  firefox: latest
+  chrome: stable
+
+after_failure:
+  - cat /home/travis/build/alobaton/spring-boot-seed/spring-boot-debug.log
+
+branches:
+  only: master
+
+notifications:
+  email: false
+
+script:
+  - cd apps && mvn clean install -Dspring.profiles.active=dev
