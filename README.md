@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://spring.io/img/homepage/icon-spring-boot.svg" width="100" title="hover text">
+  <img src="https://github.com/alobaton/spring-boot-seed/blob/master/docs/images/spring-boot.svg" width="100" title="Spring Boot">
 </p>
 
 # spring-boot-seed
