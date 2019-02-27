@@ -1,6 +1,0 @@
-
-test:
-  adapter: mysql2
-  database: dev-db
-  username: dev-user
-  password: dev-password

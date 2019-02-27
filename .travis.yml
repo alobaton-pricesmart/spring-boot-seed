@@ -31,8 +31,10 @@ notifications:
   email: false
 
 before_install:
-  - cp ./.travis/database.yml ./config/database.yml
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS dev-db;'
+  - mysql -e 'CREATE DATABASE `dev-db`;'
+  - mysql -e "CREATE USER `dev-user`@`localhost` IDENTIFIED BY 'dev-password';"
+  - mysql -e 'GRANT ALL PRIVILEGES ON * . * TO `dev-user`@`localhost`;'
+  - mysql -e 'FLUSH PRIVILEGES;'
 
 script:
   - cd apps && mvn clean install -Dspring.profiles.active=dev

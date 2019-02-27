@@ -85,4 +85,4 @@ Now open your browser at http://localhost:8080
 
 ## License
 
-MIT
+[MIT](https://github.com/alobaton/sprin-boot-seed/blob/master/LICENSE)
