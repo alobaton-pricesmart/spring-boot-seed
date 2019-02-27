@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/alobaton/spring-boot-seed/blob/master/docs/images/spring-boot.svg" width="100" title="Spring Boot">
+  <img src="https://github.com/alobaton/spring-boot-seed/blob/master/docs/img/spring-boot.svg" width="100" title="Spring Boot">
 </p>
 
 # spring-boot-seed
@@ -18,7 +18,7 @@ Provides fast, reliable and extensible starter for the development of Java proje
 - Production and development builds.
 - Provides full Docker support for both development and production environment.
 
-## How to start
+## How to start?
 
 In order to start the seed use:
 
@@ -35,6 +35,8 @@ $ mvn spring-boot:run -Dspring.profiles.active=dev
 # without maven
 $ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -jar /app.jar
 ```
+
+## How to test?
 
 In order to test the seed user:
 
