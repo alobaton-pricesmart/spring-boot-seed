@@ -31,7 +31,7 @@ notifications:
   email: false
 
 before_install:
-  - cp .travis/database.yml config/database.yml
+  - cp ./.travis/database.yml ./config/database.yml
   - mysql -e 'CREATE DATABASE IF NOT EXISTS dev-db;'
 
 script:

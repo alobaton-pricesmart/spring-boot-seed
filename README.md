@@ -36,6 +36,19 @@ $ mvn spring-boot:run -Dspring.profiles.active=dev
 $ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -jar /app.jar
 ```
 
+In order to test the seed user:
+
+```bash
+# startup the dev database.
+$ docker-compose -f docker-compose.dev.yml up -d db
+
+$ mvn clean install -Dspring.profiles.active=dev
+
+$ cd admin
+
+$ mvn spring-boot:run -Dspring.profiles.active=dev
+```
+
 ## Dockerization
 
 The application provides full Docker support. You can use it for both development and production builds and deployments.

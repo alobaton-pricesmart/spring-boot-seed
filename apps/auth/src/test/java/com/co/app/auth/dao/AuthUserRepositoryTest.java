@@ -9,6 +9,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,8 @@ public class AuthUserRepositoryTest {
 	@Autowired
 	private AuthUserRepository repository;
 
-	private AuthUser create() {
+	@Before
+	public void setUp() {
 		AuthUser user = new AuthUser();
 		user.setNickname("setup");
 		user.setName("SETUP");
@@ -46,25 +48,16 @@ public class AuthUserRepositoryTest {
 		user.setPassword("****");
 		user.addRole("USER");
 
-		return repository.save(user);
-	}
-
-	@Test
-	public void testCreate() {
-		Assert.assertNotNull(create());
+		repository.save(user);
 	}
 
 	@Test
 	public void testGet() {
-		AuthUser user = create();
-
-		Assert.assertNotNull(repository.findById(user.getNickname()));
+		Assert.assertNotNull(repository.findById("setup"));
 	}
 
 	@Test
 	public void testFindOneIsPresent() {
-		create();
-
 		AuthUser user = new AuthUser();
 		user.setName("SETUP");
 
@@ -76,7 +69,7 @@ public class AuthUserRepositoryTest {
 	@Test
 	public void testFindOneNotPresent() {
 		AuthUser user = new AuthUser();
-		user.setName("OTHER");
+		user.setName("USER");
 
 		Example<AuthUser> example = Example.of(user);
 
