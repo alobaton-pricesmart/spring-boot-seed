@@ -2,9 +2,24 @@ language: java
 jdk:
   - oraclejdk8
 
+sudo: required
+
+services:
+  - mysql
+
 addons:
   firefox: latest
   chrome: stable
+  hosts:
+    - db.dev.local
+    - api.dev.local
+  apt:
+    sources:
+      - mysql-5.7-trusty
+    packages:
+      - mysql-server
+
+dist: trusty
 
 after_failure:
   - cat /home/travis/build/alobaton/spring-boot-seed/spring-boot-debug.log
@@ -14,6 +29,10 @@ branches:
 
 notifications:
   email: false
+
+before_install:
+  - cp .travis/database.yml config/database.yml
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS dev-db;'
 
 script:
   - cd apps && mvn clean install -Dspring.profiles.active=dev

@@ -36,7 +36,6 @@
 		<spring.boot.starter.thymeleaf.version>2.1.1.RELEASE</spring.boot.starter.thymeleaf.version>
 		<hsqldb.version>2.4.1</hsqldb.version>
 		<jooq.version>3.11.7</jooq.version>
-		<h2.version>1.4.197</h2.version>
 		<mysql.connector.java.version>5.1.47</mysql.connector.java.version>
 		<flyway.version>5.2.4</flyway.version>
 		<flyway.spring.test.version>5.2.1</flyway.spring.test.version>
@@ -222,13 +221,6 @@
 				<groupId>org.flywaydb.flyway-test-extensions</groupId>
 				<artifactId>flyway-spring-test</artifactId>
 				<version>${flyway.spring.test.version}</version>
-				<scope>test</scope>
-			</dependency>
-			<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-			<dependency>
-				<groupId>com.h2database</groupId>
-				<artifactId>h2</artifactId>
-				<version>${h2.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-java8 -->
