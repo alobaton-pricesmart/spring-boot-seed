@@ -5,6 +5,7 @@
 # spring-boot-seed
 
 [![Build Status](https://travis-ci.org/alobaton/spring-boot-seed.svg?branch=master)](https://travis-ci.org/alobaton/spring-boot-seed)
+[![codecov](https://codecov.io/gh/alobaton/spring-boot-seed/branch/master/graph/badge.svg)](https://codecov.io/gh/alobaton/spring-boot-seed)
 
 Provides fast, reliable and extensible starter for the development of Java projects using Spring Boot.
 
