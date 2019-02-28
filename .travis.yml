@@ -22,8 +22,8 @@ addons:
 
 dist: trusty
 
-after_failure:
-  - cat /home/travis/build/alobaton/spring-boot-seed/spring-boot-debug.log
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
 
 branches:
   only: master
@@ -41,4 +41,4 @@ before_install:
   - sudo service mysql restart
 
 script:
-  - cd apps && mvn clean install -Dspring.profiles.active=dev
+  - cd apps && mvn clean install -Dspring.profiles.active=dev && mvn cobertura:cobertura
