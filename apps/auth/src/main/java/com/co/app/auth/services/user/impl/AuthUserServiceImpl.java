@@ -13,6 +13,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -60,6 +61,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
+	@Qualifier("emailTemplateEngine")
 	private TemplateEngine emailTemplateEngine;
 
 	@Autowired

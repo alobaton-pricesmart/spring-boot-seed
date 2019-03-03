@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" 
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.co.app</groupId>
 	<artifactId>apps</artifactId>
@@ -40,6 +41,7 @@
 		<flyway.version>5.2.4</flyway.version>
 		<flyway.spring.test.version>5.2.1</flyway.spring.test.version>
 		<hibernate.version>5.4.1.Final</hibernate.version>
+		<spring.boot.admin.starter.server.version>2.1.3</spring.boot.admin.starter.server.version>
 	</properties>
 	<modules>
 		<module>admin</module>
@@ -228,6 +230,12 @@
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-java8</artifactId>
 				<version>${hibernate.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/de.codecentric/spring-boot-admin-starter-server -->
+			<dependency>
+				<groupId>de.codecentric</groupId>
+				<artifactId>spring-boot-admin-starter-server</artifactId>
+				<version>${spring.boot.admin.starter.server.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

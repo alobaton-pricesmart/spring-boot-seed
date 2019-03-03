@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="https://github.com/alobaton/spring-boot-seed/blob/master/docs/img/spring-boot.svg" width="100" title="Spring Boot">
-</p>
-
 # spring-boot-seed
 
 [![Build Status](https://travis-ci.org/alobaton/spring-boot-seed.svg?branch=master)](https://travis-ci.org/alobaton/spring-boot-seed)
@@ -18,6 +14,7 @@ Provides fast, reliable and extensible starter for the development of Java proje
 - Application loader module.
 - Production and development builds.
 - Provides full Docker support for both development and production environment.
+- Swagger UI documentation at http://localhost:8080/swagger-ui.html
 
 ## How to start?
 
@@ -46,10 +43,6 @@ In order to test the seed user:
 $ docker-compose -f docker-compose.dev.yml up -d db
 
 $ mvn clean install -Dspring.profiles.active=dev
-
-$ cd admin
-
-$ mvn spring-boot:run -Dspring.profiles.active=dev
 ```
 
 ## Dockerization

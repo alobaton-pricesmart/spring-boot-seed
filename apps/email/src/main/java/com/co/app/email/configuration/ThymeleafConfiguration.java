@@ -3,6 +3,7 @@
  */
 package com.co.app.email.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
@@ -15,13 +16,15 @@ import org.thymeleaf.templatemode.TemplateMode;
 @Configuration
 //The template engine is instantiated at this level to decouple the administration of language literals.
 public class ThymeleafConfiguration {
-	public SpringTemplateEngine templateEngine() {
+	@Bean("emailTemplateEngine")
+	public SpringTemplateEngine emailTemplateEngine() {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 		templateEngine.setTemplateResolver(thymeleafTemplateResolver());
 
 		return templateEngine;
 	}
 
+	@Bean("thymeleafTemplateResolver")
 	public SpringResourceTemplateResolver thymeleafTemplateResolver() {
 		SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
 		templateResolver.setPrefix("classpath:templates");
