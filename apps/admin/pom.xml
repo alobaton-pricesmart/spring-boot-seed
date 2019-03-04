@@ -110,6 +110,11 @@
 			<groupId>de.codecentric</groupId>
 			<artifactId>spring-boot-admin-starter-server</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/de.codecentric/spring-boot-starter-admin-client -->
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-starter-admin-client</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>app-${project.version}-${spring.profiles.active}</finalName>

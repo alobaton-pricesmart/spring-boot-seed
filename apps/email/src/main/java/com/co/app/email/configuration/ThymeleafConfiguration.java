@@ -16,22 +16,22 @@ import org.thymeleaf.templatemode.TemplateMode;
 @Configuration
 //The template engine is instantiated at this level to decouple the administration of language literals.
 public class ThymeleafConfiguration {
-	@Bean("emailTemplateEngine")
-	public SpringTemplateEngine emailTemplateEngine() {
-		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
-		templateEngine.setTemplateResolver(thymeleafTemplateResolver());
-
-		return templateEngine;
-	}
-
-	@Bean("thymeleafTemplateResolver")
-	public SpringResourceTemplateResolver thymeleafTemplateResolver() {
-		SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
-		templateResolver.setPrefix("classpath:templates");
-		templateResolver.setSuffix(".html");
-		templateResolver.setTemplateMode(TemplateMode.HTML);
-
-		return templateResolver;
-	}
+//	@Bean("emailTemplateEngine")
+//	public SpringTemplateEngine emailTemplateEngine() {
+//		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
+//		templateEngine.setTemplateResolver(thymeleafTemplateResolver());
+//
+//		return templateEngine;
+//	}
+//
+//	@Bean("thymeleafTemplateResolver")
+//	public SpringResourceTemplateResolver thymeleafTemplateResolver() {
+//		SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
+//		templateResolver.setPrefix("classpath:templates");
+//		templateResolver.setSuffix(".html");
+//		templateResolver.setTemplateMode(TemplateMode.HTML);
+//
+//		return templateResolver;
+//	}
 
 }

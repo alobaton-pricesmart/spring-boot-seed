@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -36,7 +37,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	/**
 	 * Put here your public access endpoints...
 	 */
-	private static final String[] PUBLIC_ACCESS = new String[] { "/reset-password**", "/update-password" };
+	// private static final String[] PUBLIC_ACCESS = new String[] {};
 	/**
 	 * Put here your client access endpoints...
 	 */
@@ -48,7 +49,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
 	@Value("${app.name}")
 	private String resourceId;
-	
+
+	@Value("${spring.boot.admin.context-path}")
+	private String adminContextPath;
+
 	@Autowired
 	private CustomCorsFilter customCorsFilter;
 
@@ -110,6 +114,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	 */
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
+		SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
+		successHandler.setTargetUrlParameter("redirectTo");
+		successHandler.setDefaultTargetUrl(String.format("%s/", this.adminContextPath));
+
 		http
 				// CORS...
 				.csrf().disable()
@@ -118,15 +126,28 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				// OAuth OPTIONS requests...
 				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
 				// Public access...
-				.antMatchers(PUBLIC_ACCESS).permitAll()
+				// .antMatchers(PUBLIC_ACCESS).permitAll()
+				// Spring Boot Admin public endpoints...
+				.antMatchers(String.format("%s/assets/**", this.adminContextPath),
+						String.format("%s/login", this.adminContextPath))
+				.permitAll()
+				// Swagger documentation public endpoints...
+				.antMatchers("/v2/api-docs", "/webjars/**", "/swagger-resources/**", "/swagger-ui.html**").permitAll()
+				// Application public endpoints...
+				.antMatchers("/reset-password**", "/update-password").permitAll()
 				// Client credentials access...
 				// .antMatchers(CLIENT_ACCESS).access("#oauth2.isClient()")
 				// Set up admin access...
-				.antMatchers("/clients**", "/masters**", "/settings**").authenticated()
+				.antMatchers("/clients**", "/masters**", "/settings**").hasRole("ADMIN")
 				// Setup full authentication access...
-				.antMatchers("/oauth/user-info", "/oauth/update-password/**", "/users**").authenticated()
-		// .antMatchers(FULL_AUTHENTICATION_ACCESS).authenticated()
-		;
+				.anyRequest().authenticated()
+				// Spring Boot Admin login and logout...
+				.and().formLogin().loginPage(String.format("%s/login", this.adminContextPath))
+				.successHandler(successHandler).and().logout()
+				.logoutUrl(String.format("%s/logout", this.adminContextPath))
+				// Enable HTTP-Basic support. This is needed for the Spring Boot Admin
+				// Client to register.
+				.and().httpBasic();
 	}
 
 }

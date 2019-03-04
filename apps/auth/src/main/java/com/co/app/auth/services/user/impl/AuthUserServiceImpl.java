@@ -60,9 +60,9 @@ public class AuthUserServiceImpl implements AuthUserService {
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
-	@Autowired
-	@Qualifier("emailTemplateEngine")
-	private TemplateEngine emailTemplateEngine;
+//	@Autowired
+//	@Qualifier("emailTemplateEngine")
+//	private TemplateEngine emailTemplateEngine;
 
 	@Autowired
 	private EmailService emailService;
@@ -169,10 +169,10 @@ public class AuthUserServiceImpl implements AuthUserService {
 		passwordToken = passwordTokenRepository.save(passwordToken);
 
 		// TODO(alobaton): Create password reset template
-		EmailContentBuilder builder = new EmailContentBuilder().emailTemplateEngine(emailTemplateEngine)
-				.template("template").parameter("key", "value");
-
-		emailService.sendEmail(domain.getEmail(), from, "Subject", builder.build(), Boolean.TRUE);
+//		EmailContentBuilder builder = new EmailContentBuilder().emailTemplateEngine(emailTemplateEngine)
+//				.template("template").parameter("key", "value");
+//
+//		emailService.sendEmail(domain.getEmail(), from, "Subject", builder.build(), Boolean.TRUE);
 	}
 
 }
