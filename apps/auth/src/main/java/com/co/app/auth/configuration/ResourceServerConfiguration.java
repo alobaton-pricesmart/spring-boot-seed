@@ -19,7 +19,6 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.session.SessionManagementFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -42,16 +41,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	 * Put here your client access endpoints...
 	 */
 	// private static final String[] CLIENT_ACCESS = new String[] {};
-	/**
-	 * Put here your full authentication access endpoints...
-	 */
-	// private static final String[] FULL_AUTHENTICATION_ACCESS = new String[] {};
 
 	@Value("${app.name}")
 	private String resourceId;
-
-	@Value("${spring.boot.admin.context-path}")
-	private String adminContextPath;
 
 	@Autowired
 	private CustomCorsFilter customCorsFilter;
@@ -117,30 +109,29 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
 		http
 				// CORS...
-				.csrf().disable()
+				.csrf().disable()//
 				// Filters...
-				.addFilterBefore(customCorsFilter, SessionManagementFilter.class)
+				.addFilterBefore(customCorsFilter, SessionManagementFilter.class)//
+				.authorizeRequests()//
 				// OAuth OPTIONS requests...
-				.authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()//
+				// Application public endpoints...
+				.antMatchers("/reset-password**", "/update-password").permitAll()//
 				// Public access...
 				// .antMatchers(PUBLIC_ACCESS).permitAll()
-				// Spring Boot Admin public endpoints...
-				.antMatchers(String.format("%s/assets/**", this.adminContextPath),
-						String.format("%s/login", this.adminContextPath))
-				.permitAll()
 				// Swagger documentation public endpoints...
-				.antMatchers("/v2/api-docs", "/webjars/**", "/swagger-resources/**", "/swagger-ui.html**").permitAll()
-				// Application public endpoints...
-				.antMatchers("/reset-password**", "/update-password").permitAll()
+				.antMatchers("/v2/api-docs", "/webjars/**", "/swagger-resources/**", "/swagger-ui.html**").anonymous()//
+				// Set up admin access...
+				.antMatchers("/clients**", "/masters**", "/settings**").hasRole("ADMIN")//
 				// Client credentials access...
 				// .antMatchers(CLIENT_ACCESS).access("#oauth2.isClient()")
-				// Set up admin access...
-				.antMatchers("/clients**", "/masters**", "/settings**").hasRole("ADMIN")
 				// Setup full authentication access...
-				.anyRequest().authenticated()
-				// Spring Boot Admin login and logout...
-				.and().formLogin().loginPage(String.format("%s/login", this.adminContextPath)).and().logout()
-				.logoutUrl(String.format("%s/logout", this.adminContextPath));
+				.anyRequest().authenticated()//
+				// Login and logout...
+				.and().formLogin().loginPage("/login").permitAll()//
+				.and().logout().permitAll()//
+		// .and().httpBasic()//
+		;
 	}
 
 }

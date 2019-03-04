@@ -1,11 +1,13 @@
 /**
  * 
  */
-package com.co.app.admin.configuration;
+package com.co.app.auth.configuration;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -13,18 +15,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  *
  */
 @Configuration
+@EnableWebMvc
 public class WebMvcConfiguration implements WebMvcConfigurer {
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer#
-	 * addInterceptors(org.springframework.web.servlet.config.annotation.
-	 * InterceptorRegistry)
+	 * addViewControllers(org.springframework.web.servlet.config.annotation.
+	 * ViewControllerRegistry)
 	 */
 	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		WebMvcConfigurer.super.addInterceptors(registry);
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("login");
+		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
 
 	/*

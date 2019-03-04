@@ -55,6 +55,7 @@
 		<module>commons</module>
 		<module>masters</module>
 		<module>settings</module>
+		<module>core</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
@@ -62,6 +63,11 @@
 			<dependency>
 				<groupId>com.co.app</groupId>
 				<artifactId>admin</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.co.app</groupId>
+				<artifactId>core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

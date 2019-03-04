@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.co.app.admin.configuration;
+package com.co.app.core.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;

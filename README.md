@@ -43,6 +43,8 @@ In order to test the seed user:
 $ docker-compose -f docker-compose.dev.yml up -d db
 
 $ mvn clean install -Dspring.profiles.active=dev
+# skip the tests on development.
+mvn clean install -Dspring.profiles.active=dev -DskipTests=true
 ```
 
 ## Dockerization

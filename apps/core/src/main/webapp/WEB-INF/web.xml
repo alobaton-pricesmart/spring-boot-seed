@@ -3,7 +3,7 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-	<display-name>Admin Server</display-name>
+	<display-name>Core Application</display-name>
 	<!-- Nedded for audit aspect. -->
 	<listener>
 		<listener-class>

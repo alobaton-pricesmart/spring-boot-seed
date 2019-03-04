@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.co.app.admin.controllers.advice;
+package com.co.app.core.controllers.advice;
 
 import java.util.HashSet;
 import java.util.Set;

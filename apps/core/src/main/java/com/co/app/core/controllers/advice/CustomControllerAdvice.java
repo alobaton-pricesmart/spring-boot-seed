@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.co.app.admin.controllers.advice;
+package com.co.app.core.controllers.advice;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
