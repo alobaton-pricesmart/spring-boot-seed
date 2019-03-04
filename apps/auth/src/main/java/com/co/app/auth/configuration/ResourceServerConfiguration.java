@@ -114,9 +114,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	 */
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		SavedRequestAwareAuthenticationSuccessHandler successHandler = new SavedRequestAwareAuthenticationSuccessHandler();
-		successHandler.setTargetUrlParameter("redirectTo");
-		successHandler.setDefaultTargetUrl(String.format("%s/", this.adminContextPath));
 
 		http
 				// CORS...
@@ -142,12 +139,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				// Setup full authentication access...
 				.anyRequest().authenticated()
 				// Spring Boot Admin login and logout...
-				.and().formLogin().loginPage(String.format("%s/login", this.adminContextPath))
-				.successHandler(successHandler).and().logout()
-				.logoutUrl(String.format("%s/logout", this.adminContextPath))
-				// Enable HTTP-Basic support. This is needed for the Spring Boot Admin
-				// Client to register.
-				.and().httpBasic();
+				.and().formLogin().loginPage(String.format("%s/login", this.adminContextPath)).and().logout()
+				.logoutUrl(String.format("%s/logout", this.adminContextPath));
 	}
 
 }

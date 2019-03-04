@@ -3,6 +3,7 @@
  */
 package com.co.app.auth.domain;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Column;
@@ -41,17 +42,9 @@ public class AuthRole extends BaseDomain {
 	@Column(name = "parent_id")
 	private String parentId;
 
-	@Column(name = "view")
-	private String view;
-
-	@Column(name = "create")
-	private String create;
-
-	@Column(name = "edit")
-	private String edit;
-
-	@Column(name = "remove")
-	private String remove;
+	@Type(type = "json")
+	@Column(name = "permissions", columnDefinition = "json")
+	private List<String> permissions;
 
 	/**
 	 * @return the id
@@ -98,66 +91,28 @@ public class AuthRole extends BaseDomain {
 	}
 
 	/**
-	 * @return the view
+	 * @return the permissions
 	 */
-	public String getView() {
-		return view;
+	public List<String> getPermissions() {
+		return permissions;
 	}
 
 	/**
-	 * @param view the view to set
+	 * @param permissions the permissions to set
 	 */
-	public void setView(String view) {
-		this.view = view;
+	public void setPermissions(List<String> permissions) {
+		this.permissions = permissions;
 	}
 
-	/**
-	 * @return the create
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
 	 */
-	public String getCreate() {
-		return create;
-	}
-
-	/**
-	 * @param create the create to set
-	 */
-	public void setCreate(String create) {
-		this.create = create;
-	}
-
-	/**
-	 * @return the edit
-	 */
-	public String getEdit() {
-		return edit;
-	}
-
-	/**
-	 * @param edit the edit to set
-	 */
-	public void setEdit(String edit) {
-		this.edit = edit;
-	}
-
-	/**
-	 * @return the remove
-	 */
-	public String getRemove() {
-		return remove;
-	}
-
-	/**
-	 * @param remove the remove to set
-	 */
-	public void setRemove(String remove) {
-		this.remove = remove;
-	}
-
 	@Override
 	public String toString() {
 		return "AuthRole [id=" + id + ", name=" + name + ", description=" + description + ", parentId=" + parentId
-				+ ", view=" + view + ", create=" + create + ", edit=" + edit + ", remove=" + remove + ", created="
-				+ created + ", lastModified=" + lastModified + "]";
+				+ ", permissions=" + permissions + "]";
 	}
 
 }

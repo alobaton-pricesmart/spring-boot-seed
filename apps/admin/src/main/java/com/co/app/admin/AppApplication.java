@@ -3,14 +3,11 @@ package com.co.app.admin;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import de.codecentric.boot.admin.server.config.EnableAdminServer;
-
 /**
  * 
  * @author alobaton
  *
  */
-@EnableAdminServer
 // Exclude EmbeddedMongoAutoConfiguration since it is used only for tests.
 // @SpringBootApplication(exclude = { EmbeddedMongoAutoConfiguration.class })
 //Put your base packages of your modules here...
