@@ -1,21 +1,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="layout :: head(title=~{::title},links=~{})">
-<title>Please Login</title>
+<head>
+<title th:text="#{login.title}">Login</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!--  Put your fonts here... -->
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
 <body th:include="layout :: body" th:with="content=~{::content}">
 	<div th:fragment="content">
 		<form name="f" th:action="@{/login}" method="post">
 			<fieldset>
-				<legend>Please Login</legend>
-				<div th:if="${param.error}" class="alert alert-error">Invalid
-					username and password.</div>
-				<div th:if="${param.logout}" class="alert alert-success">You
-					have been logged out.</div>
-				<label for="username">Username</label> <input type="text"
-					id="username" name="username" /> <label for="password">Password</label>
-				<input type="password" id="password" name="password" />
+				<legend th:text="#{login.title}">Login</legend>
+				<div th:if="${param.error}" class="alert alert-error"
+					th:text="#{login.error.credentials}">Invalid username
+					and password.</div>
+				<div th:if="${param.logout}" class="alert alert-success"
+					th:text="#{login.logout}">You have been logged out.</div>
+				<table>
+					<tr>
+						<td><label for="username" th:text="#{login.username}">Username</label>
+							<input type="text" id="username" name="username" /></td>
+					</tr>
+					<tr>
+						<td><label for="password" th:text="#{login.password}">Password</label>
+							<input type="password" id="password" name="password" /></td>
+					</tr>
+				</table>
 				<div class="form-actions">
-					<button type="submit" class="btn">Log in</button>
+					<button type="submit" class="btn" th:text="#{login.title}">Login</button>
 				</div>
 			</fieldset>
 		</form>

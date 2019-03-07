@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.co.app.email;
+package com.co.app.email.utils;
 
 import java.util.HashMap;
 import java.util.Map;

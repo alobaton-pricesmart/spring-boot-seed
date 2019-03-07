@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -21,11 +20,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 
-import com.co.app.commons.exception.RegisterNotFoundException;
-import com.co.app.email.EmailContentBuilder;
-import com.co.app.email.service.EmailService;
 import com.co.app.auth.dao.AuthPasswordTokenRepository;
 import com.co.app.auth.dao.AuthUserRepository;
 import com.co.app.auth.domain.AuthPasswordToken;
@@ -34,6 +29,8 @@ import com.co.app.auth.domain.AuthUser;
 import com.co.app.auth.dto.AuthUserDto;
 import com.co.app.auth.services.encoder.HashEncoder;
 import com.co.app.auth.services.user.AuthUserService;
+import com.co.app.commons.exception.RegisterNotFoundException;
+import com.co.app.email.service.EmailService;
 
 /**
  * @author alobaton
