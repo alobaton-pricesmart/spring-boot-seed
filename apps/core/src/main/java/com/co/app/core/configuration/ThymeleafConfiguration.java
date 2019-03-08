@@ -9,6 +9,8 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
+import nz.net.ultraq.thymeleaf.LayoutDialect;
+
 /**
  * @author alobaton
  *
@@ -20,6 +22,9 @@ public class ThymeleafConfiguration {
 	public SpringTemplateEngine emailTemplateEngine() {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 		templateEngine.setTemplateResolver(thymeleafTemplateResolver());
+
+		// Support for thymeleaf dialect...
+		templateEngine.addDialect(new LayoutDialect());
 
 		return templateEngine;
 	}

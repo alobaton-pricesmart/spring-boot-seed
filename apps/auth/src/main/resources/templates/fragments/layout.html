@@ -18,10 +18,13 @@
 	th:text="#{app.name}">spring-boot-seed</title>
 </head>
 <body>
-	<th:block th:replace="fragments/header :: header" />
+	<div th:replace="fragments/header :: header">Static Header</div>
 	<div class="container">
-		<th:block layout:fragment="content" />
+		<div layout:fragment="content">
+			<!--  This content is only used for static prototyping purposes.  -->
+			Static Content
+		</div>
 	</div>
-	<th:block th:replace="fragments/footer :: footer" />
+	<div th:replace="fragments/footer :: footer">Static Footer</div>
 </body>
 </html>
