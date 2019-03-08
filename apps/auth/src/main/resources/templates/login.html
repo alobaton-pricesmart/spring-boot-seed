@@ -1,35 +1,44 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{fragments/layout}">
 <head>
 <title th:text="#{login.title}">Login</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<!--  Put your fonts here... -->
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 </head>
-<body th:include="layout :: body" th:with="content=~{::content}">
-	<div th:fragment="content">
-		<form name="f" th:action="@{/login}" method="post">
-			<fieldset>
-				<legend th:text="#{login.title}">Login</legend>
-				<div th:if="${param.error}" class="alert alert-error"
-					th:text="#{login.error.credentials}">Invalid username
-					and password.</div>
-				<div th:if="${param.logout}" class="alert alert-success"
-					th:text="#{login.logout}">You have been logged out.</div>
-				<table>
-					<tr>
-						<td><label for="username" th:text="#{login.username}">Username</label>
-							<input type="text" id="username" name="username" /></td>
-					</tr>
-					<tr>
-						<td><label for="password" th:text="#{login.password}">Password</label>
-							<input type="password" id="password" name="password" /></td>
-					</tr>
-				</table>
-				<div class="form-actions">
-					<button type="submit" class="btn" th:text="#{login.title}">Login</button>
+<body layout:fragment="content" th:remove="tag">
+	<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<h1 th:text="#{login.title}">Login page</h1>
+			<form th:action="@{/login}" method="post">
+				<div th:if="${param.error}">
+					<div class="alert alert-danger"
+						th:text="#{login.error.credentials}">Invalid username or
+						password.</div>
 				</div>
-			</fieldset>
-		</form>
+				<div th:if="${param.logout}">
+					<div class="alert alert-info" th:text="#{login.logout}">You
+						have been logged out.</div>
+				</div>
+				<div class="form-group">
+					<label for="username" th:text="#{login.username}">Username</label>:
+					<input type="text" id="username" name="username"
+						class="form-control" autofocus="autofocus">
+				</div>
+				<div class="form-group">
+					<label for="password" th:text="#{login.password}">Password</label>:
+					<input type="password" id="password" name="password"
+						class="form-control">
+				</div>
+				<div class="form-group">
+					<div class="row">
+						<div class="col-sm-6 col-sm-offset-3">
+							<input type="submit" name="login-submit" id="login-submit"
+								class="form-control btn btn-info" th:value="#{login.title}">
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
 	</div>
 </body>
 </html>

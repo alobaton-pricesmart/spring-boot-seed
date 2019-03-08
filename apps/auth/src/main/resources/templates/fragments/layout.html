@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<!--  Put your styles here... -->
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+
+<!--  Put your fonts here... -->
+<link href="https://fonts.googleapis.com/css?family=Roboto"
+	rel="stylesheet">
+
+<title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE"
+	th:text="#{app.name}">spring-boot-seed</title>
+</head>
+<body>
+	<th:block th:replace="fragments/header :: header" />
+	<div class="container">
+		<th:block layout:fragment="content" />
+	</div>
+	<th:block th:replace="fragments/footer :: footer" />
+</body>
+</html>
