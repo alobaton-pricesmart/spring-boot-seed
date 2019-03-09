@@ -9,6 +9,7 @@
 <!--  Put your styles here... -->
 <link rel="stylesheet" type="text/css"
 	th:href="@{/webjars/bootstrap/4.3.1/css/bootstrap.min.css}" />
+<link rel="stylesheet" type="text/css" th:href="@{/css/main.css}" />
 
 <!--  Put your fonts here... -->
 <link href="https://fonts.googleapis.com/css?family=Roboto"
@@ -19,7 +20,7 @@
 </head>
 <body>
 	<div th:replace="fragments/header :: header">Static Header</div>
-	<div class="container">
+	<div class="bg-light vh-100">
 		<div layout:fragment="content">
 			<!--  This content is only used for static prototyping purposes.  -->
 			Static Content

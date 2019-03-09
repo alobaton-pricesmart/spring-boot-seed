@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -28,6 +29,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
 		registry.addViewController("/login").setViewName("login");
+		registry.addViewController("/reset-password").setViewName("reset-password");
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
 
@@ -42,6 +44,21 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/oauth/token").allowedOrigins("*");
 		WebMvcConfigurer.super.addCorsMappings(registry);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.springframework.web.servlet.config.annotation.WebMvcConfigurer#
+	 * addResourceHandlers(org.springframework.web.servlet.config.annotation.
+	 * ResourceHandlerRegistry)
+	 */
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		registry.addResourceHandler("/webjars/**").addResourceLocations("/webjars/");
+		registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
+		registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
+		registry.addResourceHandler("/img/**").addResourceLocations("classpath:/static/img/");
 	}
 
 }
