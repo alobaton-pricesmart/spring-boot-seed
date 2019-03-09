@@ -3,7 +3,9 @@
  */
 package com.co.app.auth.services.user.impl;
 
+import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,9 +14,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.co.app.auth.dao.AuthUserRepository;
+import com.co.app.auth.domain.AuthUser;
 import com.co.app.auth.domain.CustomUserDetails;
-import com.co.app.auth.dto.AuthUserDto;
-import com.co.app.auth.services.user.AuthUserService;
+import com.co.app.commons.exception.RegisterNotFoundException;
 
 /**
  * @author alobaton
@@ -24,7 +27,7 @@ import com.co.app.auth.services.user.AuthUserService;
 public class CustomUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private AuthUserService service;
+	private AuthUserRepository repository;
 
 	/*
 	 * (non-Javadoc)
@@ -33,11 +36,14 @@ public class CustomUserDetailsService implements UserDetailsService {
 	 * loadUserByUsername(java.lang.String)
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		AuthUserDto user = new AuthUserDto();
+	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
+		AuthUser user = new AuthUser();
 		user.setNickname(username);
 
-		user = service.customGet(user);
+		Example<AuthUser> example = Example.of(user);
+
+		user = repository.findOne(example)
+				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, Strings.EMPTY, username));
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("Username %s not found", username));
 		}

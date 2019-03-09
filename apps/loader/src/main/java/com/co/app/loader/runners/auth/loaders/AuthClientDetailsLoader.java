@@ -29,7 +29,7 @@ public class AuthClientDetailsLoader {
 
 	@Async
 	public void load(String id, String secret, String[] resourceIds, String[] grantTypes, String[] authorities,
-			String[] scopes) {
+			String[] scopes, String[] redirectUri) {
 		// Delete preiovus data.
 		if (repository.existsById(id)) {
 			repository.deleteById(id);
@@ -46,6 +46,7 @@ public class AuthClientDetailsLoader {
 		details.setScope(new HashSet<String>(Arrays.asList(scopes)));
 		details.setAutoApprove(Boolean.TRUE);
 		details.setAuthorizedGrantTypes(new HashSet<String>(Arrays.asList(grantTypes)));
+		details.setRegisteredRedirectUri(new HashSet<String>(Arrays.asList(redirectUri)));
 		details.setAuthorities(new HashSet<String>(Arrays.asList(authorities)));
 
 		repository.save(details);

@@ -28,3 +28,24 @@ body {
 .bg-light {
 	background: #eaeff5 !important;
 }
+
+.alert-danger {
+	background: #ff4c6a;
+	color: #fff;
+}
+
+.alert-info {
+	background: #4ca6ff;
+	color: #fff;
+}
+
+.title {
+	margin-top: 0;
+	margin-bottom: .75rem;
+	text-align: center;
+}
+
+.subtitle {
+	margin-bottom: 2rem;
+	text-align: center;
+}

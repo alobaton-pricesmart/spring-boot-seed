@@ -8,8 +8,12 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -19,25 +23,32 @@ import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.token.AbstractTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
+import com.co.app.auth.dao.AuthPasswordTokenRepository;
+import com.co.app.auth.dao.AuthUserRepository;
 import com.co.app.auth.domain.AuthPasswordToken;
 import com.co.app.auth.domain.AuthPasswordTokenId;
+import com.co.app.auth.domain.AuthUser;
 import com.co.app.auth.domain.CustomUserDetails;
-import com.co.app.auth.dto.AuthUserDto;
 import com.co.app.auth.services.encoder.HashEncoder;
-import com.co.app.auth.services.token.AuthPasswordTokenService;
-import com.co.app.auth.services.user.AuthUserService;
+import com.co.app.commons.exception.RegisterNotFoundException;
 
 /**
  * @author alobaton
  *
  */
+// Dont set @component, define Bean manually at AuthorizationServerConfiguration.
 public class PasswordGranter extends AbstractTokenGranter {
 
 	private static final String AUTH_PASSWORD_GRANT_TYPE = "auth_password";
 	private static final String PASSWORD_TOKEN_PARAM = "password_token";
 
-	private AuthUserService userService;
-	private AuthPasswordTokenService passwordTokenService;
+	@Autowired
+	private AuthUserRepository userRepository;
+
+	@Autowired
+	private AuthPasswordTokenRepository passwordTokenRepopsitory;
+
+	@Autowired
 	private HashEncoder encoder;
 
 	public PasswordGranter(@NotNull AuthorizationServerTokenServices tokenServices,
@@ -46,17 +57,31 @@ public class PasswordGranter extends AbstractTokenGranter {
 	}
 
 	/**
-	 * @param passwordService the passwordService to set
+	 * @return the userRepository
 	 */
-	public void setPasswordTokenService(@NotNull AuthPasswordTokenService passwordTokenService) {
-		this.passwordTokenService = passwordTokenService;
+	public AuthUserRepository getUserRepository() {
+		return userRepository;
 	}
 
 	/**
-	 * @param userService the userService to set
+	 * @param userRepository the userRepository to set
 	 */
-	public void setUserService(@NotNull AuthUserService userService) {
-		this.userService = userService;
+	public void setUserRepository(AuthUserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
+	/**
+	 * @return the passwordTokenRepopsitory
+	 */
+	public AuthPasswordTokenRepository getPasswordTokenRepopsitory() {
+		return passwordTokenRepopsitory;
+	}
+
+	/**
+	 * @param passwordTokenRepopsitory the passwordTokenRepopsitory to set
+	 */
+	public void setPasswordTokenRepopsitory(AuthPasswordTokenRepository passwordTokenRepopsitory) {
+		this.passwordTokenRepopsitory = passwordTokenRepopsitory;
 	}
 
 	/**
@@ -85,15 +110,22 @@ public class PasswordGranter extends AbstractTokenGranter {
 		AuthPasswordToken passwordToken = new AuthPasswordToken();
 		passwordToken.setId(id);
 
-		passwordToken = passwordTokenService.customGet(passwordToken);
+		passwordToken = passwordTokenRepopsitory.findOne(Example.of(passwordToken)).orElseThrow(
+				() -> new RegisterNotFoundException(AuthPasswordToken.class, Strings.EMPTY, id.toString()));
 		if (passwordToken.isExpired()) {
 			throw new UnauthorizedUserException("Authorization code has expired.");
 		}
 
-		AuthUserDto user = new AuthUserDto();
-		user.setNickname(passwordToken.getId().getNickname());
+		String nickname = passwordToken.getId().getNickname();
+		AuthUser user = new AuthUser();
+		user.setNickname(nickname);
 
-		user = userService.customGet(user);
+		user = userRepository.findOne(Example.of(user))
+				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, Strings.EMPTY, nickname));
+		if (user == null) {
+			throw new UsernameNotFoundException(
+					String.format("Username %s not found", passwordToken.getId().getNickname()));
+		}
 
 		CustomUserDetails userDetails = new CustomUserDetails(user);
 

@@ -29,12 +29,12 @@ import org.springframework.security.oauth2.provider.token.DefaultAuthenticationK
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import com.co.app.auth.dao.AuthPasswordTokenRepository;
+import com.co.app.auth.dao.AuthUserRepository;
 import com.co.app.auth.granters.password.PasswordGranter;
 import com.co.app.auth.granters.password.PasswordGranterBuilder;
 import com.co.app.auth.services.client.impl.CustomClientDetailsService;
 import com.co.app.auth.services.encoder.HashEncoder;
-import com.co.app.auth.services.token.AuthPasswordTokenService;
-import com.co.app.auth.services.user.AuthUserService;
 
 /**
  * @author alobaton
@@ -53,10 +53,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	private UserDetailsService userDetailsService;
 
 	@Autowired
-	private AuthUserService userService;
+	private AuthUserRepository userRepository;
 
 	@Autowired
-	private AuthPasswordTokenService passwordTokenService;
+	private AuthPasswordTokenRepository passwordTokenRepository;
 
 	@Autowired
 	private HashEncoder encoder;
@@ -131,8 +131,8 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 		PasswordGranter passwordGranter = new PasswordGranterBuilder().tokenServices(endpoints.getTokenServices())
 				.clientDetailsService(endpoints.getClientDetailsService())
-				.requestFactory(endpoints.getOAuth2RequestFactory()).passwordTokenService(passwordTokenService)
-				.userService(userService).encoder(encoder).build();
+				.requestFactory(endpoints.getOAuth2RequestFactory()).passwordTokenRepository(passwordTokenRepository)
+				.userRepository(userRepository).encoder(encoder).build();
 		granters.add(passwordGranter);
 
 		return new CompositeTokenGranter(granters);

@@ -9,9 +9,9 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
+import com.co.app.auth.dao.AuthPasswordTokenRepository;
+import com.co.app.auth.dao.AuthUserRepository;
 import com.co.app.auth.services.encoder.HashEncoder;
-import com.co.app.auth.services.token.AuthPasswordTokenService;
-import com.co.app.auth.services.user.AuthUserService;
 
 /**
  * @author alobaton
@@ -22,8 +22,8 @@ public class PasswordGranterBuilder {
 	private AuthorizationServerTokenServices tokenServices;
 	private ClientDetailsService clientDetailsService;
 	private OAuth2RequestFactory requestFactory;
-	private AuthPasswordTokenService passwordTokenService;
-	private AuthUserService userService;
+	private AuthPasswordTokenRepository passwordTokenRepository;
+	private AuthUserRepository userRepository;
 	private HashEncoder encoder;
 
 	/**
@@ -57,8 +57,8 @@ public class PasswordGranterBuilder {
 	 * @param passwordService the passwordService to set
 	 * @return The auth password token granter builder
 	 */
-	public PasswordGranterBuilder passwordTokenService(@NotNull AuthPasswordTokenService passwordService) {
-		this.passwordTokenService = passwordService;
+	public PasswordGranterBuilder passwordTokenRepository(@NotNull AuthPasswordTokenRepository passwordRepository) {
+		this.passwordTokenRepository = passwordRepository;
 		return this;
 	}
 
@@ -66,8 +66,8 @@ public class PasswordGranterBuilder {
 	 * @param userService the userService to set
 	 * @return The auth password token granter builder
 	 */
-	public PasswordGranterBuilder userService(@NotNull AuthUserService userService) {
-		this.userService = userService;
+	public PasswordGranterBuilder userRepository(@NotNull AuthUserRepository userRepository) {
+		this.userRepository = userRepository;
 		return this;
 	}
 
@@ -88,8 +88,8 @@ public class PasswordGranterBuilder {
 	public PasswordGranter build() {
 		PasswordGranter granter = new PasswordGranter(tokenServices, clientDetailsService, requestFactory);
 
-		granter.setPasswordTokenService(passwordTokenService);
-		granter.setUserService(userService);
+		granter.setPasswordTokenRepopsitory(passwordTokenRepository);
+		granter.setUserRepository(userRepository);
 		granter.setEncoder(encoder);
 
 		return granter;

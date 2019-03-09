@@ -39,6 +39,7 @@ public class AuthUserLoader {
 		user.setEmail(email);
 		user.setPassword(passwordEncoder.encode(password));
 		user.setRoles(Arrays.asList(role));
+		user.setEnabled(Boolean.TRUE);
 
 		repository.save(user);
 	}

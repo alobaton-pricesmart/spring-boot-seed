@@ -43,25 +43,10 @@ public class AuthRunner implements CommandLineRunner {
 		String[] grantTypes = new String[] { "password", "client_credentials", "refresh_token", "auth_password" };
 		String[] authorities = new String[] { "ADMIN" };
 		String[] scopes = new String[] { "read", "write" };
+		String[] redirectUri = new String[] { "/" };
 		clientDetailsLoader.load("api-client", "kIQwOMQz5s82uSc3KWZF1vgOVCpUTxWp", resourceIds, grantTypes, authorities,
-				scopes);
+				scopes, redirectUri);
 		LOGGER.info("API client loaded");
-
-		// Load APP client
-		grantTypes = new String[] { "password", "client_credentials", "refresh_token", "auth_password" };
-		authorities = new String[] { "ADMIN" };
-		scopes = new String[] { "read", "write" };
-		clientDetailsLoader.load("app-client", "i47faQn6ed1YHnNSfoPMW0s9pd5sHxrp", resourceIds, grantTypes, authorities,
-				scopes);
-		LOGGER.info("APP client loaded");
-
-		// Load WEB client
-		grantTypes = new String[] { "password", "client_credentials", "refresh_token", "auth_password" };
-		authorities = new String[] { "ADMIN" };
-		scopes = new String[] { "read", "write" };
-		clientDetailsLoader.load("web-client", "Mj2mrZJxIj2cfElNlxSJoTFjEvYyPGNQ", resourceIds, grantTypes, authorities,
-				scopes);
-		LOGGER.info("WEB client loaded");
 
 		// Load admin user
 		userLoader.load("admin", "Administrator", StringUtils.EMPTY, "admin@domain.com", "d2PJNVXG", "ADMIN");

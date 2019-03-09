@@ -13,8 +13,6 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.co.app.auth.dto.AuthUserDto;
-
 /**
  * @author alobaton
  *
@@ -22,14 +20,14 @@ import com.co.app.auth.dto.AuthUserDto;
 public class CustomUserDetails implements UserDetails {
 	private static final long serialVersionUID = -4402146711326898924L;
 
-	private AuthUserDto user;
+	private AuthUser user;
 
 	/**
 	 * Create custom user details from AuthUser
 	 * 
 	 * @param user
 	 */
-	public CustomUserDetails(@NotNull AuthUserDto user) {
+	public CustomUserDetails(@NotNull AuthUser user) {
 		this.user = user;
 	}
 
