@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	layout:decorate="~{fragments/layout}">
+<head>
+</head>
+<body>
+	<!-- Content of this page will be decorated by the elements of layout.html (fragments/layout) -->
+	<div layout:fragment="content" th:remove="tag">
+		<div class="d-flex justify-content-center pt-5 pb-5">
+			<div class="card">
+				<div class="card-body">
+					<h1 class="card-title title" th:text="#{index.title(#{app.name})}">Welcome!</h1>
+					<p class="card-text subtitle" th:text="#{app.description}">Welcome
+						message</p>
+				</div>
+				<div sec:authorize="isAuthenticated()" class="card-body">
+					<div class="row">
+						<span th:text="#{login.username}">Username</span>: <span
+							sec:authentication="principal">Username</span>
+					</div>
+					<div class="row">
+						<span th:text="#{index.roles}">Roles:</span> <span
+							sec:authentication="principal.authorities">[...]</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

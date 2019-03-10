@@ -25,6 +25,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.co.app.auth.handlers.OnAuthenticationSuccessHandler;
+
 /**
  * @author alobaton
  *
@@ -36,7 +38,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	/**
 	 * Put here your public access endpoints...
 	 */
-	// private static final String[] PUBLIC_ACCESS = new String[] {};
+	private static final String[] PUBLIC_ACCESS = new String[] { "/v2/api-docs", "/webjars/**", "/swagger-resources/**",
+			"/swagger-ui.html**" };
 	/**
 	 * Put here your client access endpoints...
 	 */
@@ -106,6 +109,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	 */
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
+		OnAuthenticationSuccessHandler successHandler = new OnAuthenticationSuccessHandler();
 
 		http
 				// CORS...
@@ -116,12 +120,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				// OAuth OPTIONS requests...
 				.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()//
 				// Application public endpoints...
-				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**", "/reset-password**", "/update-password")
+				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**", "/", "/login", "/oauth/authorize",
+						"/oauth/confirm_access", "/reset-password**", "/update-password")
 				.permitAll()//
 				// Public access...
-				// .antMatchers(PUBLIC_ACCESS).permitAll()
-				// Swagger documentation public endpoints...
-				.antMatchers("/v2/api-docs", "/webjars/**", "/swagger-resources/**", "/swagger-ui.html**").anonymous()//
+				.antMatchers(PUBLIC_ACCESS).permitAll()//
 				// Set up admin access...
 				.antMatchers("/clients**", "/masters**", "/settings**").hasRole("ADMIN")//
 				// Client credentials access...
@@ -129,7 +132,8 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				// Setup full authentication access...
 				.anyRequest().authenticated()//
 				// Login and logout...
-				.and().formLogin().loginPage("/login").permitAll()//
+				.and().formLogin().successHandler(successHandler).defaultSuccessUrl("/")//
+				.loginPage("/login").permitAll()//
 				.and().logout().permitAll()//
 		// .and().httpBasic()//
 		;

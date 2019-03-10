@@ -5,6 +5,7 @@ package com.co.app.core.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.thymeleaf.extras.springsecurity4.dialect.SpringSecurityDialect;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
@@ -22,9 +23,12 @@ public class ThymeleafConfiguration {
 	public SpringTemplateEngine emailTemplateEngine() {
 		SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 		templateEngine.setTemplateResolver(thymeleafTemplateResolver());
+		templateEngine.setEnableSpringELCompiler(true);
 
-		// Support for thymeleaf dialect...
+		// Support for thymeleaf layout dialect...
 		templateEngine.addDialect(new LayoutDialect());
+		// Support for thymlead security dialect...
+		templateEngine.addDialect(new SpringSecurityDialect());
 
 		return templateEngine;
 	}

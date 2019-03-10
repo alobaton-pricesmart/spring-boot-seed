@@ -28,8 +28,10 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 	 */
 	@Override
 	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/").setViewName("index");
 		registry.addViewController("/login").setViewName("login");
 		registry.addViewController("/reset-password").setViewName("reset-password");
+		registry.addViewController("/update-password").setViewName("update-password");
 		registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
 	}
 
