@@ -5,7 +5,6 @@ package com.co.app.auth.services.user.impl;
 
 import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -37,12 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		AuthUser user = new AuthUser();
-		user.setNickname(username);
-
-		Example<AuthUser> example = Example.of(user);
-
-		user = repository.findOne(example)
+		AuthUser user = repository.findById(username)
 				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, Strings.EMPTY, username));
 		if (user == null) {
 			throw new UsernameNotFoundException(String.format("Username %s not found", username));

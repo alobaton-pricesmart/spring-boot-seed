@@ -37,13 +37,14 @@ public class AuthRunner implements CommandLineRunner {
 	 */
 	@Override
 	public void run(String... args) throws Exception {
-		String[] resourceIds = new String[] { "admin" };
+		String[] resourceIds = new String[] { "api", "admin" };
 
 		// Load API client
-		String[] grantTypes = new String[] { "password", "client_credentials", "refresh_token", "auth_password" };
+		String[] grantTypes = new String[] { "authorization_code", "client_credentials", "password", "refresh_token",
+				"implicit", "auth_password" };
 		String[] authorities = new String[] { "ADMIN" };
 		String[] scopes = new String[] { "read", "write" };
-		String[] redirectUri = new String[] { "/" };
+		String[] redirectUri = new String[] { "https://www.google.com/" };
 		clientDetailsLoader.load("api-client", "kIQwOMQz5s82uSc3KWZF1vgOVCpUTxWp", resourceIds, grantTypes, authorities,
 				scopes, redirectUri);
 		LOGGER.info("API client loaded");

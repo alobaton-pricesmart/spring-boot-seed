@@ -117,10 +117,7 @@ public class PasswordGranter extends AbstractTokenGranter {
 		}
 
 		String nickname = passwordToken.getId().getNickname();
-		AuthUser user = new AuthUser();
-		user.setNickname(nickname);
-
-		user = userRepository.findOne(Example.of(user))
+		AuthUser user = userRepository.findById(nickname)
 				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, Strings.EMPTY, nickname));
 		if (user == null) {
 			throw new UsernameNotFoundException(
