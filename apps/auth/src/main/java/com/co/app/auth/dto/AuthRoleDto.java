@@ -1,72 +1,51 @@
 /**
  * 
  */
-package com.co.app.auth.domain;
+package com.co.app.auth.dto;
 
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Type;
-
-import com.co.app.auth.dto.AuthRoleDto;
-import com.co.app.commons.domain.BaseDomain;
+import com.co.app.auth.domain.AuthRole;
+import com.co.app.commons.dto.BaseDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * @author alobaton
  *
  */
-@Entity
-@Table(name = "auth_role")
-public class AuthRole extends BaseDomain {
+@JsonInclude(Include.NON_NULL)
+public class AuthRoleDto extends BaseDto {
 
-	public static final Function<AuthRoleDto, AuthRole> CONVERTER = new Function<AuthRoleDto, AuthRole>() {
+	public static final Function<AuthRole, AuthRoleDto> CONVERTER = new Function<AuthRole, AuthRoleDto>() {
 		@Override
-		public AuthRole apply(AuthRoleDto t) {
-			AuthRole domain = new AuthRole();
-			domain.setId(t.getId());
-			domain.setName(t.getName());
-			domain.setDescription(t.getDescription());
-			domain.setGroup(t.getGroup());
-			domain.setParentId(t.getParentId());
-			domain.setPermissions(t.getPermissions());
-			domain.setCreated(t.getCreated());
-			domain.setLastModified(t.getLastModified());
+		public AuthRoleDto apply(AuthRole t) {
+			AuthRoleDto dto = new AuthRoleDto();
+			dto.setId(t.getId());
+			dto.setName(t.getName());
+			dto.setDescription(t.getDescription());
+			dto.setGroup(t.getGroup());
+			dto.setParentId(t.getParentId());
+			dto.setPermissions(t.getPermissions());
+			dto.setCreated(t.getCreated());
+			dto.setLastModified(t.getLastModified());
 
-			return domain;
+			return dto;
 		}
 	};
 
-	@Id
 	@NotNull
-	@Column(name = "id")
 	private String id;
-
-	// LDAP group mapping.
-	@Column(name = "group")
 	private String group;
-
 	@NotNull
-	@Type(type = "json")
-	@Column(name = "name", columnDefinition = "json")
 	private Map<String, String> name;
-
 	@NotNull
-	@Type(type = "json")
-	@Column(name = "description", columnDefinition = "json")
 	private Map<String, String> description;
-
-	@Column(name = "parent_id")
 	private String parentId;
-
-	@Type(type = "json")
-	@Column(name = "permissions", columnDefinition = "json")
 	private List<String> permissions;
 
 	/**
@@ -97,18 +76,30 @@ public class AuthRole extends BaseDomain {
 		this.group = group;
 	}
 
+	/**
+	 * @return the name
+	 */
 	public Map<String, String> getName() {
 		return name;
 	}
 
+	/**
+	 * @param name the name to set
+	 */
 	public void setName(Map<String, String> name) {
 		this.name = name;
 	}
 
+	/**
+	 * @return the description
+	 */
 	public Map<String, String> getDescription() {
 		return description;
 	}
 
+	/**
+	 * @param description the description to set
+	 */
 	public void setDescription(Map<String, String> description) {
 		this.description = description;
 	}
@@ -148,7 +139,7 @@ public class AuthRole extends BaseDomain {
 	 */
 	@Override
 	public String toString() {
-		return "AuthRole [id=" + id + ", group=" + group + ", name=" + name + ", description=" + description
+		return "AuthRoleDto [id=" + id + ", group=" + group + ", name=" + name + ", description=" + description
 				+ ", parentId=" + parentId + ", permissions=" + permissions + ", created=" + created + ", lastModified="
 				+ lastModified + "]";
 	}

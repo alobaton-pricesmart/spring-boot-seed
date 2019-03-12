@@ -40,8 +40,7 @@ public class AuthRunner implements CommandLineRunner {
 		String[] resourceIds = new String[] { "api", "admin" };
 
 		// Load API client
-		String[] grantTypes = new String[] { "authorization_code", "client_credentials", "password", "refresh_token",
-				"implicit", "auth_password" };
+		String[] grantTypes = new String[] { "authorization_code" };
 		String[] authorities = new String[] { "ADMIN" };
 		String[] scopes = new String[] { "read", "write" };
 		String[] redirectUri = new String[] { "https://www.google.com/" };

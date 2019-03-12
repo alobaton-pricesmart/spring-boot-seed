@@ -114,8 +114,12 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 		http
 				// CORS...
 				.csrf().disable()//
+				// Login and logout...
+				.formLogin().successHandler(successHandler).defaultSuccessUrl("/")//
+				.loginPage("/login").permitAll()//
+				.and().logout().logoutSuccessUrl("/login").permitAll()//
 				// Filters...
-				.addFilterBefore(customCorsFilter, SessionManagementFilter.class)//
+				.and().addFilterBefore(customCorsFilter, SessionManagementFilter.class)//
 				.authorizeRequests()//
 				// OAuth OPTIONS requests...
 				.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()//
@@ -131,11 +135,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				// .antMatchers(CLIENT_ACCESS).access("#oauth2.isClient()")
 				// Setup full authentication access...
 				.anyRequest().authenticated()//
-				// Login and logout...
-				.and().formLogin().successHandler(successHandler).defaultSuccessUrl("/")//
-				.loginPage("/login").permitAll()//
-				.and().logout().permitAll()//
-		// .and().httpBasic()//
+
 		;
 	}
 

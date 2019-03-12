@@ -85,7 +85,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 				PrintWriter pw = new PrintWriter(sw);
 				e.printStackTrace(pw);
 
-				LOGGER.debug(sw.toString());
+				LOGGER.error(sw.toString());
 
 				ResponseEntity<OAuth2Exception> response = super.translate(e);
 				return response;

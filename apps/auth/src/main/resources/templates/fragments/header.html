@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 	<th:block th:fragment="header">
 		<nav
@@ -11,7 +11,7 @@
 					height="30" class="d-inline-block align-top" alt=""> Logo
 				</a>
 			</div>
-			<div sec:authorize="isAuthenticated()">
+			<div th:if="${#authorization.expression('isAuthenticated()')}">
 				<form class="form-inline my-2 my-lg-0" th:action="@{/logout}"
 					method="post">
 					<input class="form-control mr-sm-2 btn btn-primary"
@@ -19,7 +19,7 @@
 						id="logoutSubmit">
 				</form>
 			</div>
-			<div sec:authorize="!isAuthenticated()">
+			<div th:if="${#authorization.expression('!isAuthenticated()')}">
 				<a th:href="@{/login}" th:text="#{login.title}"
 					class="btn btn-primary">Login</a>
 			</div>
