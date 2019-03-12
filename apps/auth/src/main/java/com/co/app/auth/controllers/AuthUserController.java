@@ -14,11 +14,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.co.app.commons.controllers.BasePagedController;
 import com.co.app.auth.dto.AuthUserDto;
 import com.co.app.auth.services.user.AuthUserService;
+import com.co.app.commons.controllers.BasePagedController;
 
 /**
  * @author alobaton
@@ -42,7 +43,7 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	}
 
 	@Override
-	public List<AuthUserDto> getAll(@Valid @RequestBody AuthUserDto dto) {
+	public List<AuthUserDto> getAll(@Valid @RequestParam AuthUserDto dto) {
 		return service.getAll(dto);
 	}
 
@@ -58,7 +59,7 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	}
 
 	@Override
-	public Page<AuthUserDto> getAll(@Valid @RequestBody AuthUserDto dto, @NotNull Pageable pageable) {
+	public Page<AuthUserDto> getAll(@Valid @RequestParam AuthUserDto dto, @NotNull @RequestParam Pageable pageable) {
 		return service.getAll(dto, pageable);
 	}
 

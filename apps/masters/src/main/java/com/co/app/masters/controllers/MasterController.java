@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.co.app.commons.controllers.BasePagedController;
@@ -41,7 +42,7 @@ public class MasterController implements BasePagedController<MasterDto> {
 	}
 
 	@Override
-	public List<MasterDto> getAll(@Valid @RequestBody MasterDto dto) {
+	public List<MasterDto> getAll(@Valid @RequestParam MasterDto dto) {
 		return service.getAll(dto);
 	}
 
@@ -58,7 +59,7 @@ public class MasterController implements BasePagedController<MasterDto> {
 	}
 
 	@Override
-	public Page<MasterDto> getAll(@Valid @RequestBody MasterDto dto, @NotNull Pageable pageable) {
+	public Page<MasterDto> getAll(@Valid @RequestParam MasterDto dto, @NotNull @RequestParam Pageable pageable) {
 		return service.getAll(dto, pageable);
 	}
 
