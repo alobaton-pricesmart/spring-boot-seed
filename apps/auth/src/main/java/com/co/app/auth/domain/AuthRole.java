@@ -33,7 +33,8 @@ public class AuthRole extends BaseDomain {
 			domain.setId(t.getId());
 			domain.setName(t.getName());
 			domain.setDescription(t.getDescription());
-			domain.setGroup(t.getGroup());
+			domain.setGroupId(t.getGroupId());
+			domain.setClientId(t.getClientId());
 			domain.setParentId(t.getParentId());
 			domain.setPermissions(t.getPermissions());
 			domain.setCreated(t.getCreated());
@@ -48,9 +49,13 @@ public class AuthRole extends BaseDomain {
 	@Column(name = "id")
 	private String id;
 
-	// LDAP group mapping.
-	@Column(name = "group")
-	private String group;
+	// LDAP groupId mapping.
+	@Column(name = "group_id")
+	private String groupId;
+
+	@NotNull
+	@Column(name = "client_id")
+	private String clientId;
 
 	@NotNull
 	@Type(type = "json")
@@ -84,17 +89,31 @@ public class AuthRole extends BaseDomain {
 	}
 
 	/**
-	 * @return the group
+	 * @return the groupId
 	 */
-	public String getGroup() {
-		return group;
+	public String getGroupId() {
+		return groupId;
 	}
 
 	/**
-	 * @param group the group to set
+	 * @param groupId the groupId to set
 	 */
-	public void setGroup(String group) {
-		this.group = group;
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	/**
+	 * @return the clientId
+	 */
+	public String getClientId() {
+		return clientId;
+	}
+
+	/**
+	 * @param clientId the clientId to set
+	 */
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	public Map<String, String> getName() {
@@ -148,9 +167,9 @@ public class AuthRole extends BaseDomain {
 	 */
 	@Override
 	public String toString() {
-		return "AuthRole [id=" + id + ", group=" + group + ", name=" + name + ", description=" + description
-				+ ", parentId=" + parentId + ", permissions=" + permissions + ", created=" + created + ", lastModified="
-				+ lastModified + "]";
+		return "AuthRole [id=" + id + ", groupId=" + groupId + ", clientId=" + clientId + ", name=" + name
+				+ ", description=" + description + ", parentId=" + parentId + ", permissions=" + permissions
+				+ ", created=" + created + ", lastModified=" + lastModified + "]";
 	}
 
 }

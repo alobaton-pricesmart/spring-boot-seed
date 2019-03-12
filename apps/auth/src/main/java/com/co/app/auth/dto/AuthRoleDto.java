@@ -28,7 +28,8 @@ public class AuthRoleDto extends BaseDto {
 			dto.setId(t.getId());
 			dto.setName(t.getName());
 			dto.setDescription(t.getDescription());
-			dto.setGroup(t.getGroup());
+			dto.setGroupId(t.getGroupId());
+			dto.setClientId(t.getClientId());
 			dto.setParentId(t.getParentId());
 			dto.setPermissions(t.getPermissions());
 			dto.setCreated(t.getCreated());
@@ -40,7 +41,10 @@ public class AuthRoleDto extends BaseDto {
 
 	@NotNull
 	private String id;
-	private String group;
+	@NotNull
+	private String groupId;
+	@NotNull
+	private String clientId;
 	@NotNull
 	private Map<String, String> name;
 	@NotNull
@@ -63,17 +67,31 @@ public class AuthRoleDto extends BaseDto {
 	}
 
 	/**
-	 * @return the group
+	 * @return the groupId
 	 */
-	public String getGroup() {
-		return group;
+	public String getGroupId() {
+		return groupId;
 	}
 
 	/**
-	 * @param group the group to set
+	 * @param groupId the groupId to set
 	 */
-	public void setGroup(String group) {
-		this.group = group;
+	public void setGroupId(String groupId) {
+		this.groupId = groupId;
+	}
+
+	/**
+	 * @return the clientId
+	 */
+	public String getClientId() {
+		return clientId;
+	}
+
+	/**
+	 * @param clientId the clientId to set
+	 */
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 
 	/**
@@ -139,9 +157,9 @@ public class AuthRoleDto extends BaseDto {
 	 */
 	@Override
 	public String toString() {
-		return "AuthRoleDto [id=" + id + ", group=" + group + ", name=" + name + ", description=" + description
-				+ ", parentId=" + parentId + ", permissions=" + permissions + ", created=" + created + ", lastModified="
-				+ lastModified + "]";
+		return "AuthRoleDto [id=" + id + ", groupId=" + groupId + ", clientId=" + clientId + ", name=" + name
+				+ ", description=" + description + ", parentId=" + parentId + ", permissions=" + permissions
+				+ ", created=" + created + ", lastModified=" + lastModified + "]";
 	}
 
 }
