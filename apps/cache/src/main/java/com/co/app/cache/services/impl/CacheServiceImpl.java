@@ -83,9 +83,9 @@ public class CacheServiceImpl implements CacheService {
 
 	@Override
 	public CacheDto update(CacheDto dto) {
-		Cache CacheType = repository.save(Cache.CONVERTER.apply(dto));
+		Cache domain = repository.save(Cache.CONVERTER.apply(dto));
 
-		return CacheDto.CONVERTER.apply(CacheType);
+		return CacheDto.CONVERTER.apply(domain);
 	}
 
 	@Override

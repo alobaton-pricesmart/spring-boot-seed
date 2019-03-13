@@ -28,6 +28,7 @@ public class Cache extends BaseDomain {
 			Cache domain = new Cache();
 			domain.setKey(t.getKey());
 			domain.setValue(t.getValue());
+			
 			return domain;
 		}
 	};
