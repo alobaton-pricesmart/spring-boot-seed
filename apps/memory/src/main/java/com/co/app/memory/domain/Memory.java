@@ -67,7 +67,7 @@ public class Memory extends BaseDomain {
 
 	@Override
 	public String toString() {
-		return "Memory [key=" + this.key + ", value=" + this.value + ", created=" + created + ", lastModified="
+		return "Memory [key=" + this.id	 + ", value=" + this.value + ", created=" + created + ", lastModified="
 				+ lastModified + "]";
 	}
 }

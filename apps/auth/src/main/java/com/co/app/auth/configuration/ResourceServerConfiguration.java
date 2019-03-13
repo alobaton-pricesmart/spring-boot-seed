@@ -122,7 +122,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 		// Login and logout...
 		http.formLogin().loginPage("/login").permitAll()//
 				.successHandler(successHandler).defaultSuccessUrl("/")//
-				.and().logout().logoutSuccessUrl("/login").permitAll();
+				.and().logout().logoutSuccessUrl("/login").permitAll()//
+				// If a user try to access a resource without having enough permissions
+				.and().exceptionHandling().accessDeniedPage("/login");
 
 		http.authorizeRequests()//
 				// OAuth OPTIONS requests...
