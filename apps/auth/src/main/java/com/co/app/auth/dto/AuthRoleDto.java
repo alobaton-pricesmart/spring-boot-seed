@@ -41,7 +41,6 @@ public class AuthRoleDto extends BaseDto {
 
 	@NotNull
 	private String id;
-	@NotNull
 	private String groupId;
 	@NotNull
 	private String clientId;
