@@ -41,6 +41,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	private static final String[] PUBLIC_ACCESS = new String[] { "/v2/api-docs", "/webjars/**", "/swagger-resources/**",
 			"/swagger-ui.html**" };
 	/**
+	 * Put here your public access endpoints...
+	 */
+	private static final String[] ADMIN_ACCESS = new String[] { "/clients**", "/masters**", "/settings**" };
+	/**
 	 * Put here your client access endpoints...
 	 */
 	// private static final String[] CLIENT_ACCESS = new String[] {};
@@ -111,16 +115,16 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	public void configure(HttpSecurity http) throws Exception {
 		OnAuthenticationSuccessHandler successHandler = new OnAuthenticationSuccessHandler();
 
-		http
-				// CORS...
-				.csrf().disable()//
-				// Login and logout...
-				.formLogin().successHandler(successHandler).defaultSuccessUrl("/")//
-				.loginPage("/login").permitAll()//
-				.and().logout().logoutSuccessUrl("/login").permitAll()//
-				// Filters...
-				.and().addFilterBefore(customCorsFilter, SessionManagementFilter.class)//
-				.authorizeRequests()//
+		// CORS...
+		http.csrf().disable()//
+				.addFilterBefore(customCorsFilter, SessionManagementFilter.class);
+
+		// Login and logout...
+		http.formLogin().loginPage("/login").permitAll()//
+				.successHandler(successHandler).defaultSuccessUrl("/")//
+				.and().logout().logoutSuccessUrl("/login").permitAll();
+
+		http.authorizeRequests()//
 				// OAuth OPTIONS requests...
 				.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()//
 				// Application public endpoints...
@@ -130,13 +134,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 				// Public access...
 				.antMatchers(PUBLIC_ACCESS).permitAll()//
 				// Set up admin access...
-				.antMatchers("/clients**", "/masters**", "/settings**").hasRole("ADMIN")//
+				.antMatchers(ADMIN_ACCESS).hasRole("ADMIN")//
 				// Client credentials access...
 				// .antMatchers(CLIENT_ACCESS).access("#oauth2.isClient()")
 				// Setup full authentication access...
-				.anyRequest().authenticated()//
-
-		;
+				.anyRequest().authenticated();
 	}
 
 }

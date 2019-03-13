@@ -1,4 +1,4 @@
-package com.co.app.cache.controllers;
+package com.co.app.memory.controllers;
 
 import java.util.List;
 
@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.co.app.cache.dto.CacheDto;
-import com.co.app.cache.services.CacheService;
+import com.co.app.memory.dto.MemoryDto;
+import com.co.app.memory.services.MemoryService;
 import com.co.app.commons.controllers.BasePagedController;
 
 /**
@@ -23,29 +23,29 @@ import com.co.app.commons.controllers.BasePagedController;
  *
  */
 @RestController
-@RequestMapping("/cache")
-public class CacheController implements BasePagedController<CacheDto> {
+@RequestMapping("/distributed-memory")
+public class MemoryController implements BasePagedController<MemoryDto> {
 	
 	@Autowired
-	private CacheService service;
+	private MemoryService service;
 	
 	@Override
-	public CacheDto create(@Valid @RequestBody CacheDto dto) {
+	public MemoryDto create(@Valid @RequestBody MemoryDto dto) {
 		return service.create(dto);
 	}
 
 	@Override
-	public CacheDto get(@PathVariable String id) {
+	public MemoryDto get(@PathVariable String id) {
 		return service.get(id);
 	}
 
 	@Override
-	public List<CacheDto> getAll(@Valid @RequestParam CacheDto dto) {
+	public List<MemoryDto> getAll(@Valid @RequestParam MemoryDto dto) {
 		return service.getAll(dto);
 	}
 
 	@Override
-	public CacheDto update(@PathVariable String key, @Valid @RequestBody CacheDto dto) {
+	public MemoryDto update(@PathVariable String key, @Valid @RequestBody MemoryDto dto) {
 		dto.setKey(key);
 
 		return service.update(dto);
@@ -57,7 +57,7 @@ public class CacheController implements BasePagedController<CacheDto> {
 	}
 
 	@Override
-	public Page<CacheDto> getAll(@Valid @RequestParam CacheDto dto, @NotNull @RequestParam Pageable pageable) {
+	public Page<MemoryDto> getAll(@Valid @RequestParam MemoryDto dto, @NotNull @RequestParam Pageable pageable) {
 		return service.getAll(dto, pageable);
 	}
 }

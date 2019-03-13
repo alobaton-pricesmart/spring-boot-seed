@@ -62,7 +62,7 @@
 		<module>masters</module>
 		<module>settings</module>
 		<module>core</module>
-		<module>cache</module>
+		<module>memory</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
@@ -114,7 +114,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.co.app</groupId>
-				<artifactId>cache</artifactId>
+				<artifactId>memory</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<!-- Import your app modules here... -->

@@ -1,4 +1,4 @@
-package com.co.app.cache.domain;
+package com.co.app.memory.domain;
 
 import java.util.Map;
 import java.util.function.Function;
@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
 
-import com.co.app.cache.dto.CacheDto;
+import com.co.app.memory.dto.MemoryDto;
 import com.co.app.commons.domain.BaseDomain;
 
 /**
@@ -19,37 +19,42 @@ import com.co.app.commons.domain.BaseDomain;
  *
  */
 @Entity
-@Table(name = "cache")
-public class Cache extends BaseDomain {
-	
-	public static final Function<CacheDto, Cache> CONVERTER = new Function<CacheDto, Cache>() {
+@Table(name = "distributed_memory")
+public class Memory extends BaseDomain {
+
+	public static final Function<MemoryDto, Memory> CONVERTER = new Function<MemoryDto, Memory>() {
 		@Override
-		public Cache apply(CacheDto t) {
-			Cache domain = new Cache();
-			domain.setKey(t.getKey());
+		public Memory apply(MemoryDto t) {
+			Memory domain = new Memory();
+			domain.setId(t.getKey());
 			domain.setValue(t.getValue());
-			
+
 			return domain;
 		}
 	};
-	
+
 	@Id
 	@NotNull
-	@Column(name = "key")
-	private String key;
+	@Column(name = "id")
+	private String id;
 
 	@NotNull
 	@Type(type = "json")
 	@Column(name = "value", columnDefinition = "json")
 	private Map<String, Object> value;
 
-
-	public String getKey() {
-		return key;
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
 	}
 
-	public void setKey(String key) {
-		this.key = key;
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public Map<String, Object> getValue() {
@@ -59,10 +64,10 @@ public class Cache extends BaseDomain {
 	public void setValue(Map<String, Object> value) {
 		this.value = value;
 	}
-	
+
 	@Override
 	public String toString() {
-		return "Cache [key=" + this.key + ", value=" + this.value
-				+ ", created=" + created + ", lastModified=" + lastModified + "]";
+		return "Memory [key=" + this.key + ", value=" + this.value + ", created=" + created + ", lastModified="
+				+ lastModified + "]";
 	}
 }

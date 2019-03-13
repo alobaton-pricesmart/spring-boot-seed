@@ -9,8 +9,8 @@
 		<artifactId>apps</artifactId>
 		<version>1.0.0</version>
 	</parent>
-	<artifactId>cache</artifactId>
-	<name>cache</name>
+	<artifactId>memory</artifactId>
+	<name>memory</name>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

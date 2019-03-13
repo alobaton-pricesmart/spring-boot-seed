@@ -1,4 +1,4 @@
-package com.co.app.cache.configuration;
+package com.co.app.memory.configuration;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,9 +10,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  *
  */
 @Configuration
-@EnableJpaRepositories(basePackages = { "com.co.app.cache.dao" })
-@EntityScan(basePackages = { "com.co.app.cache.domain" })
+@EnableJpaRepositories(basePackages = { "com.co.app.memory.dao" })
+@EntityScan(basePackages = { "com.co.app.memory.domain" })
 @EnableTransactionManagement
-public class CacheConfiguration {
+public class MemoryConfiguration {
 
 }
