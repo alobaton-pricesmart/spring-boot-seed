@@ -24,14 +24,20 @@ In order to start the seed use:
 $ git clone --depth 1 https://github.com/alobaton/spring-boot-seed.git
 $ cd spring-boot-seed
 
-$ mvn clean install -Dspring.profiles.active=dev
+$ docker-compose -f docker-compose.dev.yml up -d db
 
-$ cd admin
+Add to the hosts file (/ etc / hosts in linux) =  {localhost} db.dev.local
 
-$ mvn spring-boot:run -Dspring.profiles.active=dev
+$ cd apps
+
+$ mvn clean install -Dspring.profiles.active=dev -DskipTests=true
+
+$ cd core
+
+$ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
 
 # without maven
-$ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -jar /app.jar
+$ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -DskipTests=true -jar /app.jar
 ```
 
 ## How to test?
@@ -43,8 +49,6 @@ In order to test the seed user:
 $ docker-compose -f docker-compose.dev.yml up -d db
 
 $ mvn clean install -Dspring.profiles.active=dev
-# skip the tests on development.
-mvn clean install -Dspring.profiles.active=dev -DskipTests=true
 ```
 
 ## Dockerization

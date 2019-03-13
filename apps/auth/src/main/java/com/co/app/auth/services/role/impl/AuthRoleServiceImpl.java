@@ -15,6 +15,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.co.app.auth.dao.AuthRoleRepository;
 import com.co.app.auth.domain.AuthRole;
@@ -26,6 +27,7 @@ import com.co.app.commons.exception.RegisterNotFoundException;
  * @author alobaton
  *
  */
+@Service
 public class AuthRoleServiceImpl implements AuthRoleService {
 
 	@Autowired
