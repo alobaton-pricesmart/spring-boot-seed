@@ -39,4 +39,5 @@ services:
       - dev-network
 
 networks:
-  dev-network: {}
+  dev-network: 
+    driver: bridge

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import com.co.app.email.service.EmailService;
 import com.co.app.email.service.impl.EmailServiceImpl;
@@ -18,6 +19,7 @@ import com.co.app.settings.configuration.SettingsConfiguration;
  *
  */
 @Configuration
+@EnableJpaAuditing
 // Import your property sources here...
 @PropertySource("classpath:/auth/auth.properties")
 @PropertySource("classpath:/email/email.properties")
