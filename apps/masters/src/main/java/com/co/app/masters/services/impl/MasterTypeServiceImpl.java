@@ -44,6 +44,22 @@ public class MasterTypeServiceImpl implements MasterTypeService {
 				pageable, result.getTotalElements());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.co.app.commons.service.BasePagedService#getAll(org.springframework.data.
+	 * domain.Pageable)
+	 */
+	@Override
+	public Page<MasterTypeDto> getAll(Pageable pageable) {
+		Page<MasterType> result = repository.findAll(pageable);
+
+		return new PageImpl<MasterTypeDto>(
+				result.getContent().stream().map(MasterTypeDto.CONVERTER).collect(Collectors.<MasterTypeDto>toList()),
+				pageable, result.getTotalElements());
+	}
+
 	@Override
 	public MasterTypeDto create(MasterTypeDto dto) {
 		MasterType domain = repository.save(MasterType.CONVERTER.apply(dto));

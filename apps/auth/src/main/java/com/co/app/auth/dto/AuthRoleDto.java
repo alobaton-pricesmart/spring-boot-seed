@@ -41,6 +41,7 @@ public class AuthRoleDto extends BaseDto {
 
 	@NotNull
 	private String id;
+	@NotNull
 	private String groupId;
 	@NotNull
 	private String clientId;
@@ -49,6 +50,7 @@ public class AuthRoleDto extends BaseDto {
 	@NotNull
 	private Map<String, String> description;
 	private String parentId;
+	@NotNull
 	private List<String> permissions;
 
 	/**

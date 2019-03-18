@@ -44,6 +44,22 @@ public class MasterServiceImpl implements MasterService {
 				result.getTotalElements());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.co.app.commons.service.BasePagedService#getAll(org.springframework.data.
+	 * domain.Pageable)
+	 */
+	@Override
+	public Page<MasterDto> getAll(Pageable pageable) {
+		Page<Master> result = repository.findAll(pageable);
+
+		return new PageImpl<MasterDto>(
+				result.getContent().stream().map(MasterDto.CONVERTER).collect(Collectors.<MasterDto>toList()), pageable,
+				result.getTotalElements());
+	}
+
 	@Override
 	public MasterDto create(MasterDto dto) {
 		Master domain = repository.save(Master.CONVERTER.apply(dto));

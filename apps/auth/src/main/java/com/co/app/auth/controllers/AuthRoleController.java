@@ -99,8 +99,13 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	 * org.springframework.data.domain.Pageable)
 	 */
 	@Override
-	public Page<AuthRoleDto> getAll(@Valid @RequestParam AuthRoleDto dto, @NotNull @RequestParam Pageable pageable) {
-		return service.getAll(dto, pageable);
+	public Page<AuthRoleDto> getAll(@Valid @RequestParam Optional<AuthRoleDto> dto,
+			@NotNull @RequestParam Pageable pageable) {
+		if (dto.isPresent()) {
+			return service.getAll(dto.get(), pageable);
+		}
+
+		return service.getAll(pageable);
 	}
 
 }

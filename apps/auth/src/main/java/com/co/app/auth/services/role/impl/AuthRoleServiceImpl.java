@@ -159,4 +159,20 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 		return repository.existsById(id);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.co.app.commons.service.BasePagedService#getAll(org.springframework.data.
+	 * domain.Pageable)
+	 */
+	@Override
+	public Page<AuthRoleDto> getAll(Pageable pageable) {
+		Page<AuthRole> result = repository.findAll(pageable);
+
+		return new PageImpl<AuthRoleDto>(
+				result.getContent().stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList()),
+				pageable, result.getTotalElements());
+	}
+
 }

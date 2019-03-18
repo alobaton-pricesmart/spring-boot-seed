@@ -3,6 +3,8 @@
  */
 package com.co.app.commons.controllers;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -28,6 +30,6 @@ public interface BasePagedController<T> extends BaseController<T> {
 	 * @param parameters
 	 */
 	@PostMapping("/paged")
-	public @ResponseBody Page<T> getAll(@Valid T dto, @NotNull Pageable pageable);
+	public @ResponseBody Page<T> getAll(@Valid Optional<T> dto, @NotNull Pageable pageable);
 
 }

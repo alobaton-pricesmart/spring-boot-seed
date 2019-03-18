@@ -12,6 +12,7 @@ addons:
   chrome: stable
   hosts:
     - db.dev.local
+    - db.test.local
     - api.dev.local
   apt:
     sources:
@@ -34,9 +35,9 @@ notifications:
 before_install:
   - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('root') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
   - sudo mysql_upgrade -u root -proot  
-  - sudo mysql -u root -proot -e 'CREATE DATABASE `dev-db`;'
-  - sudo mysql -u root -proot -e "CREATE USER 'dev-user'@'localhost' IDENTIFIED BY 'dev-password';"
-  - sudo mysql -u root -proot -e "GRANT ALL ON *.* TO 'dev-user' @'localhost' WITH GRANT OPTION;"
+  - sudo mysql -u root -proot -e 'CREATE DATABASE `test-db`;'
+  - sudo mysql -u root -proot -e "CREATE USER 'test-user'@'localhost' IDENTIFIED BY 'test-password';"
+  - sudo mysql -u root -proot -e "GRANT ALL ON *.* TO 'test-user' @'localhost' WITH GRANT OPTION;"
   - sudo mysql -u root -proot -e "FLUSH PRIVILEGES;"
   - sudo service mysql restart
 

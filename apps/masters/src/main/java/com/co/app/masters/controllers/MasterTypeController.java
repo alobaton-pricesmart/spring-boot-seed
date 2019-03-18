@@ -65,9 +65,13 @@ public class MasterTypeController implements BasePagedController<MasterTypeDto> 
 	}
 
 	@Override
-	public Page<MasterTypeDto> getAll(@Valid @RequestParam MasterTypeDto dto,
+	public Page<MasterTypeDto> getAll(@Valid @RequestParam Optional<MasterTypeDto> dto,
 			@NotNull @RequestParam Pageable pageable) {
-		return service.getAll(dto, pageable);
+		if (dto.isPresent()) {
+			return service.getAll(dto.get(), pageable);
+		}
+
+		return service.getAll(pageable);
 	}
 
 }

@@ -64,8 +64,13 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	}
 
 	@Override
-	public Page<AuthUserDto> getAll(@Valid @RequestParam AuthUserDto dto, @NotNull @RequestParam Pageable pageable) {
-		return service.getAll(dto, pageable);
+	public Page<AuthUserDto> getAll(@Valid @RequestParam Optional<AuthUserDto> dto,
+			@NotNull @RequestParam Pageable pageable) {
+		if (dto.isPresent()) {
+			return service.getAll(dto.get(), pageable);
+		}
+
+		return service.getAll(pageable);
 	}
 
 }

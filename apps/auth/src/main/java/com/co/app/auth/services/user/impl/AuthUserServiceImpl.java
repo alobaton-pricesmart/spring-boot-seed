@@ -181,6 +181,23 @@ public class AuthUserServiceImpl implements AuthUserService {
 	/*
 	 * (non-Javadoc)
 	 * 
+	 * @see
+	 * com.co.app.commons.service.BasePagedService#getAll(org.springframework.data.
+	 * domain.Pageable)
+	 */
+	@Override
+	public Page<AuthUserDto> getAll(Pageable pageable) {
+
+		Page<AuthUser> result = userRepository.findAll(pageable);
+
+		return new PageImpl<AuthUserDto>(
+				result.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
+				pageable, result.getTotalElements());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.co.app.commons.service.BaseService#exists(java.lang.Object)
 	 */
 	@Override

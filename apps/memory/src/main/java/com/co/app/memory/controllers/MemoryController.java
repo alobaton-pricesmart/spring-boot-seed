@@ -62,7 +62,12 @@ public class MemoryController implements BasePagedController<MemoryDto> {
 	}
 
 	@Override
-	public Page<MemoryDto> getAll(@Valid @RequestParam MemoryDto dto, @NotNull @RequestParam Pageable pageable) {
-		return service.getAll(dto, pageable);
+	public Page<MemoryDto> getAll(@Valid @RequestParam Optional<MemoryDto> dto,
+			@NotNull @RequestParam Pageable pageable) {
+		if (dto.isPresent()) {
+			return service.getAll(dto.get(), pageable);
+		}
+
+		return service.getAll(pageable);
 	}
 }

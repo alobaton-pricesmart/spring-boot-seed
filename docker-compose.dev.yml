@@ -29,6 +29,7 @@ services:
       - MYSQL_USER=dev-user
       - MYSQL_PASSWORD=dev-password
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=root-password
     volumes:
       - ./mysql/db:/var/lib/mysql
       - ./mysql/dmp:/var/lib/mydmp

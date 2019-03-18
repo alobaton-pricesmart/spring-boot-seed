@@ -1,0 +1,25 @@
+version: "2.2"
+
+services:
+  db:
+    image: mysql:5.7.23
+    container_name: spring-boot-seed-db-test
+    hostname: db.test.local
+    environment:
+      - MYSQL_DATABASE=test-db
+      - MYSQL_USER=test-user
+      - MYSQL_PASSWORD=test-password
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+      - MYSQL_ROOT_PASSWORD=root-password
+    volumes:
+      - ./mysql/db:/var/lib/mysql
+      - ./mysql/dmp:/var/lib/mydmp
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    ports:
+      - ${DB_PORT}:3306
+    networks:
+      - test-network
+
+networks:
+  test-network: 
+    driver: bridge

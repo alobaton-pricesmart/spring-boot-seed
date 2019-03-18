@@ -14,5 +14,7 @@ import org.springframework.data.domain.Pageable;
  */
 public interface BasePagedService<T, I> extends BaseService<T, I> {
 
+	Page<T> getAll(Pageable pageable);
+
 	Page<T> getAll(T dto, Pageable pageable);
 }

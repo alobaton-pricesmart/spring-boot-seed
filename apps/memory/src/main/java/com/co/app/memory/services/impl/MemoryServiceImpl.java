@@ -20,7 +20,6 @@ import com.co.app.memory.dto.MemoryDto;
 import com.co.app.memory.services.MemoryService;
 import com.co.app.commons.exception.RegisterNotFoundException;
 
-
 /**
  * @author luis.colmenarez
  *
@@ -30,12 +29,28 @@ public class MemoryServiceImpl implements MemoryService {
 
 	@Autowired
 	private MemoryRepository repository;
-	
+
 	@Override
 	public Page<MemoryDto> getAll(MemoryDto dto, Pageable pageable) {
 		Example<Memory> example = Example.of(Memory.CONVERTER.apply(dto));
 
 		Page<Memory> result = repository.findAll(example, pageable);
+
+		return new PageImpl<MemoryDto>(
+				result.getContent().stream().map(MemoryDto.CONVERTER).collect(Collectors.<MemoryDto>toList()), pageable,
+				result.getTotalElements());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.co.app.commons.service.BasePagedService#getAll(org.springframework.data.
+	 * domain.Pageable)
+	 */
+	@Override
+	public Page<MemoryDto> getAll(Pageable pageable) {
+		Page<Memory> result = repository.findAll(pageable);
 
 		return new PageImpl<MemoryDto>(
 				result.getContent().stream().map(MemoryDto.CONVERTER).collect(Collectors.<MemoryDto>toList()), pageable,
