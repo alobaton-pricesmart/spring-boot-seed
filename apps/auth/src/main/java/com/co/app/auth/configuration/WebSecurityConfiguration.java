@@ -91,14 +91,12 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		if (Boolean.parseBoolean(this.ldapEnabled)) {
-			LOGGER.info("Autenticando contra LADP");
+			LOGGER.info("LDAP enabled");
 			auth.ldapAuthentication().contextSource().url(this.ldapUrls + this.ldapBaseDn)
 					.managerDn(ldapSecurityPrincipal).managerPassword(this.ldapPrincipalPassword).and()
 					.userDnPatterns(this.ldapUserDnPattern);
-			auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
-		} else {
-			LOGGER.info("Autenticando contra DB");
-			auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
 		}
+
+		auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
 	}
 }

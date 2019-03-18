@@ -18,22 +18,28 @@ Provides fast, reliable and extensible starter for the development of Java proje
 
 ## How to start?
 
+Update your /etc/hosts file with:
+
+```bash
+# tools
+127.0.0.1       db.dev.local
+127.0.0.1       db.prod.local
+127.0.0.1       db.test.local
+127.0.0.1       api.dev.local
+127.0.0.1       api.prod.local
+```
 In order to start the seed use:
 
 ```bash
 $ git clone --depth 1 https://github.com/alobaton/spring-boot-seed.git
-$ cd spring-boot-seed
 
+$ cd spring-boot-seed
 $ docker-compose -f docker-compose.dev.yml up -d db
 
-Add to the hosts file (/etc/hosts in linux) =  {localhost} db.dev.local
-
 $ cd apps
-
 $ mvn clean install -Dspring.profiles.active=dev -DskipTests=true
 
 $ cd core
-
 $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
 
 # without maven
