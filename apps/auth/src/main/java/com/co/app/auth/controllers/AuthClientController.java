@@ -4,6 +4,7 @@
 package com.co.app.auth.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -40,8 +41,12 @@ public class AuthClientController implements BaseController<AuthClientDetailsDto
 	}
 
 	@Override
-	public List<AuthClientDetailsDto> getAll(@Valid @RequestParam AuthClientDetailsDto dto) {
-		return service.getAll(dto);
+	public List<AuthClientDetailsDto> getAll(@Valid @RequestParam Optional<AuthClientDetailsDto> dto) {
+		if (dto.isPresent()) {
+			return service.getAll(dto.get());
+		}
+
+		return service.getAll();
 	}
 
 	@Override
