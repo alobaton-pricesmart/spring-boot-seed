@@ -51,8 +51,8 @@ $ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.acti
 In order to test the seed user:
 
 ```bash
-# startup the dev database.
-$ docker-compose -f docker-compose.dev.yml up -d db
+# startup the test database.
+$ docker-compose -f docker-compose.test.yml up -d db
 
 $ mvn clean install -Dspring.profiles.active=dev
 ```
