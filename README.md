@@ -26,7 +26,7 @@ $ cd spring-boot-seed
 
 $ docker-compose -f docker-compose.dev.yml up -d db
 
-Add to the hosts file (/ etc / hosts in linux) =  {localhost} db.dev.local
+Add to the hosts file (/etc/hosts in linux) =  {localhost} db.dev.local
 
 $ cd apps
 
@@ -50,6 +50,18 @@ $ docker-compose -f docker-compose.dev.yml up -d db
 
 $ mvn clean install -Dspring.profiles.active=dev
 ```
+
+Authentication through LDAP:
+
+```bash
+# application.properties
+ldap.enabled=true # activate
+ldap.enabled=false  # unactivated
+```
+
+$ mvn clean install -Dspring.profiles.active=dev
+```
+
 
 ## Dockerization
 
@@ -82,6 +94,7 @@ Now open your browser at http://localhost:8080
 ## Contributors
 
 [<img alt="alobaton" src="https://avatars1.githubusercontent.com/u/9356067?s=460&v=4" width="117">](https://github.com/alobaton)
+[<img alt="luisColmenarez" src="https://avatars0.githubusercontent.com/u/16671391?s=400&v=4" width="117">](https://github.com/LuisColmenarez)
 
 ## Change Log
 
