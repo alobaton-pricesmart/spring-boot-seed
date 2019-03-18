@@ -95,6 +95,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 			auth.ldapAuthentication().contextSource().url(this.ldapUrls + this.ldapBaseDn)
 					.managerDn(ldapSecurityPrincipal).managerPassword(this.ldapPrincipalPassword).and()
 					.userDnPatterns(this.ldapUserDnPattern);
+			auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
 		} else {
 			LOGGER.info("Autenticando contra DB");
 			auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());

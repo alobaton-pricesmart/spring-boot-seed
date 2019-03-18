@@ -51,14 +51,6 @@ $ docker-compose -f docker-compose.dev.yml up -d db
 $ mvn clean install -Dspring.profiles.active=dev
 ```
 
-Authentication through LDAP:
-
-```bash
-# application.properties
-ldap.enabled=true # activate
-ldap.enabled=false  # deactivate
-```
-
 $ mvn clean install -Dspring.profiles.active=dev
 ```
 
