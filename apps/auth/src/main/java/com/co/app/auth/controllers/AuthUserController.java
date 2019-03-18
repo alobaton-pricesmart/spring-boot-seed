@@ -4,6 +4,7 @@
 package com.co.app.auth.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -43,8 +44,12 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	}
 
 	@Override
-	public List<AuthUserDto> getAll(@Valid @RequestParam AuthUserDto dto) {
-		return service.getAll(dto);
+	public List<AuthUserDto> getAll(@Valid @RequestParam Optional<AuthUserDto> dto) {
+		if (dto.isPresent()) {
+			return service.getAll(dto.get());
+		}
+
+		return service.getAll();
 	}
 
 	@Override

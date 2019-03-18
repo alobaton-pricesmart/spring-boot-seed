@@ -11,11 +11,11 @@ RUN DEBIAN_FRONTEND=noninteractive \
 # Needed volume for embebed Spring Boot Tomcat.
 VOLUME /tmp
 
-COPY api ./api/
+COPY apps ./apps/
 
-RUN cd api && \
-    mvn clean install -Dspring.profiles.active=prod --batch-mode --errors --debug && \
-    mv ./admin/target/app*.jar /app.jar
+RUN cd apps && \
+    mvn clean install -Dspring.profiles.active=prod -DskipTests=true --batch-mode --errors --debug && \
+    mv ./core/target/core*.jar /app.jar
 
 ENV JAVA_OPTS="-XX:+UseG1GC \
 	-d64 \

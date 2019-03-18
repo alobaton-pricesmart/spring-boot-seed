@@ -4,6 +4,7 @@
 package com.co.app.settings.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -40,8 +41,12 @@ public class SettingsController implements BaseController<SettingsDto> {
 	}
 
 	@Override
-	public List<SettingsDto> getAll(@Valid @RequestParam SettingsDto dto) {
-		return service.getAll(dto);
+	public List<SettingsDto> getAll(@Valid @RequestParam Optional<SettingsDto> dto) {
+		if (dto.isPresent()) {
+			return service.getAll(dto.get());
+		}
+
+		return service.getAll();
 	}
 
 	@Override

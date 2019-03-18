@@ -1,6 +1,7 @@
 package com.co.app.memory.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -14,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.co.app.commons.controllers.BasePagedController;
 import com.co.app.memory.dto.MemoryDto;
 import com.co.app.memory.services.MemoryService;
-import com.co.app.commons.controllers.BasePagedController;
 
 /**
  * @author luis.colmenarez
@@ -25,10 +26,10 @@ import com.co.app.commons.controllers.BasePagedController;
 @RestController
 @RequestMapping("/distributed-memory")
 public class MemoryController implements BasePagedController<MemoryDto> {
-	
+
 	@Autowired
 	private MemoryService service;
-	
+
 	@Override
 	public MemoryDto create(@Valid @RequestBody MemoryDto dto) {
 		return service.create(dto);
@@ -40,8 +41,12 @@ public class MemoryController implements BasePagedController<MemoryDto> {
 	}
 
 	@Override
-	public List<MemoryDto> getAll(@Valid @RequestParam MemoryDto dto) {
-		return service.getAll(dto);
+	public List<MemoryDto> getAll(@Valid @RequestParam Optional<MemoryDto> dto) {
+		if (dto.isPresent()) {
+			return service.getAll(dto.get());
+		}
+
+		return service.getAll();
 	}
 
 	@Override

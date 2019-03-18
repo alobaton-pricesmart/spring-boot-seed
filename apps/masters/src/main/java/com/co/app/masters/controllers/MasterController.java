@@ -4,6 +4,7 @@
 package com.co.app.masters.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -42,8 +43,12 @@ public class MasterController implements BasePagedController<MasterDto> {
 	}
 
 	@Override
-	public List<MasterDto> getAll(@Valid @RequestParam MasterDto dto) {
-		return service.getAll(dto);
+	public List<MasterDto> getAll(@Valid @RequestParam Optional<MasterDto> dto) {
+		if (dto.isPresent()) {
+			return service.getAll(dto.get());
+		}
+
+		return service.getAll();
 	}
 
 	@Override

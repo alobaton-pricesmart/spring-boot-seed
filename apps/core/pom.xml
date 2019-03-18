@@ -123,7 +123,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>admin-${project.version}-${spring.profiles.active}</finalName>
+		<finalName>core-${project.version}-${spring.profiles.active}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
