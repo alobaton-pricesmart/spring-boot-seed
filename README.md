@@ -51,10 +51,6 @@ $ docker-compose -f docker-compose.dev.yml up -d db
 $ mvn clean install -Dspring.profiles.active=dev
 ```
 
-$ mvn clean install -Dspring.profiles.active=dev
-```
-
-
 ## Dockerization
 
 The application provides full Docker support. You can use it for both development and production builds and deployments.
