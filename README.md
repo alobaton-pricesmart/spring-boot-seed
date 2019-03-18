@@ -56,7 +56,7 @@ Authentication through LDAP:
 ```bash
 # application.properties
 ldap.enabled=true # activate
-ldap.enabled=false  # unactivated
+ldap.enabled=false  # deactivate
 ```
 
 $ mvn clean install -Dspring.profiles.active=dev
