@@ -21,15 +21,15 @@ services:
     cpu_percent: 60
 
   db:
-    image: mysql:5.7.23
+    image: mysql:5.7.25
     container_name: spring-boot-seed-db-prod
     hostname: db.prod.local
     environment:
+      - MYSQL_ROOT_PASSWORD=root-password
+      - MYSQL_ROOT_HOST=%
       - MYSQL_DATABASE=prod-db
       - MYSQL_USER=prod-user
       - MYSQL_PASSWORD=prod-password
-      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
-      - MYSQL_ROOT_PASSWORD=root-password
     volumes:
       - ./mysql/db:/var/lib/mysql
       - ./mysql/dmp:/var/lib/mydmp
@@ -40,4 +40,8 @@ services:
       - prod-network
 
 networks:
-  prod-network: {}
+  prod-network:
+    ipam:
+      driver: default
+      config:
+        - subnet: ${DOCKER_NETWORK}
