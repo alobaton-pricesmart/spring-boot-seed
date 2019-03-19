@@ -23,6 +23,6 @@
 hs_err_pid*
 
 # Others
-dev-mysql/*
-test-mysql/*
-prod-mysql/*
+mysql-dev/*
+mysql-test/*
+mysql-prod/*
