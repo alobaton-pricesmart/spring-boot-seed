@@ -5,6 +5,7 @@ services:
     image: mysql:5.7.25
     container_name: spring-boot-seed-db-test
     hostname: db.test.local
+    network_mode: host
     environment:
       - MYSQL_ROOT_PASSWORD=root-password
       - MYSQL_ROOT_HOST=%
@@ -17,12 +18,3 @@ services:
       - ./mysql-test/init:/docker-entrypoint-initdb.d
     ports:
       - ${DB_PORT}:3306
-    networks:
-      - test-network
-
-networks:
-  test-network:
-    ipam:
-      driver: default
-      config:
-        - subnet: ${DOCKER_NETWORK}

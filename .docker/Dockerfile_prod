@@ -17,6 +17,9 @@ RUN cd apps && \
     mvn clean install -Dspring.profiles.active=prod -DskipTests=true --batch-mode --errors --debug && \
     mv ./core/target/core*.jar /app.jar
 
+# Fix DNS resolution issues when nss is not installed
+RUN echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
+
 ENV JAVA_OPTS="-XX:+UseG1GC \
 	-d64 \
 	-server"
