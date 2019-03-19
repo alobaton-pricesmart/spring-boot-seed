@@ -12,9 +12,9 @@ services:
       - MYSQL_USER=test-user
       - MYSQL_PASSWORD=test-password
     volumes:
-      - ./mysql/db:/var/lib/mysql
-      - ./mysql/dmp:/var/lib/mydmp
-      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql-test/db:/var/lib/mysql
+      - ./mysql-test/dmp:/var/lib/mydmp
+      - ./mysql-test/init:/docker-entrypoint-initdb.d
     ports:
       - ${DB_PORT}:3306
     networks:

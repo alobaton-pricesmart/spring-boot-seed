@@ -31,9 +31,9 @@ services:
       - MYSQL_USER=dev-user
       - MYSQL_PASSWORD=dev-password
     volumes:
-      - ./mysql/db:/var/lib/mysql
-      - ./mysql/dmp:/var/lib/mydmp
-      - ./mysql/init:/docker-entrypoint-initdb.d
+      - ./mysql-dev/db:/var/lib/mysql
+      - ./mysql-dev/dmp:/var/lib/mydmp
+      - ./mysql-dev/init:/docker-entrypoint-initdb.d
     ports:
       - ${DB_PORT}:3306
     networks:

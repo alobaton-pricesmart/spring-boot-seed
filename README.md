@@ -9,9 +9,11 @@ Provides fast, reliable and extensible starter for the development of Java proje
 
 - Modularized Maven project.
 - i18n support.
+- Spring Security module.
 - Application masters module.
 - Application settings module.
 - Application loader module.
+- Distributed memory module.
 - Production and development builds.
 - Provides full Docker support for both development and production environment.
 - Swagger UI documentation at http://localhost:8080/swagger-ui.html
@@ -51,6 +53,7 @@ $ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.acti
 In order to test the seed user:
 
 ```bash
+# see this releated issue https://github.com/alobaton/spring-boot-seed/issues/8
 # startup the test database.
 $ docker-compose -f docker-compose.test.yml up -d db
 
