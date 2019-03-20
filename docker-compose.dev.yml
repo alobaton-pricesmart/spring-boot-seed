@@ -12,7 +12,7 @@ services:
       - db
     image: spring-boot-seed/dev
     volumes:
-      - ./api:/home/spring-boot-seed/api
+      - ./apps:/home/spring-boot-seed/apps
     ports:
       - ${API_PORT}:8080
       - 10001:10001
