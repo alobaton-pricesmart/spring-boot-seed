@@ -41,7 +41,13 @@ $ docker-compose -f docker-compose.dev.yml up -d db
 $ cd apps
 $ mvn clean install -Dspring.profiles.active=dev -DskipTests=true
 
-$ cd core
+# remember to execute loader once
+$ cd loader
+$ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
+
+# execute core application
+$ cd ..
+$ cd loader
 $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
 
 # without maven

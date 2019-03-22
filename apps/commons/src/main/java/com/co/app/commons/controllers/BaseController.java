@@ -47,7 +47,7 @@ public interface BaseController<T> {
 	 * @param parameters
 	 */
 	@GetMapping
-	public @ResponseBody List<T> getAll(@Valid Optional<T> dto);
+	public @ResponseBody List<T> getAll(Optional<T> dto);
 
 	/**
 	 * Update <T>.
