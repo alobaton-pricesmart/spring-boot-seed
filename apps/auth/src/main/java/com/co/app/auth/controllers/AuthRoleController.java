@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.co.app.auth.dto.AuthRoleDto;
+import com.co.app.auth.services.client.AuthClientDetailsService;
 import com.co.app.auth.services.role.AuthRoleService;
 import com.co.app.commons.controllers.BasePagedController;
 import com.co.app.commons.dto.PageableQueryDto;
@@ -31,6 +32,9 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	@Autowired
 	private AuthRoleService service;
 
+	@Autowired
+	private AuthClientDetailsService clientService;
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -38,6 +42,8 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	 */
 	@Override
 	public AuthRoleDto create(@Valid @RequestBody AuthRoleDto dto) {
+		dto.setClient(clientService.get(dto.getClientId()));
+		
 		return service.create(dto);
 	}
 
@@ -74,7 +80,8 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	 */
 	@Override
 	public AuthRoleDto update(@PathVariable String id, @Valid @RequestBody AuthRoleDto dto) {
-		dto.setId(id);
+		dto.setId(id);		
+		dto.setClient(clientService.get(dto.getClientId()));
 
 		return service.update(dto);
 	}
@@ -102,7 +109,7 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 			AuthRoleDto dto = request.getDto().get();
 			return service.getAll(dto, request.getPageable().getPageable());
 		}
-		
+
 		return service.getAll(request.getPageable().getPageable());
 	}
 

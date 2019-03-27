@@ -29,7 +29,8 @@ public class AuthRoleDto extends BaseDto {
 			dto.setName(t.getName());
 			dto.setDescription(t.getDescription());
 			dto.setGroupId(t.getGroupId());
-			dto.setClientId(t.getClientId());
+			dto.setClientId(t.getClient().getClientId());
+			dto.setClient(AuthClientDetailsDto.CONVERTER.apply(t.getClient()));
 			dto.setParentId(t.getParentId());
 			dto.setPermissions(t.getPermissions());
 			dto.setCreated(t.getCreated());
@@ -45,6 +46,7 @@ public class AuthRoleDto extends BaseDto {
 	private String groupId;
 	@NotNull
 	private String clientId;
+	private AuthClientDetailsDto client;
 	@NotNull
 	private Map<String, String> name;
 	@NotNull
@@ -93,6 +95,20 @@ public class AuthRoleDto extends BaseDto {
 	 */
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
+	}
+
+	/**
+	 * @return the client
+	 */
+	public AuthClientDetailsDto getClient() {
+		return client;
+	}
+
+	/**
+	 * @param client the client to set
+	 */
+	public void setClient(AuthClientDetailsDto client) {
+		this.client = client;
 	}
 
 	/**
@@ -158,9 +174,9 @@ public class AuthRoleDto extends BaseDto {
 	 */
 	@Override
 	public String toString() {
-		return "AuthRoleDto [id=" + id + ", groupId=" + groupId + ", clientId=" + clientId + ", name=" + name
-				+ ", description=" + description + ", parentId=" + parentId + ", permissions=" + permissions
-				+ ", created=" + created + ", lastModified=" + lastModified + "]";
+		return "AuthRoleDto [id=" + id + ", groupId=" + groupId + ", clientId=" + clientId + ", client=" + client
+				+ ", name=" + name + ", description=" + description + ", parentId=" + parentId + ", permissions="
+				+ permissions + ", created=" + created + ", lastModified=" + lastModified + "]";
 	}
 
 }

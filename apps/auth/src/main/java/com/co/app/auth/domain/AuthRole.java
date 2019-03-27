@@ -10,10 +10,13 @@ import java.util.function.Function;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
+import org.springframework.security.oauth2.provider.ClientDetails;
 
 import com.co.app.auth.dto.AuthRoleDto;
 import com.co.app.commons.domain.BaseDomain;
@@ -34,7 +37,7 @@ public class AuthRole extends BaseDomain {
 			domain.setName(t.getName());
 			domain.setDescription(t.getDescription());
 			domain.setGroupId(t.getGroupId());
-			domain.setClientId(t.getClientId());
+			domain.setClient(AuthClientDetails.CONVERTER.apply(t.getClient()));
 			domain.setParentId(t.getParentId());
 			domain.setPermissions(t.getPermissions());
 			domain.setCreated(t.getCreated());
@@ -53,9 +56,10 @@ public class AuthRole extends BaseDomain {
 	@Column(name = "group_id")
 	private String groupId;
 
-	@NotNull
-	@Column(name = "client_id")
-	private String clientId;
+	@ManyToOne
+	@JoinColumn
+	@Column(name = "client")
+	private ClientDetails client;
 
 	@NotNull
 	@Type(type = "json")
@@ -103,17 +107,17 @@ public class AuthRole extends BaseDomain {
 	}
 
 	/**
-	 * @return the clientId
+	 * @return the client
 	 */
-	public String getClientId() {
-		return clientId;
+	public ClientDetails getClient() {
+		return client;
 	}
 
 	/**
-	 * @param clientId the clientId to set
+	 * @param client the client to set
 	 */
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
+	public void setClient(ClientDetails client) {
+		this.client = client;
 	}
 
 	public Map<String, String> getName() {
@@ -167,7 +171,7 @@ public class AuthRole extends BaseDomain {
 	 */
 	@Override
 	public String toString() {
-		return "AuthRole [id=" + id + ", groupId=" + groupId + ", clientId=" + clientId + ", name=" + name
+		return "AuthRole [id=" + id + ", groupId=" + groupId + ", client=" + client + ", name=" + name
 				+ ", description=" + description + ", parentId=" + parentId + ", permissions=" + permissions
 				+ ", created=" + created + ", lastModified=" + lastModified + "]";
 	}
