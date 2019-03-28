@@ -121,6 +121,11 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/de.codecentric/spring-boot-starter-admin-client -->
+		<dependency>
+			<groupId>de.codecentric</groupId>
+			<artifactId>spring-boot-starter-admin-client</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>core-${project.version}-${spring.profiles.active}</finalName>
