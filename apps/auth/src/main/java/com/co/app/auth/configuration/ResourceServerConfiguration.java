@@ -38,8 +38,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	/**
 	 * Put here your public access endpoints...
 	 */
-	private static final String[] PUBLIC_ACCESS = new String[] { "/v2/api-docs", "/webjars/**", "/swagger-resources/**",
-			"/swagger-ui.html**" };
+	private static final String[] PUBLIC_ACCESS = new String[] { "/webjars/**", "/css/**", "/js/**", "/img/**", "/",
+			"/login", "/oauth/authorize", "/oauth/confirm_access", "/reset-password**", "/update-password",
+			"/v2/api-docs", "/swagger-resources/**", "/swagger-ui.html**", "/actuator**" };
 	/**
 	 * Put here your public access endpoints...
 	 */
@@ -129,10 +130,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 		http.authorizeRequests()//
 				// OAuth OPTIONS requests...
 				.antMatchers(HttpMethod.OPTIONS, "/oauth/token").permitAll()//
-				// Application public endpoints...
-				.antMatchers("/webjars/**", "/css/**", "/js/**", "/img/**", "/", "/login", "/oauth/authorize",
-						"/oauth/confirm_access", "/reset-password**", "/update-password")
-				.permitAll()//
 				// Public access...
 				.antMatchers(PUBLIC_ACCESS).permitAll()//
 				// Set up admin access...
