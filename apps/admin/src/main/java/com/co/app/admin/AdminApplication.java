@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author alobaton
  *
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = { "com.co.app.admin" })
 public class AdminApplication {
 
 	public static void main(String[] args) {

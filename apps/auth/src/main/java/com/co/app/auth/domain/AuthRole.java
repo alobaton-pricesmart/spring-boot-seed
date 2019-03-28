@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,7 +17,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Type;
-import org.springframework.security.oauth2.provider.ClientDetails;
 
 import com.co.app.auth.dto.AuthRoleDto;
 import com.co.app.commons.domain.BaseDomain;
@@ -37,7 +37,7 @@ public class AuthRole extends BaseDomain {
 			domain.setName(t.getName());
 			domain.setDescription(t.getDescription());
 			domain.setGroupId(t.getGroupId());
-			domain.setClient(AuthClientDetails.CONVERTER.apply(t.getClient()));
+			domain.setClient((AuthClientDetails) AuthClientDetails.CONVERTER.apply(t.getClient()));
 			domain.setParentId(t.getParentId());
 			domain.setPermissions(t.getPermissions());
 			domain.setCreated(t.getCreated());
@@ -56,10 +56,9 @@ public class AuthRole extends BaseDomain {
 	@Column(name = "group_id")
 	private String groupId;
 
-	@ManyToOne
-	@JoinColumn
-	@Column(name = "client")
-	private ClientDetails client;
+	@ManyToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "client")
+	private AuthClientDetails client;
 
 	@NotNull
 	@Type(type = "json")
@@ -109,14 +108,14 @@ public class AuthRole extends BaseDomain {
 	/**
 	 * @return the client
 	 */
-	public ClientDetails getClient() {
+	public AuthClientDetails getClient() {
 		return client;
 	}
 
 	/**
 	 * @param client the client to set
 	 */
-	public void setClient(ClientDetails client) {
+	public void setClient(AuthClientDetails client) {
 		this.client = client;
 	}
 
