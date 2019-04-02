@@ -3,6 +3,7 @@
  */
 package com.co.app.core.configuration;
 
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -19,6 +20,7 @@ import com.co.app.settings.configuration.SettingsConfiguration;
  *
  */
 @Configuration
+@EnableAutoConfiguration
 @EnableJpaAuditing
 // Import your property sources here...
 @PropertySource("classpath:/auth/auth.properties")
