@@ -9,6 +9,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,16 +32,19 @@ public class SettingsController implements BaseController<SettingsDto> {
 	private SettingsService service;
 
 	@Override
+	@PreAuthorize("customHasPermission('create:setting')")
 	public SettingsDto create(@Valid @RequestBody SettingsDto dto) {
 		return service.create(dto);
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('read:setting')")
 	public SettingsDto get(@PathVariable String id) {
 		return service.get(id);
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('read:settings')")
 	public List<SettingsDto> getAll(@Valid @RequestParam Optional<SettingsDto> dto) {
 		if (dto.isPresent()) {
 			return service.getAll(dto.get());
@@ -50,6 +54,7 @@ public class SettingsController implements BaseController<SettingsDto> {
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('update:setting')")
 	public SettingsDto update(@PathVariable String id, @Valid @RequestBody SettingsDto dto) {
 		dto.setId(id);
 
@@ -57,6 +62,7 @@ public class SettingsController implements BaseController<SettingsDto> {
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('delete:setting')")
 	public void delete(@PathVariable String id) {
 		service.delete(id);
 	}

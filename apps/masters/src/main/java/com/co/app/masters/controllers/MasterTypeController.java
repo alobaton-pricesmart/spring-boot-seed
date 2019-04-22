@@ -10,6 +10,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,16 +33,19 @@ public class MasterTypeController implements BasePagedController<MasterTypeDto> 
 	private MasterTypeService service;
 
 	@Override
+	@PreAuthorize("customHasPermission('create:master-type')")
 	public MasterTypeDto create(@Valid @RequestBody MasterTypeDto dto) {
 		return service.create(dto);
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('read:master-type')")
 	public MasterTypeDto get(@PathVariable String id) {
 		return service.get(id);
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('read:master-types')")
 	public List<MasterTypeDto> getAll(Optional<MasterTypeDto> dto) {
 		if (dto.isPresent()) {
 			return service.getAll(dto.get());
@@ -51,6 +55,7 @@ public class MasterTypeController implements BasePagedController<MasterTypeDto> 
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('update:master-type')")
 	public MasterTypeDto update(@PathVariable String id, @Valid @RequestBody MasterTypeDto dto) {
 		dto.setId(id);
 
@@ -58,11 +63,13 @@ public class MasterTypeController implements BasePagedController<MasterTypeDto> 
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('delete:master-type')")
 	public void delete(@PathVariable String id) {
 		service.delete(id);
 	}
 
 	@Override
+	@PreAuthorize("customHasPermission('read:master-types')")
 	public Page<MasterTypeDto> getAll(@RequestBody PageableQueryDto<MasterTypeDto> request) {
 		if (request.getDto().isPresent()) {
 			MasterTypeDto dto = request.getDto().get();
