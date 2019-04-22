@@ -6,6 +6,7 @@ package com.co.app.auth.dto;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotNull;
 
@@ -26,13 +27,12 @@ public class AuthRoleDto extends BaseDto {
 		public AuthRoleDto apply(AuthRole t) {
 			AuthRoleDto dto = new AuthRoleDto();
 			dto.setId(t.getId());
-			dto.setName(t.getName());
 			dto.setDescription(t.getDescription());
 			dto.setGroupId(t.getGroupId());
-			dto.setClientId(t.getClient().getClientId());
-			dto.setClient(AuthClientDetailsDto.CONVERTER.apply(t.getClient()));
 			dto.setParentId(t.getParentId());
-			dto.setPermissions(t.getPermissions());
+			dto.setPermissions(t.getPermissions().stream().map(AuthPermissionDto.CONVERTER)
+					.collect(Collectors.<AuthPermissionDto>toList()));
+
 			dto.setCreated(t.getCreated());
 			dto.setLastModified(t.getLastModified());
 
@@ -45,15 +45,9 @@ public class AuthRoleDto extends BaseDto {
 	@NotNull
 	private String groupId;
 	@NotNull
-	private String clientId;
-	private AuthClientDetailsDto client;
-	@NotNull
-	private Map<String, String> name;
-	@NotNull
 	private Map<String, String> description;
 	private String parentId;
-	@NotNull
-	private List<String> permissions;
+	private List<AuthPermissionDto> permissions;
 
 	/**
 	 * @return the id
@@ -81,48 +75,6 @@ public class AuthRoleDto extends BaseDto {
 	 */
 	public void setGroupId(String groupId) {
 		this.groupId = groupId;
-	}
-
-	/**
-	 * @return the clientId
-	 */
-	public String getClientId() {
-		return clientId;
-	}
-
-	/**
-	 * @param clientId the clientId to set
-	 */
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-
-	/**
-	 * @return the client
-	 */
-	public AuthClientDetailsDto getClient() {
-		return client;
-	}
-
-	/**
-	 * @param client the client to set
-	 */
-	public void setClient(AuthClientDetailsDto client) {
-		this.client = client;
-	}
-
-	/**
-	 * @return the name
-	 */
-	public Map<String, String> getName() {
-		return name;
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(Map<String, String> name) {
-		this.name = name;
 	}
 
 	/**
@@ -156,27 +108,22 @@ public class AuthRoleDto extends BaseDto {
 	/**
 	 * @return the permissions
 	 */
-	public List<String> getPermissions() {
+	public List<AuthPermissionDto> getPermissions() {
 		return permissions;
 	}
 
 	/**
 	 * @param permissions the permissions to set
 	 */
-	public void setPermissions(List<String> permissions) {
+	public void setPermissions(List<AuthPermissionDto> permissions) {
 		this.permissions = permissions;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "AuthRoleDto [id=" + id + ", groupId=" + groupId + ", clientId=" + clientId + ", client=" + client
-				+ ", name=" + name + ", description=" + description + ", parentId=" + parentId + ", permissions="
-				+ permissions + ", created=" + created + ", lastModified=" + lastModified + "]";
+		return "AuthRoleDto [id=" + id + ", groupId=" + groupId + ", description=" + description + ", parentId="
+				+ parentId + ", permissions=" + permissions + ", created=" + created + ", lastModified=" + lastModified
+				+ "]";
 	}
 
 }
