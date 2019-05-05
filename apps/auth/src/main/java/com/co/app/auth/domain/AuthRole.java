@@ -6,13 +6,14 @@ package com.co.app.auth.domain;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -34,14 +35,11 @@ public class AuthRole extends BaseDomain {
 		public AuthRole apply(AuthRoleDto t) {
 			AuthRole domain = new AuthRole();
 			domain.setId(t.getId());
-			domain.setName(t.getName());
 			domain.setDescription(t.getDescription());
 			domain.setGroupId(t.getGroupId());
-			domain.setClient((AuthClientDetails) AuthClientDetails.CONVERTER.apply(t.getClient()));
 			domain.setParentId(t.getParentId());
-			domain.setPermissions(t.getPermissions());
-			domain.setCreated(t.getCreated());
-			domain.setLastModified(t.getLastModified());
+			domain.setPermissions(t.getPermissions().stream().map(AuthPermission.CONVERTER)
+					.collect(Collectors.<AuthPermission>toList()));
 
 			return domain;
 		}
@@ -56,15 +54,6 @@ public class AuthRole extends BaseDomain {
 	@Column(name = "group_id")
 	private String groupId;
 
-	@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "client")
-	private AuthClientDetails client;
-
-	@NotNull
-	@Type(type = "json")
-	@Column(name = "name", columnDefinition = "json")
-	private Map<String, String> name;
-
 	@NotNull
 	@Type(type = "json")
 	@Column(name = "description", columnDefinition = "json")
@@ -74,8 +63,9 @@ public class AuthRole extends BaseDomain {
 	private String parentId;
 
 	@Type(type = "json")
-	@Column(name = "permissions", columnDefinition = "json")
-	private List<String> permissions;
+	@OneToMany(mappedBy = "auth_role", cascade = CascadeType.ALL)
+	@JoinColumn(name = "permissions", columnDefinition = "json")
+	private List<AuthPermission> permissions;
 
 	/**
 	 * @return the id
@@ -105,28 +95,6 @@ public class AuthRole extends BaseDomain {
 		this.groupId = groupId;
 	}
 
-	/**
-	 * @return the client
-	 */
-	public AuthClientDetails getClient() {
-		return client;
-	}
-
-	/**
-	 * @param client the client to set
-	 */
-	public void setClient(AuthClientDetails client) {
-		this.client = client;
-	}
-
-	public Map<String, String> getName() {
-		return name;
-	}
-
-	public void setName(Map<String, String> name) {
-		this.name = name;
-	}
-
 	public Map<String, String> getDescription() {
 		return description;
 	}
@@ -152,27 +120,21 @@ public class AuthRole extends BaseDomain {
 	/**
 	 * @return the permissions
 	 */
-	public List<String> getPermissions() {
+	public List<AuthPermission> getPermissions() {
 		return permissions;
 	}
 
 	/**
 	 * @param permissions the permissions to set
 	 */
-	public void setPermissions(List<String> permissions) {
+	public void setPermissions(List<AuthPermission> permissions) {
 		this.permissions = permissions;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
 	@Override
 	public String toString() {
-		return "AuthRole [id=" + id + ", groupId=" + groupId + ", client=" + client + ", name=" + name
-				+ ", description=" + description + ", parentId=" + parentId + ", permissions=" + permissions
-				+ ", created=" + created + ", lastModified=" + lastModified + "]";
+		return "AuthRole [id=" + id + ", groupId=" + groupId + ", description=" + description + ", parentId=" + parentId
+				+ ", permissions=" + permissions + ", created=" + created + ", lastModified=" + lastModified + "]";
 	}
 
 }

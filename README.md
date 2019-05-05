@@ -47,7 +47,7 @@ $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
 
 # execute core application
 $ cd ..
-$ cd loader
+$ cd core
 $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
 
 # without maven

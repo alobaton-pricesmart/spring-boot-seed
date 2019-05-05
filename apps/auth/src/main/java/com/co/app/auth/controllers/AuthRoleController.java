@@ -10,13 +10,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.co.app.auth.dto.AuthRoleDto;
-import com.co.app.auth.services.client.AuthClientDetailsService;
 import com.co.app.auth.services.role.AuthRoleService;
 import com.co.app.commons.controllers.BasePagedController;
 import com.co.app.commons.dto.PageableQueryDto;
@@ -32,18 +32,14 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	@Autowired
 	private AuthRoleService service;
 
-	@Autowired
-	private AuthClientDetailsService clientService;
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see com.co.app.commons.controllers.BaseController#create(java.lang.Object)
 	 */
 	@Override
+	@PreAuthorize("customHasPermission('craete:role')")
 	public AuthRoleDto create(@Valid @RequestBody AuthRoleDto dto) {
-		dto.setClient(clientService.get(dto.getClientId()));
-		
 		return service.create(dto);
 	}
 
@@ -53,6 +49,7 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	 * @see com.co.app.commons.controllers.BaseController#get(java.lang.String)
 	 */
 	@Override
+	@PreAuthorize("customHasPermission('read:role')")
 	public AuthRoleDto get(@PathVariable String id) {
 		return service.get(id);
 	}
@@ -63,6 +60,7 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	 * @see com.co.app.commons.controllers.BaseController#getAll(java.lang.Object)
 	 */
 	@Override
+	@PreAuthorize("customHasPermission('read:roles')")
 	public List<AuthRoleDto> getAll(Optional<AuthRoleDto> dto) {
 		if (dto.isPresent()) {
 			return service.getAll(dto.get());
@@ -79,9 +77,9 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	 * java.lang.Object)
 	 */
 	@Override
+	@PreAuthorize("customHasPermission('update:role')")
 	public AuthRoleDto update(@PathVariable String id, @Valid @RequestBody AuthRoleDto dto) {
-		dto.setId(id);		
-		dto.setClient(clientService.get(dto.getClientId()));
+		dto.setId(id);
 
 		return service.update(dto);
 	}
@@ -92,6 +90,7 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	 * @see com.co.app.commons.controllers.BaseController#delete(java.lang.String)
 	 */
 	@Override
+	@PreAuthorize("customHasPermission('delete:role')")
 	public void delete(@PathVariable String id) {
 		service.delete(id);
 	}
@@ -104,6 +103,7 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	 * org.springframework.data.domain.Pageable)
 	 */
 	@Override
+	@PreAuthorize("customHasPermission('read:roles')")
 	public Page<AuthRoleDto> getAll(@RequestBody PageableQueryDto<AuthRoleDto> request) {
 		if (request.getDto().isPresent()) {
 			AuthRoleDto dto = request.getDto().get();
