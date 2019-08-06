@@ -17,12 +17,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
-		<!-- Import your app modules here... -->
-		<dependency>
-			<groupId>com.co.app</groupId>
-			<artifactId>auth</artifactId>
-		</dependency>
-		<!-- Import your app modules here... -->
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
