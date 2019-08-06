@@ -48,7 +48,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	/**
 	 * Put here your client access endpoints...
 	 */
-	// private static final String[] CLIENT_ACCESS = new String[] {};
+	/**
+	 * private static final String[] CLIENT_ACCESS = new String[] {};
+	 */
 
 	@Value("${app.name}")
 	private String resourceId;

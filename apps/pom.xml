@@ -63,7 +63,6 @@
 		<module>masters</module>
 		<module>settings</module>
 		<module>core</module>
-		<module>memory</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

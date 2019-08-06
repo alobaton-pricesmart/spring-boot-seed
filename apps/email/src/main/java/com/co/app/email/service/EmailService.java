@@ -3,7 +3,7 @@
  */
 package com.co.app.email.service;
 
-import org.springframework.scheduling.annotation.Async;
+import com.co.app.email.dto.MailDto;
 
 /**
  * @author alobaton
@@ -11,7 +11,11 @@ import org.springframework.scheduling.annotation.Async;
  */
 public interface EmailService {
 
-	@Async
-	void sendEmail(String to, String from, String subject, String text, boolean html);
+	/**
+	 * Envia un correo.
+	 * 
+	 * @param mail Contenido del correo.
+	 */
+	public void sendEmail(MailDto mail);
 
 }

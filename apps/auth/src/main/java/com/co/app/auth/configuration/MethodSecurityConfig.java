@@ -32,9 +32,6 @@ public class MethodSecurityConfig extends GlobalMethodSecurityConfiguration {
 	 */
 	@Override
 	protected MethodSecurityExpressionHandler createExpressionHandler() {
-		CustomMethodSecurityExpressionHandler expressionHandler = new CustomMethodSecurityExpressionHandler(userService,
-				roleService);
-
-		return expressionHandler;
+		return new CustomMethodSecurityExpressionHandler(userService, roleService);
 	}
 }

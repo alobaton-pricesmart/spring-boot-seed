@@ -4,6 +4,7 @@
 package com.co.app.auth.services.user.impl;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -21,8 +22,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 
+import com.co.app.auth.configuration.EmailConfiguration;
 import com.co.app.auth.dao.AuthPasswordTokenRepository;
 import com.co.app.auth.dao.AuthUserRepository;
 import com.co.app.auth.domain.AuthPasswordToken;
@@ -32,8 +33,10 @@ import com.co.app.auth.dto.AuthUserDto;
 import com.co.app.auth.services.encoder.HashEncoder;
 import com.co.app.auth.services.user.AuthUserService;
 import com.co.app.commons.exception.RegisterNotFoundException;
+import com.co.app.email.dto.MailDto;
 import com.co.app.email.service.EmailService;
-import com.co.app.email.utils.EmailContentBuilder;
+import com.co.app.email.service.impl.SmtpEmailServiceImpl;
+import com.co.app.email.utils.EmailServiceFactoryObject;
 import com.co.app.message.service.MessageService;
 
 /**
@@ -45,9 +48,6 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 	@Value("${auth.password.validity-seconds}")
 	private int validitySeconds;
-
-	@Value("${email.from}")
-	private String from;
 
 	@Autowired
 	private AuthUserRepository userRepository;
@@ -62,10 +62,10 @@ public class AuthUserServiceImpl implements AuthUserService {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Autowired
-	private TemplateEngine emailTemplateEngine;
+	private EmailConfiguration emailConfiguration;
 
 	@Autowired
-	private EmailService emailService;
+	private EmailServiceFactoryObject emailServiceFactoryObject;
 
 	@Autowired
 	private MessageService messageService;
@@ -233,14 +233,31 @@ public class AuthUserServiceImpl implements AuthUserService {
 		LocalDateTime expiresAt = LocalDateTime.now().plusSeconds(validitySeconds);
 		passwordToken.setExpiresAt(expiresAt);
 
-		passwordToken = passwordTokenRepository.save(passwordToken);
+		passwordTokenRepository.save(passwordToken);
 
-		EmailContentBuilder builder = new EmailContentBuilder().emailTemplateEngine(emailTemplateEngine)
-				.template("reset-password-email").parameter("reset-password.user", getFullName(domain))
-				.parameter("reset-password.uri", String.format("?token=%s", token));
+		MailDto mail = new MailDto();
+		mail.setFrom(emailConfiguration.getFrom());
+		mail.addTo(domain.getEmail());
+		mail.setSubject(messageService.getMessage("reset-password.subject"));
+		mail.setTemplate("reset-password-email");
 
-		emailService.sendEmail(domain.getEmail(), from, messageService.getMessage("reset-password.subject"),
-				builder.build(), Boolean.TRUE);
+		Map<String, Object> model = new HashMap<>();
+		model.put("reset-password.user", getFullName(domain));
+		model.put("reset-password.uri", String.format("?token=%s", token));
+		mail.setModel(model);
+
+		Map<String, Object> properties = new HashMap<>();
+		model.put(SmtpEmailServiceImpl.MAIL_HOST, emailConfiguration.getHost());
+		model.put(SmtpEmailServiceImpl.MAIL_PORT, emailConfiguration.getPort());
+		model.put(SmtpEmailServiceImpl.MAIL_USERNAME, emailConfiguration.getUsername());
+		model.put(SmtpEmailServiceImpl.MAIL_KEY, emailConfiguration.getPassword());
+		model.put(SmtpEmailServiceImpl.MAIL_DEFAULT_ENCODING, emailConfiguration.getDefaultEncoding());
+		mail.setProperties(properties);
+
+		EmailService service = emailServiceFactoryObject
+				.emailService(EmailServiceFactoryObject.SMTP_EMAIL_SERVICE_IMPL);
+		service.sendEmail(mail);
+
 	}
 
 	private String getFullName(AuthUser user) {
