@@ -23,32 +23,32 @@
 		<cobertura.maven.plugin.version>2.7</cobertura.maven.plugin.version>
 		<log4j.version>1.2.17</log4j.version>
 		<junit.version>4.12</junit.version>
-		<jackson.annotations.version>2.9.6</jackson.annotations.version>
-		<javax.validation.version>2.0.1.Final</javax.validation.version>
-		<commons.lang3.version>3.8.1</commons.lang3.version>
-		<commons.csv.version>1.6</commons.csv.version>
-		<commons.codec.version>1.11</commons.codec.version>
+		<jackson-annotations.version>2.9.6</jackson-annotations.version>
+		<javax-validation.version>2.0.1.Final</javax-validation.version>
+		<commons-lang3.version>3.8.1</commons-lang3.version>
+		<commons-csv.version>1.6</commons-csv.version>
+		<commons-codec.version>1.11</commons-codec.version>
 		<guava.version>27.0-jre</guava.version>
-		<org.aspectj.version>1.9.1</org.aspectj.version>
+		<org-aspectj.version>1.9.1</org-aspectj.version>
 		<swagger.version>2.9.2</swagger.version>
 		<spring-boot-starter-security.version>2.1.3.RELEASE</spring-boot-starter-security.version>
-		<spring.security.oauth2.version>2.3.5.RELEASE</spring.security.oauth2.version>
-		<spring.security.jwt.version>1.0.9.RELEASE</spring.security.jwt.version>
-		<spring.boot.starter.data.jpa>2.1.1.RELEASE</spring.boot.starter.data.jpa>
+		<spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
+		<spring-security-jwt.version>1.0.9.RELEASE</spring-security-jwt.version>
+		<spring-boot-starter-data-jpa.version>2.1.1.RELEASE</spring-boot-starter-data-jpa.version>
 		<thymeleaf.version>3.0.11.RELEASE</thymeleaf.version>
 		<thymeleaf-layout-dialect.version>2.3.0</thymeleaf-layout-dialect.version>
 		<thymeleaf-extras-springsecurity5.version>3.0.4.RELEASE</thymeleaf-extras-springsecurity5.version>
-		<spring.boot.starter.thymeleaf.version>2.1.3.RELEASE</spring.boot.starter.thymeleaf.version>
+		<spring-boot-starter-thymeleaf.version>2.1.3.RELEASE</spring-boot-starter-thymeleaf.version>
 		<hsqldb.version>2.4.1</hsqldb.version>
 		<jooq.version>3.11.7</jooq.version>
-		<mysql.connector.java.version>5.1.47</mysql.connector.java.version>
+		<mysql-connector-java.version>5.1.47</mysql-connector-java.version>
 		<flyway.version>5.2.4</flyway.version>
 		<!-- Use - insted of . Any custom maven property starting with prefix flyway 
 			causing migration to fail. -->
-		<flyway-spring.test.version>5.2.1</flyway-spring.test.version>
+		<flyway-spring-test.version>5.2.1</flyway-spring-test.version>
 		<hibernate.version>5.4.1.Final</hibernate.version>
-		<spring.boot.admin.starter.server.version>2.1.3</spring.boot.admin.starter.server.version>
-		<spring.boot.admin.starter.client.version>1.1.2</spring.boot.admin.starter.client.version>
+		<spring-boot-admin-starter-server.version>2.1.3</spring-boot-admin-starter-server.version>
+		<spring-boot-starter-admin-client.version>1.1.2</spring-boot-starter-admin-client.version>
 		<bootstrap.version>4.3.1</bootstrap.version>
 		<jquery.version>3.3.1-2</jquery.version>
 		<apacheds-server-jndi.version>1.5.5</apacheds-server-jndi.version>
@@ -104,11 +104,6 @@
 			</dependency>
 			<dependency>
 				<groupId>com.co.app</groupId>
-				<artifactId>masters</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.co.app</groupId>
 				<artifactId>settings</artifactId>
 				<version>${project.version}</version>
 			</dependency>
@@ -153,13 +148,13 @@
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
 				<artifactId>jackson-annotations</artifactId>
-				<version>${jackson.annotations.version}</version>
+				<version>${jackson-annotations.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/javax.validation/validation-api -->
 			<dependency>
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
-				<version>${javax.validation.version}</version>
+				<version>${javax-validation.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
 			<dependency>
@@ -171,19 +166,19 @@
 			<dependency>
 				<groupId>org.springframework.security.oauth</groupId>
 				<artifactId>spring-security-oauth2</artifactId>
-				<version>${spring.security.oauth2.version}</version>
+				<version>${spring-security-oauth2.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-jwt</artifactId>
-				<version>${spring.security.jwt.version}</version>
+				<version>${spring-security-jwt.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-data-jpa</artifactId>
-				<version>${spring.boot.starter.data.jpa}</version>
+				<version>${spring-boot-starter-data-jpa.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/nz.net.ultraq.thymeleaf/thymeleaf-layout-dialect -->
 			<dependency>
@@ -195,7 +190,7 @@
 			<dependency>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-starter-thymeleaf</artifactId>
-				<version>${spring.boot.starter.thymeleaf.version}</version>
+				<version>${spring-boot-starter-thymeleaf.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5 -->
 			<dependency>
@@ -213,31 +208,31 @@
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjrt</artifactId>
-				<version>${org.aspectj.version}</version>
+				<version>${org-aspectj.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
 			<dependency>
 				<groupId>org.aspectj</groupId>
 				<artifactId>aspectjweaver</artifactId>
-				<version>${org.aspectj.version}</version>
+				<version>${org-aspectj.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
-				<version>${commons.lang3.version}</version>
+				<version>${commons-lang3.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-csv</artifactId>
-				<version>${commons.csv.version}</version>
+				<version>${commons-csv.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
 			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
-				<version>${commons.codec.version}</version>
+				<version>${commons-codec.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
 			<dependency>
@@ -249,7 +244,7 @@
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>${mysql.connector.java.version}</version>
+				<version>${mysql-connector-java.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-core -->
 			<dependency>
@@ -261,7 +256,7 @@
 			<dependency>
 				<groupId>org.flywaydb.flyway-test-extensions</groupId>
 				<artifactId>flyway-spring-test</artifactId>
-				<version>${flyway-spring.test.version}</version>
+				<version>${flyway-spring-test.version}</version>
 				<scope>test</scope>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-java8 -->
@@ -274,13 +269,13 @@
 			<dependency>
 				<groupId>de.codecentric</groupId>
 				<artifactId>spring-boot-admin-starter-server</artifactId>
-				<version>${spring.boot.admin.starter.server.version}</version>
+				<version>${spring-boot-admin-starter-server.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/de.codecentric/spring-boot-starter-admin-client -->
 			<dependency>
 				<groupId>de.codecentric</groupId>
 				<artifactId>spring-boot-starter-admin-client</artifactId>
-				<version>${spring.boot.admin.starter.client.version}</version>
+				<version>${spring-boot-starter-admin-client.version}</version>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.webjars/bootstrap -->
 			<dependency>
@@ -303,15 +298,6 @@
 		</dependencies>
 	</dependencyManagement>
 	<build>
-		<pluginManagement>
-			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-resources-plugin</artifactId>
-					<version>${maven.resources.plugin.version}</version>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

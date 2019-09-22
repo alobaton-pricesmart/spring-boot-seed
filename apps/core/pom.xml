@@ -35,10 +35,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.co.app</groupId>
-			<artifactId>masters</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.co.app</groupId>
 			<artifactId>settings</artifactId>
 		</dependency>
 		<!-- Import your app modules here... -->
