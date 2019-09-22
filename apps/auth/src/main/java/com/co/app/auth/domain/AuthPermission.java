@@ -56,6 +56,11 @@ public class AuthPermission extends BaseDomain {
 	@JoinColumn(name = "client")
 	private AuthClientDetails client;
 
+	@NotNull
+	@ManyToOne(cascade = CascadeType.REMOVE)
+	@JoinColumn(name = "role", columnDefinition = "json")
+	private AuthRole role;
+
 	/**
 	 * @return the id
 	 */
@@ -96,6 +101,20 @@ public class AuthPermission extends BaseDomain {
 	 */
 	public void setClient(AuthClientDetails client) {
 		this.client = client;
+	}
+
+	/**
+	 * @return the role
+	 */
+	public AuthRole getRole() {
+		return role;
+	}
+
+	/**
+	 * @param role the role to set
+	 */
+	public void setRole(AuthRole role) {
+		this.role = role;
 	}
 
 	@Override

@@ -7,7 +7,6 @@ services:
       dockerfile: ./.docker/Dockerfile_prod
     container_name: spring-boot-seed-prod
     hostname: api.prod.local
-    network_mode: host
     depends_on:
       - db
     image: spring-boot-seed/prod
@@ -20,10 +19,9 @@ services:
     cpu_percent: 60
 
   db:
-    image: mysql:5.7.25
+    image: mysql:8.0.13
     container_name: spring-boot-seed-db-prod
     hostname: db.prod.local
-    network_mode: host
     environment:
       - MYSQL_ROOT_PASSWORD=root-password
       - MYSQL_ROOT_HOST=%

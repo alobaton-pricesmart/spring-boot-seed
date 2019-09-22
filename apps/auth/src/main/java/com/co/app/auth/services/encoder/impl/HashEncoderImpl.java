@@ -55,7 +55,7 @@ public class HashEncoderImpl implements HashEncoder {
 
 		try {
 			byte[] bytes = digest.digest(message.getBytes(StandardCharsets.UTF_8.name()));
-			return String.format("%032x", new Object[] { new BigInteger(1, bytes) });
+			return String.format("%032x", new BigInteger(1, bytes));
 		} catch (UnsupportedEncodingException e) {
 			LOGGER.error(e.getMessage());
 			throw new IllegalStateException("UTF-8 encoding not available. Fatal (should be in the JDK).");

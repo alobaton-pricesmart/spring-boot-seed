@@ -46,7 +46,7 @@ import com.co.app.message.service.MessageService;
 @Service
 public class AuthUserServiceImpl implements AuthUserService {
 
-	@Value("${auth.password.validity-seconds}")
+	@Value("${reset-password.validity-seconds:1800}")
 	private int validitySeconds;
 
 	@Autowired
@@ -82,7 +82,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 		Page<AuthUser> result = userRepository.findAll(example, pageable);
 
-		return new PageImpl<AuthUserDto>(
+		return new PageImpl<>(
 				result.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
 				pageable, result.getTotalElements());
 	}
@@ -190,7 +190,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 
 		Page<AuthUser> result = userRepository.findAll(pageable);
 
-		return new PageImpl<AuthUserDto>(
+		return new PageImpl<>(
 				result.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
 				pageable, result.getTotalElements());
 	}

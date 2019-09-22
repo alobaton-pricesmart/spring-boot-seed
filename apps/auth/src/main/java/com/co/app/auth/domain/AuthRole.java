@@ -12,7 +12,6 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -63,8 +62,7 @@ public class AuthRole extends BaseDomain {
 	private String parentId;
 
 	@Type(type = "json")
-	@OneToMany(mappedBy = "auth_role", cascade = CascadeType.ALL)
-	@JoinColumn(name = "permissions", columnDefinition = "json")
+	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
 	private List<AuthPermission> permissions;
 
 	/**

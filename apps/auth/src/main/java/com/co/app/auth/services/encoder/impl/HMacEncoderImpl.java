@@ -29,8 +29,7 @@ public class HMacEncoderImpl implements HMacEncoder {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * com.co.app.auth.services.HMacEncoder#calculateHMac(java.lang.String,
+	 * @see com.co.app.auth.services.HMacEncoder#calculateHMac(java.lang.String,
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
@@ -66,9 +65,7 @@ public class HMacEncoderImpl implements HMacEncoder {
 			return null;
 		}
 
-		String digest = toHexString(bytes);
-
-		return digest;
+		return toHexString(bytes);
 	}
 
 	/**
@@ -78,14 +75,13 @@ public class HMacEncoderImpl implements HMacEncoder {
 	 * @return The HEX string.
 	 */
 	private static String toHexString(byte[] bytes) {
-		@SuppressWarnings("resource")
-		Formatter formatter = new Formatter();
+		try (Formatter formatter = new Formatter()) {
+			for (byte b : bytes) {
+				formatter.format("%02x", b);
+			}
 
-		for (byte b : bytes) {
-			formatter.format("%02x", b);
+			return formatter.toString();
 		}
-
-		return formatter.toString();
 	}
 
 }
