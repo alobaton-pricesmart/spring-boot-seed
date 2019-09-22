@@ -35,7 +35,7 @@ import com.co.app.auth.services.user.AuthUserService;
 import com.co.app.commons.exception.RegisterNotFoundException;
 import com.co.app.email.dto.MailDto;
 import com.co.app.email.service.EmailService;
-import com.co.app.email.service.impl.SmtpEmailServiceImpl;
+import com.co.app.email.utils.EmailConstants;
 import com.co.app.email.utils.EmailServiceFactoryObject;
 import com.co.app.message.service.MessageService;
 
@@ -247,11 +247,11 @@ public class AuthUserServiceImpl implements AuthUserService {
 		mail.setModel(model);
 
 		Map<String, Object> properties = new HashMap<>();
-		model.put(SmtpEmailServiceImpl.MAIL_HOST, emailConfiguration.getHost());
-		model.put(SmtpEmailServiceImpl.MAIL_PORT, emailConfiguration.getPort());
-		model.put(SmtpEmailServiceImpl.MAIL_USERNAME, emailConfiguration.getUsername());
-		model.put(SmtpEmailServiceImpl.MAIL_KEY, emailConfiguration.getPassword());
-		model.put(SmtpEmailServiceImpl.MAIL_DEFAULT_ENCODING, emailConfiguration.getDefaultEncoding());
+		model.put(EmailConstants.MAIL_HOST, emailConfiguration.getHost());
+		model.put(EmailConstants.MAIL_PORT, emailConfiguration.getPort());
+		model.put(EmailConstants.MAIL_USERNAME, emailConfiguration.getUsername());
+		model.put(EmailConstants.MAIL_KEY, emailConfiguration.getPassword());
+		model.put(EmailConstants.MAIL_DEFAULT_ENCODING, emailConfiguration.getDefaultEncoding());
 		mail.setProperties(properties);
 
 		EmailService service = emailServiceFactoryObject

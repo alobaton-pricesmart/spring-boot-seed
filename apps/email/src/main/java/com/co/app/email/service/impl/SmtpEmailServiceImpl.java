@@ -28,6 +28,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import com.co.app.email.dto.MailDto;
 import com.co.app.email.exception.EmailException;
 import com.co.app.email.service.EmailService;
+import com.co.app.email.utils.EmailConstants;
 
 /**
  * @author alobaton
@@ -35,12 +36,6 @@ import com.co.app.email.service.EmailService;
  */
 @Service
 public class SmtpEmailServiceImpl implements EmailService {
-
-	public static final String MAIL_HOST = "mail.host";
-	public static final String MAIL_PORT = "mail.port";
-	public static final String MAIL_USERNAME = "mail.username";
-	public static final String MAIL_KEY = "mail.password";
-	public static final String MAIL_DEFAULT_ENCODING = "mail.default-encoding";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SmtpEmailServiceImpl.class.getName());
 
@@ -96,8 +91,8 @@ public class SmtpEmailServiceImpl implements EmailService {
 
 			emailSender.send(message);
 		} catch (MessagingException e) {
-			LOGGER.error("Error al enviar correo", e);
-			throw new EmailException("Error al enviar correo", e);
+			LOGGER.error("Error sending mail...", e);
+			throw new EmailException("Error sending mail", e);
 		}
 	}
 
@@ -106,11 +101,11 @@ public class SmtpEmailServiceImpl implements EmailService {
 	 */
 	public JavaMailSender getJavaMailSender(Map<String, Object> properties) {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-		mailSender.setDefaultEncoding(String.valueOf(properties.get(MAIL_DEFAULT_ENCODING)));
-		mailSender.setHost(String.valueOf(properties.get(MAIL_HOST)));
-		mailSender.setPort(Integer.parseInt(String.valueOf(properties.get(MAIL_PORT))));
-		mailSender.setUsername(String.valueOf(properties.get(MAIL_USERNAME)));
-		mailSender.setPassword(String.valueOf(properties.get(MAIL_KEY)));
+		mailSender.setDefaultEncoding(String.valueOf(properties.get(EmailConstants.MAIL_DEFAULT_ENCODING)));
+		mailSender.setHost(String.valueOf(properties.get(EmailConstants.MAIL_HOST)));
+		mailSender.setPort(Integer.parseInt(String.valueOf(properties.get(EmailConstants.MAIL_PORT))));
+		mailSender.setUsername(String.valueOf(properties.get(EmailConstants.MAIL_USERNAME)));
+		mailSender.setPassword(String.valueOf(properties.get(EmailConstants.MAIL_KEY)));
 
 		Properties javaMailProperties = new Properties();
 		properties.forEach(javaMailProperties::put);

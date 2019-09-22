@@ -5,7 +5,6 @@ package com.co.app.email.utils;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.co.app.email.service.EmailService;
@@ -24,12 +23,6 @@ public class EmailServiceFactoryObject {
 	public static final String SMTP_EMAIL_SERVICE_IMPL = "smtp";
 
 	/**
-	 * Aqui debemos añadir las implementaciones.
-	 */
-	@Autowired
-	private SmtpEmailServiceImpl smtpEmailService;
-
-	/**
 	 * 
 	 * @param impl Identificacion de la implementacion
 	 * @return
@@ -37,7 +30,7 @@ public class EmailServiceFactoryObject {
 	public EmailService emailService(@NotNull String impl) {
 		switch (impl) {
 		case SMTP_EMAIL_SERVICE_IMPL:
-			return smtpEmailService;
+			return new SmtpEmailServiceImpl();
 		default:
 			return null;
 		}

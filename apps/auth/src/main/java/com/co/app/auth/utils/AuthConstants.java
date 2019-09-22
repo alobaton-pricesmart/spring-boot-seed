@@ -9,16 +9,18 @@ import org.apache.commons.codec.digest.HmacAlgorithms;
  * @author alobaton
  *
  */
-public class AuthConstants {
+public interface AuthConstants {
 
-	public static final String ROLES = "roles";
-	public static final String ROLE = "role";
-	public static final String ROLE_PREFIX = "ROLE_";
+	String ROLES = "roles";
+	String ROLE = "role";
+	String ROLE_PREFIX = "ROLE_";
 
-	public static final String TOKEN = "token";
-	public static final String TOKEN_ID = "tokenId";
-	public static final String REFRESH_TOKEN_ID = "refreshTokenId";
-	public static final String AUTHENTICATION_ID = "authenticationId";
+	String TOKEN = "token";
+	String TOKEN_ID = "tokenId";
+	String REFRESH_TOKEN_ID = "refreshTokenId";
+	String AUTHENTICATION_ID = "authenticationId";
 
-	public static final String HMAC_ALGORITHM = HmacAlgorithms.HMAC_SHA_512.getName();
+	String HMAC_ALGORITHM = HmacAlgorithms.HMAC_SHA_512.getName();
+
+	String TIMEZONE = "EST";
 }

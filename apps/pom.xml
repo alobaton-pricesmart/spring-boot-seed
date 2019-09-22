@@ -24,7 +24,8 @@
 		<log4j.version>1.2.17</log4j.version>
 		<junit.version>4.12</junit.version>
 		<jackson-annotations.version>2.9.6</jackson-annotations.version>
-		<javax-validation.version>2.0.1.Final</javax-validation.version>
+		<validation-api.version>2.0.1.Final</validation-api.version>
+		<servlet-api.version>3.0-alpha-1</servlet-api.version>
 		<commons-lang3.version>3.8.1</commons-lang3.version>
 		<commons-csv.version>1.6</commons-csv.version>
 		<commons-codec.version>1.11</commons-codec.version>
@@ -60,7 +61,6 @@
 		<module>message</module>
 		<module>loader</module>
 		<module>commons</module>
-		<module>masters</module>
 		<module>settings</module>
 		<module>core</module>
 	</modules>
@@ -154,7 +154,14 @@
 			<dependency>
 				<groupId>javax.validation</groupId>
 				<artifactId>validation-api</artifactId>
-				<version>${javax-validation.version}</version>
+				<version>${validation-api.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet-api.version}</version>
+				<scope>provided</scope>
 			</dependency>
 			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
 			<dependency>

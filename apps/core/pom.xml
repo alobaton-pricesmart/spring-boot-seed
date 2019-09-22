@@ -19,10 +19,6 @@
 		<!-- Import your app modules here... -->
 		<dependency>
 			<groupId>com.co.app</groupId>
-			<artifactId>auth</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.co.app</groupId>
 			<artifactId>commons</artifactId>
 		</dependency>
 		<dependency>
