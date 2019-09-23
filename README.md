@@ -26,7 +26,6 @@ Update your /etc/hosts file with:
 # tools
 127.0.0.1       db.dev.local
 127.0.0.1       db.prod.local
-127.0.0.1       db.test.local
 127.0.0.1       api.dev.local
 127.0.0.1       api.prod.local
 ```

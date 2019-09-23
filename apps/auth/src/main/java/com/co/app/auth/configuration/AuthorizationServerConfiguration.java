@@ -14,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
@@ -35,6 +34,7 @@ import com.co.app.auth.granters.password.PasswordGranter;
 import com.co.app.auth.granters.password.PasswordGranterBuilder;
 import com.co.app.auth.services.client.impl.CustomClientDetailsService;
 import com.co.app.auth.services.encoder.HashEncoder;
+import com.co.app.auth.services.user.impl.CustomUserDetailsService;
 
 /**
  * @author alobaton
@@ -50,7 +50,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	private CustomClientDetailsService customClientDetailsService;
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private CustomUserDetailsService customUserDetailsService;
 
 	@Autowired
 	private AuthUserRepository userRepository;
@@ -87,8 +87,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
 				LOGGER.error(sw.toString());
 
-				ResponseEntity<OAuth2Exception> response = super.translate(e);
-				return response;
+				return super.translate(e);
 			}
 		};
 	}
@@ -116,7 +115,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
 		endpoints.tokenStore(tokenStore).accessTokenConverter(accessTokenConverter)
-				.authenticationManager(authenticationManager).userDetailsService(userDetailsService)
+				.authenticationManager(authenticationManager).userDetailsService(customUserDetailsService)
 				.tokenGranter(tokenGranter(endpoints)).exceptionTranslator(webResponseExceptionTranslator());
 	}
 
@@ -127,7 +126,7 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	 * @return The composite token granter.
 	 */
 	private TokenGranter tokenGranter(AuthorizationServerEndpointsConfigurer endpoints) {
-		List<TokenGranter> granters = new ArrayList<TokenGranter>(Arrays.asList(endpoints.getTokenGranter()));
+		List<TokenGranter> granters = new ArrayList<>(Arrays.asList(endpoints.getTokenGranter()));
 
 		PasswordGranter passwordGranter = new PasswordGranterBuilder().tokenServices(endpoints.getTokenServices())
 				.clientDetailsService(endpoints.getClientDetailsService())

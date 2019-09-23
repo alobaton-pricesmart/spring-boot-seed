@@ -30,12 +30,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private LdapConfiguration ldapConfiguration;
 
-	private CustomUserDetailsService customUserDetailsService;
-
 	@Autowired
-	public CustomUserDetailsService customUserDetailsService(CustomUserDetailsService customUserDetailsService) {
-		return this.customUserDetailsService = customUserDetailsService;
-	}
+	private CustomUserDetailsService customUserDetailsService;
 
 	/*
 	 * (non-Javadoc)
@@ -82,7 +78,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 					.userDnPatterns(ldapConfiguration.getUserDnPattern());
 		}
 
-		auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 }

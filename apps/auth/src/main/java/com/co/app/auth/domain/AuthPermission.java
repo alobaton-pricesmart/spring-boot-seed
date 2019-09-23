@@ -58,7 +58,7 @@ public class AuthPermission extends BaseDomain {
 
 	@NotNull
 	@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "role", columnDefinition = "json")
+	@JoinColumn(name = "role_id")
 	private AuthRole role;
 
 	/**
