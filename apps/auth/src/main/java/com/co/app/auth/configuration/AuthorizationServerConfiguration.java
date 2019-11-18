@@ -40,7 +40,7 @@ import com.co.app.auth.services.user.impl.CustomUserDetailsService;
  * @author alobaton
  *
  */
-@Configuration
+@Configuration(value = "authorizationServerConfiguration")
 @EnableAuthorizationServer
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 

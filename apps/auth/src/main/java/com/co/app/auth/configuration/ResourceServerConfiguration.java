@@ -3,9 +3,6 @@
  */
 package com.co.app.auth.configuration;
 
-import java.util.Arrays;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,11 +16,6 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
-import org.springframework.security.web.session.SessionManagementFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 import com.co.app.auth.handlers.OnAuthenticationSuccessHandler;
 
@@ -44,7 +36,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	/**
 	 * Put here your public access endpoints...
 	 */
-	private static final String[] ADMIN_ACCESS = new String[] { "/clients**", "/masters**", "/settings**" };
+	private static final String[] ADMIN_ACCESS = new String[] { "/clients**" };
 	/**
 	 * Put here your client access endpoints...
 	 */
@@ -55,35 +47,14 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 	@Value("${app.name}")
 	private String resourceId;
 
-	@Autowired
-	private CustomCorsFilter customCorsFilter;
-
 	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-		CorsConfiguration configuration = new CorsConfiguration();
-		configuration.setAllowCredentials(Boolean.TRUE);
-		configuration.setAllowedOrigins(Arrays.asList("*"));
-		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "DELETE", "OPTIONS"));
-		configuration.setAllowedHeaders(Arrays.asList("*"));
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		source.registerCorsConfiguration("/**", configuration);
-		return source;
+	public JwtAccessTokenConverter accessTokenConverter() {
+		return new JwtAccessTokenConverter();
 	}
-
-	@Bean
-	public CorsFilter corsFilter() {
-		return new CorsFilter(corsConfigurationSource());
-	}
-
+	
 	@Bean
 	public TokenStore tokenStore() {
 		return new JwtTokenStore(accessTokenConverter());
-	}
-
-	@Bean
-	public JwtAccessTokenConverter accessTokenConverter() {
-		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-		return converter;
 	}
 
 	@Bean
@@ -119,8 +90,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 		OnAuthenticationSuccessHandler successHandler = new OnAuthenticationSuccessHandler();
 
 		// CORS...
-		http.csrf().disable()//
-				.addFilterBefore(customCorsFilter, SessionManagementFilter.class);
+		http.csrf().disable();
 
 		// Login and logout...
 		http.formLogin().loginPage("/login").permitAll()//

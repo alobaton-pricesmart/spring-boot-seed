@@ -12,6 +12,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
@@ -21,6 +23,7 @@ import org.springframework.web.filter.GenericFilterBean;
  *
  */
 @Component
+@Order(Ordered.HIGHEST_PRECEDENCE)
 public class CustomCorsFilter extends GenericFilterBean {
 
 	/*
@@ -37,7 +40,7 @@ public class CustomCorsFilter extends GenericFilterBean {
 		rs.setHeader("Access-Control-Allow-Origin", "*");
 		rs.setHeader("Access-Control-Allow-Credentials", "true");
 		rs.setHeader("Access-Control-Max-Age", "3600");
-		rs.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+		rs.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
 		rs.setHeader("Access-Control-Allow-Headers", "*");
 
 		if (HttpMethod.OPTIONS.name().equalsIgnoreCase(rq.getMethod())) {
