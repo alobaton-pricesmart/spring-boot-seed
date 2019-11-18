@@ -1,0 +1,2 @@
+INSERT INTO `auth_role` (id, group_id, description, parent_id) 
+VALUES ('ADMIN', NULL, JSON_OBJECT('es', 'Tiene acceso a todas las funcionalidades del sistema', 'en', 'Has access to all the systems features'), NULL);

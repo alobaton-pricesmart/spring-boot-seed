@@ -1,0 +1,2 @@
+INSERT INTO `auth_client_details` (client_id, resource_ids, secret_required, client_secret, scoped, scope, authorized_grant_types, registered_redirect_uri, authorities, access_token_validity_seconds, refresh_token_validity_seconds, auto_approve, additional_information) 
+VALUES ('api_client', JSON_ARRAY('resource_id'), true, '$2y$12$0pPMbX4kyqlCiMeruc36tOSH9bVAkoeJfMYgjqbO68ljs8P27yrEC', true, JSON_ARRAY('write', 'read'), NULL, NULL, NULL, 3600, 7200, true, NULL);

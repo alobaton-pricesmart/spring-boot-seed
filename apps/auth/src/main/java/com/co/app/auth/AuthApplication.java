@@ -15,7 +15,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import com.co.app.auth.utils.AuthConstants;
 
 /**
- * @author aobaton
+ * @author alobaton
  *
  */
 @SpringBootApplication
