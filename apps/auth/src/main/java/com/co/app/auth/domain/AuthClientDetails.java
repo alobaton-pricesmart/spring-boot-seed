@@ -4,6 +4,7 @@
 package com.co.app.auth.domain;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
@@ -20,8 +21,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
-import com.co.app.commons.domain.BaseDomain;
 import com.co.app.auth.dto.AuthClientDetailsDto;
+import com.co.app.commons.domain.BaseDomain;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
@@ -254,6 +255,10 @@ public class AuthClientDetails extends BaseDomain implements ClientDetails {
 
 	@Override
 	public Collection<GrantedAuthority> getAuthorities() {
+		if (this.authorities == null) {
+			this.authorities = new HashSet<>();
+		}
+		
 		String arr[] = new String[authorities.size()];
 		return AuthorityUtils.createAuthorityList(authorities.toArray(arr));
 	}
