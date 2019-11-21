@@ -11,13 +11,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClients;
 
+import com.co.app.auth.configuration.RibbonConfiguration;
 import com.co.app.auth.utils.AuthConstants;
 
 /**
  * @author alobaton
  *
  */
+@EnableDiscoveryClient
+@RibbonClients(defaultConfiguration = RibbonConfiguration.class)
 @SpringBootApplication
 public class AuthApplication extends SpringBootServletInitializer {
 
