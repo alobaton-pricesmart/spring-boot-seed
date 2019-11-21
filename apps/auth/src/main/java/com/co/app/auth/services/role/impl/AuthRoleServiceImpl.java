@@ -21,6 +21,7 @@ import com.co.app.auth.dao.AuthRoleRepository;
 import com.co.app.auth.domain.AuthRole;
 import com.co.app.auth.dto.AuthRoleDto;
 import com.co.app.auth.services.role.AuthRoleService;
+import com.co.app.commons.CommonsConstants;
 import com.co.app.commons.exception.RegisterNotFoundException;
 
 /**
@@ -69,7 +70,8 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 	 */
 	@Override
 	public AuthRoleDto get(String id) {
-		AuthRole domain = repository.getOne(id);
+		AuthRole domain = repository.findById(id)
+				.orElseThrow(() -> new RegisterNotFoundException(AuthRole.class, CommonsConstants.ID, id));
 
 		return AuthRoleDto.CONVERTER.apply(domain);
 	}

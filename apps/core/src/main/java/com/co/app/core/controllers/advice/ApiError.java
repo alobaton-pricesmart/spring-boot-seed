@@ -3,19 +3,61 @@
  */
 package com.co.app.core.controllers.advice;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * @author alobaton
  *
  */
 public class ApiError {
+
+	private String timestamp;
+	private int status;
+	private String error;
 	private String message;
-	private Set<String> errors;
-	
-	public ApiError() {
-		this.errors = new HashSet<>();
+	private String responseCode;
+	private String description;
+	private String path;
+	private String traza;
+
+	/**
+	 * @return the timestamp
+	 */
+	public String getTimestamp() {
+		return timestamp;
+	}
+
+	/**
+	 * @param timestamp the timestamp to set
+	 */
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public int getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	/**
+	 * @return the error
+	 */
+	public String getError() {
+		return error;
+	}
+
+	/**
+	 * @param error the error to set
+	 */
+	public void setError(String error) {
+		this.error = error;
 	}
 
 	/**
@@ -33,35 +75,66 @@ public class ApiError {
 	}
 
 	/**
-	 * @return the errors
+	 * @return the responseCode
 	 */
-	public Set<String> getErrors() {
-		return errors;
+	public String getResponseCode() {
+		return responseCode;
 	}
 
 	/**
-	 * @param errors the errors to set
+	 * @param responseCode the responseCode to set
 	 */
-	public void setErrors(Set<String> errors) {
-		this.errors = errors;
+	public void setResponseCode(String responseCode) {
+		this.responseCode = responseCode;
 	}
 
 	/**
-	 * 
-	 * @param error The error to add
+	 * @return the description
 	 */
-	public void addError(String error) {
-		this.errors.add(error);
+	public String getDescription() {
+		return description;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
+	/**
+	 * @param description the description to set
 	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return the path
+	 */
+	public String getPath() {
+		return path;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+	/**
+	 * @return the traza
+	 */
+	public String getTraza() {
+		return traza;
+	}
+
+	/**
+	 * @param traza the traza to set
+	 */
+	public void setTraza(String traza) {
+		this.traza = traza;
+	}
+
 	@Override
 	public String toString() {
-		return "ApiError [message=" + message + ", errors=" + errors + "]";
+		return "ApiError [timestamp=" + timestamp + ", status=" + status + ", error=" + error + ", message=" + message
+				+ ", responseCode=" + responseCode + ", description=" + description + ", path=" + path + ", traza="
+				+ traza + "]";
 	}
 
 }

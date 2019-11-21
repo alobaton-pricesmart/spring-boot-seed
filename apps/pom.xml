@@ -58,6 +58,7 @@
 		<spring-cloud-starter-gateway.version>2.1.4.RELEASE</spring-cloud-starter-gateway.version>
 		<spring-cloud-starter-netflix-ribbon.version>2.1.4.RELEASE</spring-cloud-starter-netflix-ribbon.version>
 		<spring-cloud-starter-netflix-hystrix.version>2.1.4.RELEASE</spring-cloud-starter-netflix-hystrix.version>
+		<spring-security-oauth2-autoconfigure.version>2.2.1.RELEASE</spring-security-oauth2-autoconfigure.version>
 	</properties>
 	<modules>
 		<module>eureka</module>
@@ -337,6 +338,12 @@
 				<groupId>org.springframework.cloud</groupId>
 				<artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
 				<version>${spring-cloud-starter-netflix-hystrix.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.springframework.security.oauth.boot/spring-security-oauth2-autoconfigure -->
+			<dependency>
+				<groupId>org.springframework.security.oauth.boot</groupId>
+				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+				<version>${spring-security-oauth2-autoconfigure.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

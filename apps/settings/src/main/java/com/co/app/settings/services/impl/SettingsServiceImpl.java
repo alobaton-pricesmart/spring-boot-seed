@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import com.co.app.commons.CommonsConstants;
 import com.co.app.commons.exception.RegisterNotFoundException;
 import com.co.app.settings.dao.SettingsRepository;
 import com.co.app.settings.domain.Settings;
@@ -39,7 +40,8 @@ public class SettingsServiceImpl implements SettingsService {
 
 	@Override
 	public SettingsDto get(String id) {
-		Settings domain = repository.getOne(id);
+		Settings domain = repository.findById(id)
+				.orElseThrow(() -> new RegisterNotFoundException(Settings.class, CommonsConstants.ID, id));
 
 		return SettingsDto.CONVERTER.apply(domain);
 	}

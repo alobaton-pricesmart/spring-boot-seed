@@ -9,6 +9,7 @@ import javax.annotation.PostConstruct;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.ldap.LdapAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
@@ -23,7 +24,7 @@ import com.co.app.auth.utils.AuthConstants;
  */
 @EnableDiscoveryClient
 @RibbonClients(defaultConfiguration = RibbonConfiguration.class)
-@SpringBootApplication
+@SpringBootApplication(exclude = { LdapAutoConfiguration.class })
 public class AuthApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {

@@ -31,7 +31,7 @@ public class CustomControllerAdvice {
 	public @ResponseBody ResponseEntity<ApiError> duplicateKeyExceptionHandler(CustomDuplicateKeyException ex) {
 		ApiError error = new ApiError();
 		error.setMessage(ex.getCode() == null ? ex.getCode() : messageService.getMessage(ex.getCode(), ex.getArgs()));
-		error.addError(ex.getMessage());
+		error.setError(ex.getMessage());
 
 		return new ResponseEntity<>(error, HttpStatus.CONFLICT);
 	}
@@ -41,7 +41,7 @@ public class CustomControllerAdvice {
 	public @ResponseBody ResponseEntity<ApiError> registerNotFoundExceptionHandler(RegisterNotFoundException ex) {
 		ApiError error = new ApiError();
 		error.setMessage(ex.getCode() == null ? ex.getCode() : messageService.getMessage(ex.getCode(), ex.getArgs()));
-		error.addError(ex.getMessage());
+		error.setError(ex.getMessage());
 
 		return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
 	}
@@ -51,7 +51,7 @@ public class CustomControllerAdvice {
 	public @ResponseBody ResponseEntity<ApiError> apiExceptionHandler(ApiException ex) {
 		ApiError error = new ApiError();
 		error.setMessage(ex.getCode() == null ? ex.getCode() : messageService.getMessage(ex.getCode()));
-		error.addError(ex.getMessage());
+		error.setError(ex.getMessage());
 
 		return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
 	}

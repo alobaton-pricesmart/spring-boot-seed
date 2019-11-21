@@ -108,7 +108,8 @@ public class AuthUserServiceImpl implements AuthUserService {
 	 */
 	@Override
 	public AuthUserDto get(String id) {
-		AuthUser domain = userRepository.getOne(id);
+		AuthUser domain = userRepository.findById(id)
+				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, AuthUser.NICKNAME, id));
 
 		return AuthUserDto.CONVERTER.apply(domain);
 	}

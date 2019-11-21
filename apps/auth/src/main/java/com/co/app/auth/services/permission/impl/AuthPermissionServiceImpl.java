@@ -21,6 +21,7 @@ import com.co.app.auth.dao.AuthPermissionRepository;
 import com.co.app.auth.domain.AuthPermission;
 import com.co.app.auth.dto.AuthPermissionDto;
 import com.co.app.auth.services.permission.AuthPermissionService;
+import com.co.app.commons.CommonsConstants;
 import com.co.app.commons.exception.RegisterNotFoundException;
 
 /**
@@ -60,7 +61,8 @@ public class AuthPermissionServiceImpl implements AuthPermissionService {
 
 	@Override
 	public AuthPermissionDto get(String id) {
-		AuthPermission domain = repository.getOne(id);
+		AuthPermission domain = repository.findById(id)
+				.orElseThrow(() -> new RegisterNotFoundException(AuthPermission.class, CommonsConstants.ID, id));
 
 		return AuthPermissionDto.CONVERTER.apply(domain);
 	}

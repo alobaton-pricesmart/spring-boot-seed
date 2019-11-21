@@ -19,6 +19,7 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.CompositeTokenGranter;
 import org.springframework.security.oauth2.provider.TokenGranter;
 import org.springframework.security.oauth2.provider.error.DefaultWebResponseExceptionTranslator;
@@ -27,6 +28,7 @@ import org.springframework.security.oauth2.provider.token.AuthenticationKeyGener
 import org.springframework.security.oauth2.provider.token.DefaultAuthenticationKeyGenerator;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import com.co.app.auth.dao.AuthPasswordTokenRepository;
 import com.co.app.auth.dao.AuthUserRepository;
@@ -65,11 +67,15 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private TokenStore tokenStore;
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+		return new JwtAccessTokenConverter();
+	}
 
-	@Autowired
-	private JwtAccessTokenConverter accessTokenConverter;
+	@Bean
+	public TokenStore tokenStore() {
+		return new JwtTokenStore(accessTokenConverter());
+	}
 
 	@Bean
 	public AuthenticationKeyGenerator authenticationKeyGenerator() {
@@ -114,9 +120,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	 */
 	@Override
 	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-		endpoints.tokenStore(tokenStore).accessTokenConverter(accessTokenConverter)
+		endpoints.tokenStore(tokenStore()).accessTokenConverter(accessTokenConverter())
 				.authenticationManager(authenticationManager).userDetailsService(customUserDetailsService)
 				.tokenGranter(tokenGranter(endpoints)).exceptionTranslator(webResponseExceptionTranslator());
+	}
+
+	@Override
+	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+		oauthServer.tokenKeyAccess("permitAll()").checkTokenAccess("isAuthenticated()");
 	}
 
 	/**
