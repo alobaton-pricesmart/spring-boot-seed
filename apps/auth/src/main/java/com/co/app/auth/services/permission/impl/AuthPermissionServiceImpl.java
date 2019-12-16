@@ -16,6 +16,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.co.app.auth.dao.AuthPermissionRepository;
 import com.co.app.auth.domain.AuthPermission;
@@ -29,6 +30,7 @@ import com.co.app.commons.exception.RegisterNotFoundException;
  *
  */
 @Service
+@Transactional
 public class AuthPermissionServiceImpl implements AuthPermissionService {
 
 	@Autowired

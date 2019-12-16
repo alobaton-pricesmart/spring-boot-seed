@@ -25,7 +25,7 @@ import com.co.app.commons.domain.BaseDomain;
  *
  */
 @Entity
-@Table(name = "auth_persmission")
+@Table(name = "auth_permission")
 public class AuthPermission extends BaseDomain {
 
 	public static final Function<AuthPermissionDto, AuthPermission> CONVERTER = new Function<AuthPermissionDto, AuthPermission>() {
@@ -46,19 +46,18 @@ public class AuthPermission extends BaseDomain {
 	@Column(name = "id")
 	private String id;
 
-	@NotNull
 	@Type(type = "json")
 	@Column(name = "description", columnDefinition = "json")
 	private Map<String, String> description;
 
 	@NotNull
 	@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "client")
+	@JoinColumn(name = "client_id", referencedColumnName = "client_id")
 	private AuthClientDetails client;
 
 	@NotNull
 	@ManyToOne(cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "role_id")
+	@JoinColumn(name = "role_id", referencedColumnName = "id")
 	private AuthRole role;
 
 	/**
