@@ -59,6 +59,7 @@
 		<spring-cloud-starter-netflix-ribbon.version>2.1.4.RELEASE</spring-cloud-starter-netflix-ribbon.version>
 		<spring-cloud-starter-netflix-hystrix.version>2.1.4.RELEASE</spring-cloud-starter-netflix-hystrix.version>
 		<spring-security-oauth2-autoconfigure.version>2.2.1.RELEASE</spring-security-oauth2-autoconfigure.version>
+		<querydsl-apt.version>4.1.0</querydsl-apt.version>
 	</properties>
 	<modules>
 		<module>eureka</module>
@@ -344,6 +345,13 @@
 				<groupId>org.springframework.security.oauth.boot</groupId>
 				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
 				<version>${spring-security-oauth2-autoconfigure.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.querydsl/querydsl-jpa -->
+			<dependency>
+				<groupId>com.querydsl</groupId>
+				<artifactId>querydsl-apt</artifactId>
+				<classifier>jpa</classifier>
+				<version>${querydsl-apt.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

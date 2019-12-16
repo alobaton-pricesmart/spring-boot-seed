@@ -7,10 +7,11 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
-import javax.validation.constraints.NotNull;
+import java.util.stream.StreamSupport;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.util.Strings;
@@ -18,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.co.app.auth.configuration.EmailConfiguration;
@@ -29,7 +28,6 @@ import com.co.app.auth.dao.AuthUserRepository;
 import com.co.app.auth.domain.AuthPasswordToken;
 import com.co.app.auth.domain.AuthPasswordTokenId;
 import com.co.app.auth.domain.AuthUser;
-import com.co.app.auth.dto.AuthUserDto;
 import com.co.app.auth.services.encoder.HashEncoder;
 import com.co.app.auth.services.user.AuthUserService;
 import com.co.app.commons.exception.RegisterNotFoundException;
@@ -38,6 +36,7 @@ import com.co.app.email.service.EmailService;
 import com.co.app.email.utils.EmailConstants;
 import com.co.app.email.utils.EmailServiceFactoryObject;
 import com.co.app.message.service.MessageService;
+import com.querydsl.core.types.Predicate;
 
 /**
  * @author alobaton
@@ -59,9 +58,6 @@ public class AuthUserServiceImpl implements AuthUserService {
 	private HashEncoder hashEncoder;
 
 	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
-
-	@Autowired
 	private EmailConfiguration emailConfiguration;
 
 	@Autowired
@@ -77,14 +73,8 @@ public class AuthUserServiceImpl implements AuthUserService {
 	 * org.springframework.data.domain.Pageable)
 	 */
 	@Override
-	public Page<AuthUserDto> getAll(AuthUserDto dto, Pageable pageable) {
-		Example<AuthUser> example = Example.of(AuthUser.CONVERTER.apply(dto));
-
-		Page<AuthUser> result = userRepository.findAll(example, pageable);
-
-		return new PageImpl<>(
-				result.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
-				pageable, result.getTotalElements());
+	public Page<AuthUser> getAll(Predicate predicate, Pageable pageable) {
+		return userRepository.findAll(predicate, pageable);
 	}
 
 	/*
@@ -93,12 +83,9 @@ public class AuthUserServiceImpl implements AuthUserService {
 	 * @see com.co.app.commons.service.BaseService#create(java.lang.Object)
 	 */
 	@Override
-	public AuthUserDto create(AuthUserDto dto) {
-		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
-
-		AuthUser domain = userRepository.save(AuthUser.CONVERTER.apply(dto));
-
-		return AuthUserDto.CONVERTER.apply(domain);
+	public AuthUser create(AuthUser domain) {
+		// TODO(alobaton): Validar si no existe.
+		return userRepository.save(domain);
 	}
 
 	/*
@@ -107,52 +94,22 @@ public class AuthUserServiceImpl implements AuthUserService {
 	 * @see com.co.app.commons.service.BaseService#get(java.lang.Object)
 	 */
 	@Override
-	public AuthUserDto get(String id) {
-		AuthUser domain = userRepository.findById(id)
+	public AuthUser get(String id) {
+		return userRepository.findById(id)
 				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, AuthUser.NICKNAME, id));
-
-		return AuthUserDto.CONVERTER.apply(domain);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.co.app.commons.service.BaseService#customGet(java.lang.Object)
-	 */
-	@Override
-	public AuthUserDto customGet(@NotNull AuthUserDto dto) {
-		Example<AuthUser> example = Example.of(AuthUser.CONVERTER.apply(dto));
-
-		AuthUser domain = userRepository.findOne(example)
-				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, Strings.EMPTY, dto.toString()));
-
-		return AuthUserDto.CONVERTER.apply(domain);
 	}
 
 	@Override
-	public List<AuthUserDto> getAll() {
-		return userRepository.findAll().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.co.app.commons.service.BaseService#getAll(java.lang.Object)
-	 */
-	@Override
-	public List<AuthUserDto> getAll(AuthUserDto dto) {
-		Example<AuthUser> example = Example.of(AuthUser.CONVERTER.apply(dto));
-
-		List<AuthUser> result = userRepository.findAll(example);
-
-		return result.stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList());
+	public List<AuthUser> getAll(Predicate predicate) {
+		return StreamSupport.stream(
+				Spliterators.spliteratorUnknownSize(userRepository.findAll(predicate).iterator(), Spliterator.ORDERED),
+				false).collect(Collectors.<AuthUser>toList());
 	}
 
 	@Override
-	public AuthUserDto update(AuthUserDto dto) {
-		AuthUser domain = userRepository.save(AuthUser.CONVERTER.apply(dto));
-
-		return AuthUserDto.CONVERTER.apply(domain);
+	public AuthUser update(AuthUser domain) {
+		// TODO(alobaton): Validar si existe.
+		return userRepository.save(domain);
 	}
 
 	/*
@@ -161,7 +118,7 @@ public class AuthUserServiceImpl implements AuthUserService {
 	 * @see com.co.app.commons.service.BaseService#customUpdate(java.util.Map)
 	 */
 	@Override
-	public AuthUserDto customUpdate(Map<String, Object> dto) {
+	public AuthUser customUpdate(Map<String, Object> domain) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -171,29 +128,12 @@ public class AuthUserServiceImpl implements AuthUserService {
 	 * @see com.co.app.commons.service.BaseService#delete(java.lang.Object)
 	 */
 	@Override
-	public AuthUserDto delete(String id) {
-		AuthUserDto dto = get(id);
+	public AuthUser delete(String id) {
+		AuthUser domain = get(id);
 
 		userRepository.deleteById(id);
 
-		return dto;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.co.app.commons.service.BasePagedService#getAll(org.springframework.data.
-	 * domain.Pageable)
-	 */
-	@Override
-	public Page<AuthUserDto> getAll(Pageable pageable) {
-
-		Page<AuthUser> result = userRepository.findAll(pageable);
-
-		return new PageImpl<>(
-				result.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
-				pageable, result.getTotalElements());
+		return domain;
 	}
 
 	/*

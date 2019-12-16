@@ -5,21 +5,22 @@ package com.co.app.settings.services.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import javax.validation.constraints.NotNull;
-
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.co.app.commons.CommonsConstants;
 import com.co.app.commons.exception.RegisterNotFoundException;
 import com.co.app.settings.dao.SettingsRepository;
 import com.co.app.settings.domain.Settings;
-import com.co.app.settings.dto.SettingsDto;
 import com.co.app.settings.services.SettingsService;
+import com.querydsl.core.types.Predicate;
 
 /**
  * @author alobaton
@@ -32,68 +33,50 @@ public class SettingsServiceImpl implements SettingsService {
 	private SettingsRepository repository;
 
 	@Override
-	public SettingsDto create(SettingsDto dto) {
-		Settings domain = repository.save(Settings.CONVERTER.apply(dto));
-
-		return SettingsDto.CONVERTER.apply(domain);
+	public Settings create(Settings domain) {
+		return repository.save(domain);
 	}
 
 	@Override
-	public SettingsDto get(String id) {
-		Settings domain = repository.findById(id)
+	public Settings get(String id) {
+		return repository.findById(id)
 				.orElseThrow(() -> new RegisterNotFoundException(Settings.class, CommonsConstants.ID, id));
-
-		return SettingsDto.CONVERTER.apply(domain);
 	}
 
 	@Override
-	public SettingsDto customGet(@NotNull SettingsDto dto) {
-		Example<Settings> example = Example.of(Settings.CONVERTER.apply(dto));
-
-		Settings domain = repository.findOne(example)
-				.orElseThrow(() -> new RegisterNotFoundException(Settings.class, Strings.EMPTY, dto.toString()));
-
-		return SettingsDto.CONVERTER.apply(domain);
-	}
-
-	@Override
-	public List<SettingsDto> getAll() {
-		return repository.findAll().stream().map(SettingsDto.CONVERTER).collect(Collectors.<SettingsDto>toList());
-	}
-
-	@Override
-	public List<SettingsDto> getAll(SettingsDto dto) {
-		Example<Settings> example = Example.of(Settings.CONVERTER.apply(dto));
-
-		List<Settings> result = repository.findAll(example);
-
-		return result.stream().map(SettingsDto.CONVERTER).collect(Collectors.<SettingsDto>toList());
-	}
-
-	@Override
-	public SettingsDto update(SettingsDto dto) {
-		Settings masterType = repository.save(Settings.CONVERTER.apply(dto));
-
-		return SettingsDto.CONVERTER.apply(masterType);
-	}
-
-	@Override
-	public SettingsDto customUpdate(Map<String, Object> dto) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public SettingsDto delete(String id) {
-		SettingsDto dto = get(id);
+	public Settings delete(String id) {
+		Settings domain = get(id);
 
 		repository.deleteById(id);
 
-		return dto;
+		return domain;
 	}
 
 	@Override
 	public boolean exists(String id) {
 		return repository.existsById(id);
+	}
+
+	@Override
+	public List<Settings> getAll(Predicate predicate) {
+		return StreamSupport.stream(
+				Spliterators.spliteratorUnknownSize(repository.findAll(predicate).iterator(), Spliterator.ORDERED),
+				false).collect(Collectors.<Settings>toList());
+	}
+
+	@Override
+	public Settings update(Settings domain) {
+		return repository.save(domain);
+	}
+
+	@Override
+	public Settings customUpdate(Map<String, Object> model) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public Page<Settings> getAll(Predicate predicate, Pageable pageable) {
+		return repository.findAll(predicate, pageable);
 	}
 
 }

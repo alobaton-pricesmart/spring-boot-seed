@@ -6,7 +6,7 @@ package com.co.app.commons.service;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.constraints.NotNull;
+import com.querydsl.core.types.Predicate;
 
 /**
  * 
@@ -20,10 +20,10 @@ public interface BaseService<T, I> {
 	/**
 	 * Creates a <T>.
 	 * 
-	 * @param dto The <T>.
+	 * @param domain The <T>.
 	 * @return The created <T>.
 	 */
-	T create(T dto);
+	T create(T domain);
 
 	/**
 	 * Get a <T>
@@ -34,41 +34,26 @@ public interface BaseService<T, I> {
 	T get(I id);
 
 	/**
-	 * 
-	 * @param pk
-	 * @return
-	 */
-	T customGet(@NotNull T dto);
-
-	/**
-	 * Get all <T>.
-	 * 
-	 * @return
-	 */
-	List<T> getAll();
-
-	/**
 	 * Get all <T>
 	 * 
-	 * @param dto
 	 * @return
 	 */
-	List<T> getAll(T dto);
+	List<T> getAll(Predicate predicate);
 
 	/**
 	 * Update a <T>
 	 * 
-	 * @param dto The <T>
+	 * @param domain The <T>
 	 * @return The updated <T>
 	 */
-	T update(T dto);
+	T update(T domain);
 
 	/**
 	 * 
-	 * @param dto
+	 * @param domain
 	 * @return The updated <T>
 	 */
-	T customUpdate(Map<String, Object> dto);
+	T customUpdate(Map<String, Object> domain);
 
 	/**
 	 * Delte a <T>

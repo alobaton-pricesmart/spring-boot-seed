@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.co.app.auth.domain.AuthUser;
 import com.co.app.auth.domain.CustomUserDetails;
 import com.co.app.auth.dto.AuthPasswordDto;
 import com.co.app.auth.dto.AuthUserDto;
@@ -47,7 +48,7 @@ public class AuthController {
 			nickname = (String) authentication.getPrincipal();
 		}
 
-		return service.get(nickname);
+		return AuthUserDto.CONVERTER.apply(service.get(nickname));
 	}
 
 	@GetMapping("/recovery-password")
@@ -67,18 +68,18 @@ public class AuthController {
 			nickname = (String) authentication.getPrincipal();
 		}
 
-		AuthUserDto user = service.get(nickname);
+		AuthUser user = service.get(nickname);
 		user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
 
-		return service.update(user);
+		return AuthUserDto.CONVERTER.apply(service.update(user));
 	}
 
 	@PostMapping("/update-password/{id}")
 	public @ResponseBody AuthUserDto resetPassword(@PathVariable @NotNull String id,
 			@Valid @RequestBody AuthPasswordDto passwordDto) {
-		AuthUserDto user = service.get(id);
+		AuthUser user = service.get(id);
 		user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
 
-		return service.update(user);
+		return AuthUserDto.CONVERTER.apply(service.update(user));
 	}
 }

@@ -7,15 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.stereotype.Service;
 
 import com.co.app.auth.domain.AuthClientDetails;
-import com.co.app.auth.dto.AuthClientDetailsDto;
 import com.co.app.auth.services.client.AuthClientDetailsService;
+import com.querydsl.core.types.Predicate;
 
 /**
  * @author alobaton
@@ -28,56 +25,24 @@ public class AuthClientDetailsServiceImpl implements AuthClientDetailsService {
 	private CustomClientDetailsService service;
 
 	@Override
-	public AuthClientDetailsDto create(AuthClientDetailsDto dto) {
-		ClientDetails domain = AuthClientDetails.CONVERTER.apply(dto);
-
+	public AuthClientDetails create(AuthClientDetails domain) {
 		service.addClientDetails(domain);
 
-		return dto;
+		return domain;
 	}
 
 	@Override
-	public AuthClientDetailsDto get(String id) {
+	public AuthClientDetails get(String id) {
 		AuthClientDetails domain = (AuthClientDetails) service.loadClientByClientId(id);
 
-		return AuthClientDetailsDto.CONVERTER.apply(domain);
+		return domain;
 	}
 
 	@Override
-	public AuthClientDetailsDto customGet(@NotNull AuthClientDetailsDto dto) {
-		throw new UnsupportedOperationException();
-	}
+	public AuthClientDetails update(AuthClientDetails domain) {
+		service.updateClientDetails(domain);
 
-	@Override
-	public List<AuthClientDetailsDto> getAll() {
-		return service.listClientDetails().stream().map(AuthClientDetailsDto.CONVERTER)
-				.collect(Collectors.<AuthClientDetailsDto>toList());
-	}
-
-	@Override
-	public List<AuthClientDetailsDto> getAll(AuthClientDetailsDto dto) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public AuthClientDetailsDto update(AuthClientDetailsDto dto) {
-		service.updateClientDetails(AuthClientDetails.CONVERTER.apply(dto));
-
-		return get(dto.getClientId());
-	}
-
-	@Override
-	public AuthClientDetailsDto customUpdate(Map<String, Object> dto) {
-		throw new UnsupportedOperationException();
-	}
-
-	@Override
-	public AuthClientDetailsDto delete(String id) {
-		AuthClientDetailsDto dto = AuthClientDetailsDto.CONVERTER.apply(service.loadClientByClientId(id));
-
-		service.removeClientDetails(id);
-
-		return dto;
+		return get(domain.getClientId());
 	}
 
 	@Override
@@ -88,6 +53,26 @@ public class AuthClientDetailsServiceImpl implements AuthClientDetailsService {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@Override
+	public List<AuthClientDetails> getAll(Predicate predicate) {
+		return service.listClientDetails().stream().map(clientDetails -> (AuthClientDetails) clientDetails)
+				.collect(Collectors.<AuthClientDetails>toList());
+	}
+
+	@Override
+	public AuthClientDetails customUpdate(Map<String, Object> model) {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public AuthClientDetails delete(String id) {
+		AuthClientDetails domain = get(id);
+
+		service.removeClientDetails(id);
+
+		return domain;
 	}
 
 }

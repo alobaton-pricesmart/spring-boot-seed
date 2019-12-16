@@ -5,25 +5,23 @@ package com.co.app.auth.services.role.impl;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
-import javax.validation.constraints.NotNull;
-
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.co.app.auth.dao.AuthRoleRepository;
 import com.co.app.auth.domain.AuthRole;
-import com.co.app.auth.dto.AuthRoleDto;
 import com.co.app.auth.services.role.AuthRoleService;
 import com.co.app.commons.CommonsConstants;
 import com.co.app.commons.exception.RegisterNotFoundException;
+import com.querydsl.core.types.Predicate;
 
 /**
  * @author alobaton
@@ -39,30 +37,12 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.co.app.commons.service.BasePagedService#getAll(java.lang.Object,
-	 * org.springframework.data.domain.Pageable)
-	 */
-	@Override
-	public Page<AuthRoleDto> getAll(AuthRoleDto dto, Pageable pageable) {
-		Example<AuthRole> example = Example.of(AuthRole.CONVERTER.apply(dto));
-
-		Page<AuthRole> result = repository.findAll(example, pageable);
-
-		return new PageImpl<AuthRoleDto>(
-				result.getContent().stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList()),
-				pageable, result.getTotalElements());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.co.app.commons.service.BaseService#create(java.lang.Object)
 	 */
 	@Override
-	public AuthRoleDto create(AuthRoleDto dto) {
-		AuthRole domain = repository.save(AuthRole.CONVERTER.apply(dto));
-
-		return AuthRoleDto.CONVERTER.apply(domain);
+	public AuthRole create(AuthRole domain) {
+		// TODO(alobaton): Validar si no existe.
+		return repository.save(domain);
 	}
 
 	/*
@@ -71,50 +51,9 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 	 * @see com.co.app.commons.service.BaseService#get(java.lang.Object)
 	 */
 	@Override
-	public AuthRoleDto get(String id) {
-		AuthRole domain = repository.findById(id)
+	public AuthRole get(String id) {
+		return repository.findById(id)
 				.orElseThrow(() -> new RegisterNotFoundException(AuthRole.class, CommonsConstants.ID, id));
-
-		return AuthRoleDto.CONVERTER.apply(domain);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.co.app.commons.service.BaseService#customGet(java.lang.Object)
-	 */
-	@Override
-	public AuthRoleDto customGet(@NotNull AuthRoleDto dto) {
-		Example<AuthRole> example = Example.of(AuthRole.CONVERTER.apply(dto));
-
-		AuthRole domain = repository.findOne(example)
-				.orElseThrow(() -> new RegisterNotFoundException(AuthRole.class, Strings.EMPTY, dto.toString()));
-
-		return AuthRoleDto.CONVERTER.apply(domain);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.co.app.commons.service.BaseService#getAll()
-	 */
-	@Override
-	public List<AuthRoleDto> getAll() {
-		return repository.findAll().stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList());
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.co.app.commons.service.BaseService#getAll(java.lang.Object)
-	 */
-	@Override
-	public List<AuthRoleDto> getAll(AuthRoleDto dto) {
-		Example<AuthRole> example = Example.of(AuthRole.CONVERTER.apply(dto));
-
-		List<AuthRole> result = repository.findAll(example);
-
-		return result.stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList());
 	}
 
 	/*
@@ -123,10 +62,9 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 	 * @see com.co.app.commons.service.BaseService#update(java.lang.Object)
 	 */
 	@Override
-	public AuthRoleDto update(AuthRoleDto dto) {
-		AuthRole domain = repository.save(AuthRole.CONVERTER.apply(dto));
-
-		return AuthRoleDto.CONVERTER.apply(domain);
+	public AuthRole update(AuthRole domain) {
+		// TODO(alobaton): Validar si existe.
+		return repository.save(domain);
 	}
 
 	/*
@@ -135,7 +73,7 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 	 * @see com.co.app.commons.service.BaseService#customUpdate(java.util.Map)
 	 */
 	@Override
-	public AuthRoleDto customUpdate(Map<String, Object> dto) {
+	public AuthRole customUpdate(Map<String, Object> dto) {
 		throw new UnsupportedOperationException();
 	}
 
@@ -145,12 +83,12 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 	 * @see com.co.app.commons.service.BaseService#delete(java.lang.Object)
 	 */
 	@Override
-	public AuthRoleDto delete(String id) {
-		AuthRoleDto dto = get(id);
+	public AuthRole delete(String id) {
+		AuthRole domain = get(id);
 
 		repository.deleteById(id);
 
-		return dto;
+		return domain;
 	}
 
 	/*
@@ -163,20 +101,16 @@ public class AuthRoleServiceImpl implements AuthRoleService {
 		return repository.existsById(id);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.co.app.commons.service.BasePagedService#getAll(org.springframework.data.
-	 * domain.Pageable)
-	 */
 	@Override
-	public Page<AuthRoleDto> getAll(Pageable pageable) {
-		Page<AuthRole> result = repository.findAll(pageable);
+	public Page<AuthRole> getAll(Predicate predicate, Pageable pageable) {
+		return repository.findAll(predicate, pageable);
+	}
 
-		return new PageImpl<AuthRoleDto>(
-				result.getContent().stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList()),
-				pageable, result.getTotalElements());
+	@Override
+	public List<AuthRole> getAll(Predicate predicate) {
+		return StreamSupport.stream(
+				Spliterators.spliteratorUnknownSize(repository.findAll(predicate).iterator(), Spliterator.ORDERED),
+				false).collect(Collectors.<AuthRole>toList());
 	}
 
 }

@@ -4,10 +4,10 @@
 package com.co.app.commons.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.querydsl.core.types.Predicate;
 
 /**
  * @author alobaton
@@ -47,7 +49,7 @@ public interface BaseController<T> {
 	 * @param parameters
 	 */
 	@GetMapping
-	public @ResponseBody List<T> getAll(Optional<T> dto);
+	public @ResponseBody List<T> getAll(@QuerydslPredicate Predicate predicate);
 
 	/**
 	 * Update <T>.

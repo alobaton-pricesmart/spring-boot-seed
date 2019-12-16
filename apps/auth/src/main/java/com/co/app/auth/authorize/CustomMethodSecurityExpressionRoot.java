@@ -15,10 +15,10 @@ import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserExc
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import com.co.app.auth.domain.AuthPermission;
+import com.co.app.auth.domain.AuthRole;
+import com.co.app.auth.domain.AuthUser;
 import com.co.app.auth.domain.CustomUserDetails;
-import com.co.app.auth.dto.AuthPermissionDto;
-import com.co.app.auth.dto.AuthRoleDto;
-import com.co.app.auth.dto.AuthUserDto;
 import com.co.app.auth.services.role.AuthRoleService;
 import com.co.app.auth.services.user.AuthUserService;
 
@@ -61,7 +61,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot
 		LOGGER.debug(String.format("Principal object %s", this.getAuthentication().getPrincipal()));
 
 		// Get user roles.
-		AuthUserDto user = null;
+		AuthUser user = null;
 		if (this.getAuthentication().getPrincipal() instanceof String) {
 			user = userService.get((String) this.getAuthentication().getPrincipal());
 		} else if (this.getAuthentication().getPrincipal() instanceof CustomUserDetails) {
@@ -75,9 +75,9 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot
 
 		// Validate against role's permissions.
 		for (String roleId : user.getRoles()) {
-			AuthRoleDto role = roleService.get(roleId);
+			AuthRole role = roleService.get(roleId);
 
-			for (AuthPermissionDto permission : role.getPermissions()) {
+			for (AuthPermission permission : role.getPermissions()) {
 				if (permission.getId().equals(scope)) {
 					return Boolean.TRUE;
 				}
