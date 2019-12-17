@@ -33,16 +33,23 @@ public class AuthClientController implements BaseController<AuthClientDetailsDto
 	private AuthClientDetailsService service;
 
 	@Override
+	@PreAuthorize("customHasPermission('read:client')")
+	public AuthClientDetailsDto get(@PathVariable String id) {
+		return AuthClientDetailsDto.CONVERTER.apply(service.get(id));
+	}
+
+	@Override
+	@PreAuthorize("customHasPermission('read:clients')")
+	public List<AuthClientDetailsDto> getAll(Predicate predicate) {
+		return service.getAll(predicate).stream().map(AuthClientDetailsDto.CONVERTER)
+				.collect(Collectors.<AuthClientDetailsDto>toList());
+	}
+
+	@Override
 	@PreAuthorize("customHasPermission('craete:client')")
 	public AuthClientDetailsDto create(@Valid @RequestBody AuthClientDetailsDto dto) {
 		return AuthClientDetailsDto.CONVERTER
 				.apply(service.create((AuthClientDetails) AuthClientDetails.CONVERTER.apply(dto)));
-	}
-
-	@Override
-	@PreAuthorize("customHasPermission('read:client')")
-	public AuthClientDetailsDto get(@PathVariable String id) {
-		return AuthClientDetailsDto.CONVERTER.apply(service.get(id));
 	}
 
 	@Override
@@ -59,9 +66,4 @@ public class AuthClientController implements BaseController<AuthClientDetailsDto
 		service.delete(id);
 	}
 
-	@Override
-	public List<AuthClientDetailsDto> getAll(Predicate predicate) {
-		return service.getAll(predicate).stream().map(AuthClientDetailsDto.CONVERTER)
-				.collect(Collectors.<AuthClientDetailsDto>toList());
-	}
 }

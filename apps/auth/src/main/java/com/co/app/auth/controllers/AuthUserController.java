@@ -42,17 +42,34 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
-	@PreAuthorize("customHasPermission('create:user')")
-	public AuthUserDto create(@Valid @RequestBody AuthUserDto dto) {
-		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+	@PreAuthorize("customHasPermission('read:users')")
+	public Page<AuthUserDto> getAll(@QuerydslPredicate(root = AuthUser.class) Predicate predicate, Pageable pageable,
+			@RequestParam(required = false) boolean isPaged) {
+		Page<AuthUser> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
 
-		return AuthUserDto.CONVERTER.apply(service.create(AuthUser.CONVERTER.apply(dto)));
+		return new PageImpl<>(
+				page.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
+				pageable, page.getTotalElements());
+	}
+
+	@Override
+	@PreAuthorize("customHasPermission('read:users')")
+	public List<AuthUserDto> getAll(Predicate predicate) {
+		return service.getAll(predicate).stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList());
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('read:user')")
 	public AuthUserDto get(@PathVariable String id) {
 		return AuthUserDto.CONVERTER.apply(service.get(id));
+	}
+
+	@Override
+	@PreAuthorize("customHasPermission('create:user')")
+	public AuthUserDto create(@Valid @RequestBody AuthUserDto dto) {
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+		return AuthUserDto.CONVERTER.apply(service.create(AuthUser.CONVERTER.apply(dto)));
 	}
 
 	@Override
@@ -66,22 +83,6 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	@PreAuthorize("customHasPermission('delete:user')")
 	public void delete(@PathVariable String id) {
 		service.delete(id);
-	}
-
-	@Override
-	@PreAuthorize("customHasPermission('read:users')")
-	public Page<AuthUserDto> getAll(@QuerydslPredicate(root = AuthUser.class) Predicate predicate, Pageable pageable,
-			@RequestParam(required = false) boolean isPaged) {
-		Page<AuthUser> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
-
-		return new PageImpl<>(
-				page.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
-				pageable, page.getTotalElements());
-	}
-
-	@Override
-	public List<AuthUserDto> getAll(Predicate predicate) {
-		return service.getAll(predicate).stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList());
 	}
 
 }

@@ -34,15 +34,31 @@ public class AuthPermissionController implements BasePagedController<AuthPermiss
 	private AuthPermissionService service;
 
 	@Override
-	@PreAuthorize("customHasPermission('craete:permission')")
-	public AuthPermissionDto create(@Valid AuthPermissionDto dto) {
-		return AuthPermissionDto.CONVERTER.apply(service.create(AuthPermission.CONVERTER.apply(dto)));
-	}
-
-	@Override
 	@PreAuthorize("customHasPermission('read:permission')")
 	public AuthPermissionDto get(String id) {
 		return AuthPermissionDto.CONVERTER.apply(service.get(id));
+	}
+
+	@Override
+	@PreAuthorize("customHasPermission('read:permissions')")
+	public List<AuthPermissionDto> getAll(Predicate predicate) {
+		return service.getAll(predicate).stream().map(AuthPermissionDto.CONVERTER)
+				.collect(Collectors.<AuthPermissionDto>toList());
+	}
+
+	@Override
+	@PreAuthorize("customHasPermission('read:permissions')")
+	public Page<AuthPermissionDto> getAll(Predicate predicate, Pageable pageable, boolean isPaged) {
+		Page<AuthPermission> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
+
+		return new PageImpl<>(page.getContent().stream().map(AuthPermissionDto.CONVERTER)
+				.collect(Collectors.<AuthPermissionDto>toList()), pageable, page.getTotalElements());
+	}
+
+	@Override
+	@PreAuthorize("customHasPermission('craete:permission')")
+	public AuthPermissionDto create(@Valid AuthPermissionDto dto) {
+		return AuthPermissionDto.CONVERTER.apply(service.create(AuthPermission.CONVERTER.apply(dto)));
 	}
 
 	@Override
@@ -58,20 +74,6 @@ public class AuthPermissionController implements BasePagedController<AuthPermiss
 	public void delete(String id) {
 		service.delete(id);
 
-	}
-
-	@Override
-	public List<AuthPermissionDto> getAll(Predicate predicate) {
-		return service.getAll(predicate).stream().map(AuthPermissionDto.CONVERTER)
-				.collect(Collectors.<AuthPermissionDto>toList());
-	}
-
-	@Override
-	public Page<AuthPermissionDto> getAll(Predicate predicate, Pageable pageable, boolean isPaged) {
-		Page<AuthPermission> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
-
-		return new PageImpl<>(page.getContent().stream().map(AuthPermissionDto.CONVERTER)
-				.collect(Collectors.<AuthPermissionDto>toList()), pageable, page.getTotalElements());
 	}
 
 }

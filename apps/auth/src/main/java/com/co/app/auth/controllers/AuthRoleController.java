@@ -38,23 +38,39 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.co.app.commons.controllers.BaseController#create(java.lang.Object)
-	 */
-	@Override
-	@PreAuthorize("customHasPermission('craete:role')")
-	public AuthRoleDto create(@Valid @RequestBody AuthRoleDto dto) {
-		return AuthRoleDto.CONVERTER.apply(service.create(AuthRole.CONVERTER.apply(dto)));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
 	 * @see com.co.app.commons.controllers.BaseController#get(java.lang.String)
 	 */
 	@Override
 	@PreAuthorize("customHasPermission('read:role')")
 	public AuthRoleDto get(@PathVariable String id) {
 		return AuthRoleDto.CONVERTER.apply(service.get(id));
+	}
+
+	@Override
+	@PreAuthorize("customHasPermission('read:roles')")
+	public List<AuthRoleDto> getAll(Predicate predicate) {
+		return service.getAll(predicate).stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList());
+	}
+
+	@Override
+	@PreAuthorize("customHasPermission('read:roles')")
+	public Page<AuthRoleDto> getAll(Predicate predicate, Pageable pageable, boolean isPaged) {
+		Page<AuthRole> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
+
+		return new PageImpl<>(
+				page.getContent().stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList()),
+				pageable, page.getTotalElements());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.co.app.commons.controllers.BaseController#create(java.lang.Object)
+	 */
+	@Override
+	@PreAuthorize("customHasPermission('craete:role')")
+	public AuthRoleDto create(@Valid @RequestBody AuthRoleDto dto) {
+		return AuthRoleDto.CONVERTER.apply(service.create(AuthRole.CONVERTER.apply(dto)));
 	}
 
 	/*
@@ -79,20 +95,6 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	@PreAuthorize("customHasPermission('delete:role')")
 	public void delete(@PathVariable String id) {
 		service.delete(id);
-	}
-
-	@Override
-	public List<AuthRoleDto> getAll(Predicate predicate) {
-		return service.getAll(predicate).stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList());
-	}
-	
-	@Override
-	public Page<AuthRoleDto> getAll(Predicate predicate, Pageable pageable, boolean isPaged) {
-		Page<AuthRole> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
-
-		return new PageImpl<>(
-				page.getContent().stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList()),
-				pageable, page.getTotalElements());
 	}
 
 }
