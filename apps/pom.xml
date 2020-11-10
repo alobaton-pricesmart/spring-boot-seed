@@ -68,7 +68,6 @@
 		<module>message</module>
 		<module>loader</module>
 		<module>commons</module>
-		<module>settings</module>
 		<module>core</module>
 		<module>gateway</module>
 	</modules>
@@ -108,11 +107,6 @@
 			<dependency>
 				<groupId>com.co.app</groupId>
 				<artifactId>loader</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.co.app</groupId>
-				<artifactId>settings</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
