@@ -61,6 +61,7 @@
 		<spring-security-oauth2-autoconfigure.version>2.2.1.RELEASE</spring-security-oauth2-autoconfigure.version>
 		<querydsl-apt.version>4.1.0</querydsl-apt.version>
 		<lombok.version>1.18.16</lombok.version>
+		<h2.version>1.4.200</h2.version>
 	</properties>
 	<modules>
 		<module>eureka</module>
@@ -355,6 +356,14 @@
 				<version>${lombok.version}</version>
 				<scope>provided</scope>
 			</dependency>
+			<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+			<dependency>
+				<groupId>com.h2database</groupId>
+				<artifactId>h2</artifactId>
+				<version>${h2.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	<build>

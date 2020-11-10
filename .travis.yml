@@ -19,7 +19,6 @@ addons:
       - mysql-5.7-trusty
     packages:
       - mysql-server
-      - mysql-client
 
 dist: trusty
 

@@ -11,7 +11,6 @@ Provides fast, reliable and extensible starter for the development of Java proje
 - i18n support.
 - Spring Security module.
 - Application masters module.
-- Application settings module.
 - Application loader module.
 - Distributed memory module.
 - Production and development builds.
@@ -60,8 +59,8 @@ In order to test the seed user:
 ```bash
 # see this releated issue https://github.com/alobaton/spring-boot-seed/issues/8
 # startup the test database.
-$ docker-compose -f docker-compose.test.yml up -d db
-
+$ docker-compose -f docker-compose.dev.yml up -d db
+$ cd apps
 $ mvn clean install -Dspring.profiles.active=dev
 ```
 
