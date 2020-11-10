@@ -40,13 +40,6 @@ public class CodeGeneratorImpl implements CodeGenerator {
 		this.random = new SecureRandom();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.co.app.auth.services.CodeGenerator#generateCode(com.innova4j.stsp.
-	 * auth.services.CodeType, int)
-	 */
 	@Override
 	public String generateCode(CodeType type, int length) {
 		char[] buf = new char[6];

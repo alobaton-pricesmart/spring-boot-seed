@@ -21,28 +21,22 @@ import org.hibernate.annotations.Type;
 import com.co.app.auth.dto.AuthRoleDto;
 import com.co.app.commons.domain.BaseDomain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author alobaton
  *
  */
 @Entity
 @Table(name = "auth_role")
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(of = { "id" }, doNotUseGetters = true, callSuper = false)
 public class AuthRole extends BaseDomain {
-
-	public static final Function<AuthRoleDto, AuthRole> CONVERTER = new Function<AuthRoleDto, AuthRole>() {
-		@Override
-		public AuthRole apply(AuthRoleDto t) {
-			AuthRole domain = new AuthRole();
-			domain.setId(t.getId());
-			domain.setDescription(t.getDescription());
-			domain.setGroupId(t.getGroupId());
-			domain.setParentId(t.getParentId());
-			domain.setPermissions(t.getPermissions().stream().map(AuthPermission.CONVERTER)
-					.collect(Collectors.<AuthPermission>toList()));
-
-			return domain;
-		}
-	};
 
 	@Id
 	@NotNull
@@ -65,74 +59,16 @@ public class AuthRole extends BaseDomain {
 	@OneToMany(mappedBy = "role", cascade = CascadeType.ALL)
 	private List<AuthPermission> permissions;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+	public static final Function<AuthRoleDto, AuthRole> CONVERTER = (AuthRoleDto t) -> {
+		AuthRole domain = new AuthRole();
+		domain.setId(t.getId());
+		domain.setDescription(t.getDescription());
+		domain.setGroupId(t.getGroupId());
+		domain.setParentId(t.getParentId());
+		domain.setPermissions(
+				t.getPermissions().stream().map(AuthPermission.CONVERTER).collect(Collectors.<AuthPermission>toList()));
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the groupId
-	 */
-	public String getGroupId() {
-		return groupId;
-	}
-
-	/**
-	 * @param groupId the groupId to set
-	 */
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
-	}
-
-	public Map<String, String> getDescription() {
-		return description;
-	}
-
-	public void setDescription(Map<String, String> description) {
-		this.description = description;
-	}
-
-	/**
-	 * @return the parentId
-	 */
-	public String getParentId() {
-		return parentId;
-	}
-
-	/**
-	 * @param parentId the parentId to set
-	 */
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
-
-	/**
-	 * @return the permissions
-	 */
-	public List<AuthPermission> getPermissions() {
-		return permissions;
-	}
-
-	/**
-	 * @param permissions the permissions to set
-	 */
-	public void setPermissions(List<AuthPermission> permissions) {
-		this.permissions = permissions;
-	}
-
-	@Override
-	public String toString() {
-		return "AuthRole [id=" + id + ", groupId=" + groupId + ", description=" + description + ", parentId=" + parentId
-				+ ", permissions=" + permissions + ", created=" + created + ", lastModified=" + lastModified + "]";
-	}
+		return domain;
+	};
 
 }

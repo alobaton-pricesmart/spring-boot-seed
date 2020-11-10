@@ -3,10 +3,17 @@
  */
 package com.co.app.commons.exception;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author alobaton
  *
  */
+@Getter
+@Setter
+@ToString
 public class ApiException extends RuntimeException {
 
 	private String code;
@@ -29,20 +36,6 @@ public class ApiException extends RuntimeException {
 		this.args = args;
 	}
 
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public String[] getArgs() {
-		return args;
-	}
-
-	public void setArgs(String[] args) {
-		this.args = args;
-	}
+	
 
 }

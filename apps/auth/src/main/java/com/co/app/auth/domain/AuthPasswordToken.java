@@ -16,12 +16,21 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 
 import com.co.app.commons.domain.BaseEntity;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author alobaton
  *
  */
 @Entity
 @Table(name = "auth_password_token")
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(of = { "id" }, doNotUseGetters = true, callSuper = false)
 public class AuthPasswordToken extends BaseEntity {
 
 	@EmbeddedId
@@ -32,47 +41,9 @@ public class AuthPasswordToken extends BaseEntity {
 	@Column(name = "expires_at")
 	private LocalDateTime expiresAt;
 
-	/**
-	 * @return the id
-	 */
-	public AuthPasswordTokenId getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(AuthPasswordTokenId id) {
-		this.id = id;
-	}
-
-	/**
-	 * @return the expiresAt
-	 */
-	public LocalDateTime getExpiresAt() {
-		return expiresAt;
-	}
-
-	/**
-	 * @param expiresAt the expiresAt to set
-	 */
-	public void setExpiresAt(LocalDateTime expiresAt) {
-		this.expiresAt = expiresAt;
-	}
-
 	public boolean isExpired() {
 		LocalDateTime now = LocalDateTime.now();
 		return this.expiresAt == null || this.expiresAt.isBefore(now);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "AuthPasswordToken [id=" + id + ", expiresAt=" + expiresAt + "]";
 	}
 
 }

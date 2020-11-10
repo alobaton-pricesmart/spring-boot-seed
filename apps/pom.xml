@@ -60,6 +60,7 @@
 		<spring-cloud-starter-netflix-hystrix.version>2.1.4.RELEASE</spring-cloud-starter-netflix-hystrix.version>
 		<spring-security-oauth2-autoconfigure.version>2.2.1.RELEASE</spring-security-oauth2-autoconfigure.version>
 		<querydsl-apt.version>4.1.0</querydsl-apt.version>
+		<lombok.version>1.18.16</lombok.version>
 	</properties>
 	<modules>
 		<module>eureka</module>
@@ -346,6 +347,13 @@
 				<artifactId>querydsl-apt</artifactId>
 				<classifier>jpa</classifier>
 				<version>${querydsl-apt.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

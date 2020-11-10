@@ -10,10 +10,17 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.domain.PageImpl;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author alobaton
  *
  */
+@Getter
+@Setter
+@ToString
 public class PageableQueryDto<T> {
 
 	@NotNull
@@ -22,27 +29,6 @@ public class PageableQueryDto<T> {
 
 	public PageableQueryDto() {
 		dto = Optional.empty();
-	}
-
-	public CustomPageImpl getPageable() {
-		return pageable;
-	}
-
-	public void setPageable(CustomPageImpl pageable) {
-		this.pageable = pageable;
-	}
-
-	public Optional<T> getDto() {
-		return dto;
-	}
-
-	public void setDto(Optional<T> dto) {
-		this.dto = dto;
-	}
-
-	@Override
-	public String toString() {
-		return "PageableQueryDto [pageable=" + pageable + ", dto=" + dto + "]";
 	}
 
 	public class CustomPageImpl extends PageImpl<T> {

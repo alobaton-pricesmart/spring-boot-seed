@@ -15,30 +15,19 @@ import com.co.app.commons.dto.BaseDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author alobaton
  *
  */
 @JsonInclude(Include.NON_NULL)
+@Getter
+@Setter
+@ToString
 public class AuthRoleDto extends BaseDto {
-
-	public static final Function<AuthRole, AuthRoleDto> CONVERTER = new Function<AuthRole, AuthRoleDto>() {
-		@Override
-		public AuthRoleDto apply(AuthRole t) {
-			AuthRoleDto dto = new AuthRoleDto();
-			dto.setId(t.getId());
-			dto.setDescription(t.getDescription());
-			dto.setGroupId(t.getGroupId());
-			dto.setParentId(t.getParentId());
-			dto.setPermissions(t.getPermissions().stream().map(AuthPermissionDto.CONVERTER)
-					.collect(Collectors.<AuthPermissionDto>toList()));
-
-			dto.setCreated(t.getCreated());
-			dto.setLastModified(t.getLastModified());
-
-			return dto;
-		}
-	};
 
 	@NotNull
 	private String id;
@@ -49,81 +38,19 @@ public class AuthRoleDto extends BaseDto {
 	private String parentId;
 	private List<AuthPermissionDto> permissions;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+	public static final Function<AuthRole, AuthRoleDto> CONVERTER = (AuthRole t) -> {
+		AuthRoleDto dto = new AuthRoleDto();
+		dto.setId(t.getId());
+		dto.setDescription(t.getDescription());
+		dto.setGroupId(t.getGroupId());
+		dto.setParentId(t.getParentId());
+		dto.setPermissions(t.getPermissions().stream().map(AuthPermissionDto.CONVERTER)
+				.collect(Collectors.<AuthPermissionDto>toList()));
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+		dto.setCreated(t.getCreated());
+		dto.setLastModified(t.getLastModified());
 
-	/**
-	 * @return the groupId
-	 */
-	public String getGroupId() {
-		return groupId;
-	}
-
-	/**
-	 * @param groupId the groupId to set
-	 */
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
-	}
-
-	/**
-	 * @return the description
-	 */
-	public Map<String, String> getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(Map<String, String> description) {
-		this.description = description;
-	}
-
-	/**
-	 * @return the parentId
-	 */
-	public String getParentId() {
-		return parentId;
-	}
-
-	/**
-	 * @param parentId the parentId to set
-	 */
-	public void setParentId(String parentId) {
-		this.parentId = parentId;
-	}
-
-	/**
-	 * @return the permissions
-	 */
-	public List<AuthPermissionDto> getPermissions() {
-		return permissions;
-	}
-
-	/**
-	 * @param permissions the permissions to set
-	 */
-	public void setPermissions(List<AuthPermissionDto> permissions) {
-		this.permissions = permissions;
-	}
-
-	@Override
-	public String toString() {
-		return "AuthRoleDto [id=" + id + ", groupId=" + groupId + ", description=" + description + ", parentId="
-				+ parentId + ", permissions=" + permissions + ", created=" + created + ", lastModified=" + lastModified
-				+ "]";
-	}
+		return dto;
+	};
 
 }

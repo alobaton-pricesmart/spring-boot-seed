@@ -15,12 +15,19 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author alobaton
  *
  */
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+@ToString
 public abstract class BaseDomain extends BaseEntity {
 
 	@CreatedDate
@@ -32,43 +39,5 @@ public abstract class BaseDomain extends BaseEntity {
 	@DateTimeFormat(iso = ISO.DATE_TIME)
 	@Column(name = "last_modified")
 	protected LocalDateTime lastModified;
-
-	/**
-	 * @return the created
-	 */
-	public LocalDateTime getCreated() {
-		return created;
-	}
-
-	/**
-	 * @param created the created to set
-	 */
-	public void setCreated(LocalDateTime created) {
-		this.created = created;
-	}
-
-	/**
-	 * @return the lastModified
-	 */
-	public LocalDateTime getLastModified() {
-		return lastModified;
-	}
-
-	/**
-	 * @param lastModified the lastModified to set
-	 */
-	public void setLastModified(LocalDateTime lastModified) {
-		this.lastModified = lastModified;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {
-		return "BaseDomain [created=" + created + ", lastModified=" + lastModified + "]";
-	}
 
 }

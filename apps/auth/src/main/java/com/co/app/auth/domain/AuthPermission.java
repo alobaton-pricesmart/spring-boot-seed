@@ -20,26 +20,22 @@ import org.hibernate.annotations.Type;
 import com.co.app.auth.dto.AuthPermissionDto;
 import com.co.app.commons.domain.BaseDomain;
 
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * @author alobaton
  *
  */
 @Entity
 @Table(name = "auth_permission")
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode(of = { "id" }, doNotUseGetters = true, callSuper = false)
 public class AuthPermission extends BaseDomain {
-
-	public static final Function<AuthPermissionDto, AuthPermission> CONVERTER = new Function<AuthPermissionDto, AuthPermission>() {
-		@Override
-		public AuthPermission apply(AuthPermissionDto t) {
-			AuthPermission domain = new AuthPermission();
-
-			domain.setId(t.getId());
-			domain.setDescription(t.getDescription());
-			domain.setClient((AuthClientDetails) AuthClientDetails.CONVERTER.apply(t.getClient()));
-
-			return domain;
-		}
-	};
 
 	@Id
 	@NotNull
@@ -60,66 +56,14 @@ public class AuthPermission extends BaseDomain {
 	@JoinColumn(name = "role_id", referencedColumnName = "id")
 	private AuthRole role;
 
-	/**
-	 * @return the id
-	 */
-	public String getId() {
-		return id;
-	}
+	public static final Function<AuthPermissionDto, AuthPermission> CONVERTER = (AuthPermissionDto t) -> {
+		AuthPermission domain = new AuthPermission();
 
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
+		domain.setId(t.getId());
+		domain.setDescription(t.getDescription());
+		domain.setClient((AuthClientDetails) AuthClientDetails.CONVERTER.apply(t.getClient()));
 
-	/**
-	 * @return the description
-	 */
-	public Map<String, String> getDescription() {
-		return description;
-	}
-
-	/**
-	 * @param description the description to set
-	 */
-	public void setDescription(Map<String, String> description) {
-		this.description = description;
-	}
-
-	/**
-	 * @return the client
-	 */
-	public AuthClientDetails getClient() {
-		return client;
-	}
-
-	/**
-	 * @param client the client to set
-	 */
-	public void setClient(AuthClientDetails client) {
-		this.client = client;
-	}
-
-	/**
-	 * @return the role
-	 */
-	public AuthRole getRole() {
-		return role;
-	}
-
-	/**
-	 * @param role the role to set
-	 */
-	public void setRole(AuthRole role) {
-		this.role = role;
-	}
-
-	@Override
-	public String toString() {
-		return "AuthPermission [id=" + id + ", description=" + description + ", client=" + client + ", created="
-				+ created + ", lastModified=" + lastModified + "]";
-	}
+		return domain;
+	};
 
 }
