@@ -1,2 +1,0 @@
-INSERT INTO `auth_user` (nickname, name, last_name, email, roles, password,  locked, enabled) 
-VALUES ('admin', 'Administrador', NULL, 'alobaton.restrepo@gmail.com', JSON_ARRAY('ADMIN'), '$2a$10$n0XSnNTqHVwO44KHR5R5.u5SgZEbwZ4lEYSiGbBEMK49FKonqWEx2', false, true);

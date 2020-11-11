@@ -57,9 +57,6 @@ $ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.acti
 In order to test the seed user:
 
 ```bash
-# see this releated issue https://github.com/alobaton/spring-boot-seed/issues/8
-# startup the test database.
-$ docker-compose -f docker-compose.dev.yml up -d db
 $ cd apps
 $ mvn clean install -Dspring.profiles.active=dev
 ```

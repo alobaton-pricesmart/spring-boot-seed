@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,13 +49,14 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 
 	@Override
 	@PreAuthorize("customHasPermission('read:roles')")
-	public List<AuthRoleDto> getAll(Predicate predicate) {
+	public List<AuthRoleDto> getAll(@QuerydslPredicate(root = AuthRole.class) Predicate predicate) {
 		return service.getAll(predicate).stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList());
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('read:roles')")
-	public Page<AuthRoleDto> getAll(Predicate predicate, Pageable pageable, boolean isPaged) {
+	public Page<AuthRoleDto> getAll(@QuerydslPredicate(root = AuthRole.class) Predicate predicate, Pageable pageable,
+			boolean isPaged) {
 		Page<AuthRole> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
 
 		return new PageImpl<>(

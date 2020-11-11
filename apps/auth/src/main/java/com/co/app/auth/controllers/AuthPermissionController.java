@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,14 +42,15 @@ public class AuthPermissionController implements BasePagedController<AuthPermiss
 
 	@Override
 	@PreAuthorize("customHasPermission('read:permissions')")
-	public List<AuthPermissionDto> getAll(Predicate predicate) {
+	public List<AuthPermissionDto> getAll(@QuerydslPredicate(root = AuthPermission.class) Predicate predicate) {
 		return service.getAll(predicate).stream().map(AuthPermissionDto.CONVERTER)
 				.collect(Collectors.<AuthPermissionDto>toList());
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('read:permissions')")
-	public Page<AuthPermissionDto> getAll(Predicate predicate, Pageable pageable, boolean isPaged) {
+	public Page<AuthPermissionDto> getAll(@QuerydslPredicate(root = AuthPermission.class) Predicate predicate,
+			Pageable pageable, boolean isPaged) {
 		Page<AuthPermission> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
 
 		return new PageImpl<>(page.getContent().stream().map(AuthPermissionDto.CONVERTER)

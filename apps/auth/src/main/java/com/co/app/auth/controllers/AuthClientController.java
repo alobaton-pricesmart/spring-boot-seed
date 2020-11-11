@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -40,7 +41,7 @@ public class AuthClientController implements BaseController<AuthClientDetailsDto
 
 	@Override
 	@PreAuthorize("customHasPermission('read:clients')")
-	public List<AuthClientDetailsDto> getAll(Predicate predicate) {
+	public List<AuthClientDetailsDto> getAll(@QuerydslPredicate(root = AuthClientDetails.class) Predicate predicate) {
 		return service.getAll(predicate).stream().map(AuthClientDetailsDto.CONVERTER)
 				.collect(Collectors.<AuthClientDetailsDto>toList());
 	}
