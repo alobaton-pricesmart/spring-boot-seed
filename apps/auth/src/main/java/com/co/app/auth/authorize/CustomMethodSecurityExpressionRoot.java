@@ -3,6 +3,9 @@
  */
 package com.co.app.auth.authorize;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.NotNull;
 
@@ -12,6 +15,7 @@ import org.springframework.security.access.expression.SecurityExpressionRoot;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.common.exceptions.UnauthorizedUserException;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -53,6 +57,7 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot
 	 * @param scope The method scope. Eg. create:user. See auth_permissions table.
 	 * @return True if has permission, false otherwise.
 	 */
+	@Transactional
 	public boolean customHasPermission(@NotNull String scope) {
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
@@ -77,10 +82,10 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot
 		for (String roleId : user.getRoles()) {
 			AuthRole role = roleService.get(roleId);
 
-			for (AuthPermission permission : role.getPermissions()) {
-				if (permission.getId().equals(scope)) {
-					return Boolean.TRUE;
-				}
+			List<String> permissionsIdList = role.getPermissions().stream().map(AuthPermission::getId)
+					.collect(Collectors.toList());
+			if (permissionsIdList.contains(scope)) {
+				return Boolean.TRUE;
 			}
 		}
 

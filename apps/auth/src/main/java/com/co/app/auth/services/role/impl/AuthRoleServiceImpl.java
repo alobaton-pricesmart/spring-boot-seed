@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.co.app.auth.dao.AuthRoleRepository;
 import com.co.app.auth.domain.AuthRole;
@@ -28,7 +27,6 @@ import com.querydsl.core.types.Predicate;
  *
  */
 @Service
-@Transactional
 public class AuthRoleServiceImpl implements AuthRoleService {
 
 	@Autowired

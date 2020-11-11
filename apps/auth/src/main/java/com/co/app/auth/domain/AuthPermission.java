@@ -3,6 +3,7 @@
  */
 package com.co.app.auth.domain;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -44,7 +45,7 @@ public class AuthPermission extends BaseDomain {
 
 	@Type(type = "json")
 	@Column(name = "description", columnDefinition = "json")
-	private Map<String, String> description;
+	private Map<String, String> description = new HashMap<>();
 
 	@NotNull
 	@ManyToOne(cascade = CascadeType.REMOVE)
