@@ -5,13 +5,13 @@ services:
     build:
       context: .
       dockerfile: ./.docker/Dockerfile_auth_dev
-    container_name: solicitudes-mantenimiento-api-auth-dev
+    container_name: app-name-api-auth-dev
     hostname: api.dev.local
     depends_on:
       - db
-    image: solicitudes-mantenimiento-api-auth-dev
+    image: app-name-api-auth-dev
     volumes:
-      - ./apps:/home/solicitudes-mantenimiento-api/apps
+      - ./apps:/home/app-name-api/apps
     ports:
       - 8082:8082
       - 10001:10001
@@ -19,7 +19,7 @@ services:
     cpu_percent: 60
 
   db:
-    container_name: solicitudes-mantenimiento-api-db-dev
+    container_name: app-name-api-db-dev
     hostname: db.dev.local
     image: mysql:8.0.13
     environment:

@@ -1,8 +1,8 @@
-# solicitudes-mantenimiento-api
+# app-name-api
 
-## Como iniciar?
+## How to start?
 
-Antes de iniciar actualice el archivo /etc/hosts:
+Before start update the /etc/hosts file:
 
 ```bash
 # tools
@@ -11,53 +11,53 @@ Antes de iniciar actualice el archivo /etc/hosts:
 127.0.0.1       api.dev.local
 127.0.0.1       api.prod.local
 ```
-Clone el repositorio:
+Clone the repository:
 ```bash
-$ git clone --depth 1 https://github.com/soportesolicitudesmantenimiento/solicitudes-mantenimiento.git
-$ cd solicitudes-mantenimiento/solicitudes-mantenimiento-api
+$ git clone --depth 1 https://github.com/soportesolicitudesmantenimiento/app-name.git
+$ cd app-name/app-name-api
 ```
 
-Inicie la Base de Datos de pruebas:
+Start the database:
 ```bash
 $ docker-compose -f docker-compose.dev.yml up -d db
 ```
 
-Compile el proyecto:
+Compile the project:
 ```bash
 $ cd apps
 $ mvn clean install -Dspring.profiles.active=dev -DskipTests=true
 ```
 
-Ejecute el loader:
+Execute loader:
 ```bash
 $ cd loader
 $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
 ```
 
-Ejecute el servicio de Autenticación y Autorización:
+Start authentication and authorization server:
 ```bash
 $ cd ..
 $ cd auth
 $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
 ```
-El servicio de Autenticación y Autorización se encuentra disponible en http://localhost:8082.
+The authentication and authorization server is deployed at http://localhost:8082.
 
-Ejecute la aplicación:
+Start the application:
 ```bash
 $ cd ..
 $ cd core
 $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
 ```
-La aplicación se encuentra disponible en http://localhost:8083.
+The application server is deployed at http://localhost:8083.
 
-Para ejecutar los anteriores proyectos sin Maven use:
+To start the projects without Maven use:
 ```bash
 $ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -DskipTests=true -jar /app.jar
 ```
 
-## Como probar?
+## CHow to test?
 
-Para probar el proyecto use:
+To test the project use:
 ```bash
 $ cd apps
 $ mvn clean install -Dspring.profiles.active=dev
@@ -65,38 +65,37 @@ $ mvn clean install -Dspring.profiles.active=dev
 
 ## Dockerización
 
-La aplicación provee soporte completo para Docker. Puedes usarlo para construcción y despliegue de desarrollo y producción.
 
-### Construcción y despliegue de desarrollo
+### Development building and deployment
 
-__NOTA__ El entorno dev no utiliza la arquitectura Netflix, razón por la cual deberá modificar los `application-dev.properties` donde se haga referencia a `api.dev.local` o `localhost` y reemplazarlo por la respectiva etiqueta del contenedor. Ej. `jdbc:mysql://db:3306/prod-db` donde `db` es la etiqueta del contenedor de base de datos en el archivo `docker-compose.dev.yml`.
+__NOTA__ Dev don't use Netflix architecture, you must update in change `api.dev.local` to `localhost` in `application-dev.properties` file. Ex. `jdbc:mysql://db:3306/prod-db` where `db` is the container tag in `docker-compose.dev.properties` file.
 
-Para iniciar los contenedores use:
+To start the containers use:
 ```bash
 $ cp .env.dev .env
 $ docker-compose -f docker-compose.dev.yml up -d
 ```
 
-El servicio de Autenticación y Autorización se encuentra disponible en http://localhost:8082. La aplicación se encuentra disponible en http://localhost:8083.
+The authentication and authorization server is deployed at http://localhost:8082. The application is deployed at http://localhost:8083.
 
-Para iniciar los contenedores automaticamente al iniciar un servidor Linux, puede utilizar el archivo `solicitudes-mantenimiento-dev.service`. Debe actualizar la ruta el proyecto y moverlo a la ruta `/etc/systemd/system/` y ejecutando los siguientes comandos:
+To start the containers automatically using a Linux server you can use the file `app-name-dev.service`. You must update the project path, move the file to `/etc/systemd/system/` and execute the following commands:
 ```bash
-$ sudo systemctl enable solicitudes-mantenimiento-dev.service
-$ sudo systemctl start solicitudes-mantenimiento-dev
+$ sudo systemctl enable app-name-dev.service
+$ sudo systemctl start app-name-dev
 ```
 
-### Construcción y despliegue de producción
+### Production building and deployment
 
-Para iniciar los contenedores use:
+To start the containers use:
 ```bash
 $ cp .env.prod .env
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
 
-Ahora abra su navegador en http://localhost:8081/#/eureka ó http://localhost:8081/admin#/applications.
+The Eureka and spring boot admin console are available at http://localhost:8081/#/eureka ó http://localhost:8081/admin#/applications.
 
-Para iniciar los contenedores automaticamente al iniciar un servidor Linux, puede utilizar el archivo `solicitudes-mantenimiento-prod.service`. Debe actualizar la ruta el proyecto y moverlo a la ruta `/etc/systemd/system/` y ejecutando los siguientes comandos:
+To start the containers automatically using a Linux server you can use the file `app-name-prod.service`. You must update the project path, move the file to `/etc/systemd/system/` and execute the following commands:
 ```bash
-$ sudo systemctl enable solicitudes-mantenimiento-prod.service
-$ sudo systemctl start solicitudes-mantenimiento-prod
+$ sudo systemctl enable app-name-prod.service
+$ sudo systemctl start app-name-prod
 ```

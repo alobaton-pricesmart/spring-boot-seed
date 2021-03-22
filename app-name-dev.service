@@ -1,0 +1,11 @@
+[Unit]
+Description=app-name-dev
+After=docker.service
+Requieres=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/bin/docker-compose -f /path/to/project/app-name/app-name-api/docker-compose.dev.yml up -d
+
+[Install]
+WantedBy=multi-user.target

@@ -5,14 +5,14 @@ services:
     build:
       context: .
       dockerfile: ./.docker/Dockerfile_auth_prod
-    container_name: solicitudes-mantenimiento-api-auth-prod
+    container_name: app-name-api-auth-prod
     hostname: api.prod.local
     depends_on:
       - db
       - gateway
-    image: solicitudes-mantenimiento-api-auth-prod
+    image: app-name-api-auth-prod
     volumes:
-      - ./apps:/home/solicitudes-mantenimiento-api/apps
+      - ./apps:/home/app-name-api/apps
     ports:
       - 8082:8082
     mem_limit: 768m
@@ -22,13 +22,13 @@ services:
     build:
       context: .
       dockerfile: ./.docker/Dockerfile_gateway_prod
-    container_name: solicitudes-mantenimiento-api-gateway-prod
+    container_name: app-name-api-gateway-prod
     hostname: api.prod.local
     depends_on:
       - eureka
-    image: solicitudes-mantenimiento-api-gateway-prod
+    image: app-name-api-gateway-prod
     volumes:
-      - ./apps:/home/solicitudes-mantenimiento-api/apps
+      - ./apps:/home/app-name-api/apps
     ports:
       - 8080:8080
     mem_limit: 768m
@@ -38,18 +38,18 @@ services:
     build:
       context: .
       dockerfile: ./.docker/Dockerfile_eureka_prod
-    container_name: solicitudes-mantenimiento-api-eureka-prod
+    container_name: app-name-api-eureka-prod
     hostname: api.prod.local
-    image: solicitudes-mantenimiento-api-aureka-prod
+    image: app-name-api-aureka-prod
     volumes:
-      - ./apps:/home/solicitudes-mantenimiento-api/apps
+      - ./apps:/home/app-name-api/apps
     ports:
       - 8081:8081
     mem_limit: 768m
     cpu_percent: 60
 
   db:
-    container_name: solicitudes-mantenimiento-api-db-prod
+    container_name: app-name-api-db-prod
     hostname: db.prod.local
     image: mysql:8.0.13
     environment:
