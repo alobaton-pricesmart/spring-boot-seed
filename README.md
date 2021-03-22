@@ -1,5 +1,10 @@
 # app-name-api
 
+[![Build Status](https://travis-ci.org/alobaton/spring-boot-seed.svg?branch=master)](https://travis-ci.org/alobaton/spring-boot-seed)
+[![codecov](https://codecov.io/gh/alobaton/spring-boot-seed/branch/master/graph/badge.svg)](https://codecov.io/gh/alobaton/spring-boot-seed)
+
+Provides fast, reliable and extensible starter for the development of Java projects using Spring Boot.
+
 ## How to start?
 
 Before start update the /etc/hosts file:
@@ -99,3 +104,14 @@ To start the containers automatically using a Linux server you can use the file 
 $ sudo systemctl enable app-name-prod.service
 $ sudo systemctl start app-name-prod
 ```
+
+## Contributors
+
+[<img alt="alobaton" src="https://avatars1.githubusercontent.com/u/9356067?s=460&v=4" width="117">](https://github.com/alobaton)
+[<img alt="luisColmenarez" src="https://avatars0.githubusercontent.com/u/16671391?s=400&v=4" width="117">](https://github.com/LuisColmenarez)
+
+## Change Log
+
+## License
+
+[MIT](https://github.com/alobaton/sprin-boot-seed/blob/master/LICENSE)
