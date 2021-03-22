@@ -15,13 +15,11 @@ import javax.mail.internet.MimeMessage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
@@ -34,13 +32,15 @@ import com.co.app.email.utils.EmailConstants;
  * @author alobaton
  *
  */
-@Service
 public class SmtpEmailServiceImpl implements EmailService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SmtpEmailServiceImpl.class.getName());
 
-	@Autowired
 	private SpringTemplateEngine templateEngine;
+
+	public SmtpEmailServiceImpl(SpringTemplateEngine templateEngine) {
+		this.templateEngine = templateEngine;
+	}
 
 	@Async
 	@Override
@@ -84,14 +84,14 @@ public class SmtpEmailServiceImpl implements EmailService {
 			if (mail.getAttachments() != null) {
 				Iterator<String> it = mail.getAttachments().iterator();
 				while (it.hasNext()) {
-					FileSystemResource file = new FileSystemResource(new File((String) it.next()));
+					FileSystemResource file = new FileSystemResource(new File(it.next()));
 					helper.addAttachment(file.getFilename(), file);
 				}
 			}
 
 			emailSender.send(message);
 		} catch (MessagingException e) {
-			LOGGER.error("Error sending mail...", e);
+			LOGGER.error("Error sending mail", e);
 			throw new EmailException("Error sending mail", e);
 		}
 	}
@@ -109,7 +109,6 @@ public class SmtpEmailServiceImpl implements EmailService {
 
 		Properties javaMailProperties = new Properties();
 		properties.forEach(javaMailProperties::put);
-
 		mailSender.setJavaMailProperties(javaMailProperties);
 
 		return mailSender;

@@ -3,21 +3,22 @@
  */
 package com.co.app.commons.exception;
 
-import javax.validation.constraints.NotNull;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-/**
- * @author alobaton
- *
- */
-public class CustomDuplicateKeyException extends ApiException {
+import com.netflix.hystrix.exception.ExceptionNotWrappedByHystrix;
 
-	private static final long serialVersionUID = -8618808352593994489L;
+@ResponseStatus(HttpStatus.CONFLICT)
+public class CustomDuplicateKeyException extends ApiException implements ExceptionNotWrappedByHystrix {
 
-	private static final String CODE = "exception.duplicateKey";
+	private static final long serialVersionUID = 1L;
 
-	public <T> CustomDuplicateKeyException(@NotNull Class<T> clazz, @NotNull String key, @NotNull String id) {
-		super(CODE, new String[] { clazz.getName(), key, id },
-				String.format("%s duplicate key %s.", clazz.getName(), id));
+	public CustomDuplicateKeyException(String code) {
+		super(code);
+	}
+
+	public CustomDuplicateKeyException(String code, String... args) {
+		super(code, args);
 	}
 
 }

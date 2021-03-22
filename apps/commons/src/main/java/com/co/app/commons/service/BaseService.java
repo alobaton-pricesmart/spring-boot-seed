@@ -13,9 +13,9 @@ import com.querydsl.core.types.Predicate;
  * @author alobaton
  *
  * @param <T>
- * @param <I>
+ * @param<K>
  */
-public interface BaseService<T, I> {
+public interface BaseService<T, K> {
 
 	/**
 	 * Creates a <T>.
@@ -28,10 +28,10 @@ public interface BaseService<T, I> {
 	/**
 	 * Get a <T>
 	 * 
-	 * @param id The <I>.
+	 * @param id The<K>.
 	 * @return The <T>.
 	 */
-	T get(I id);
+	T get(K id);
 
 	/**
 	 * Get all <T>
@@ -58,16 +58,16 @@ public interface BaseService<T, I> {
 	/**
 	 * Delte a <T>
 	 * 
-	 * @param id The <I>
+	 * @param id The<K>
 	 */
-	T delete(I id);
+	T delete(K id);
 
 	/**
-	 * True if exists by <I>.
+	 * True if exists by<K>.
 	 * 
-	 * @param id The <I>.
+	 * @param id The<K>.
 	 * @return True if exists, false otherwise.
 	 */
-	boolean exists(I id);
+	boolean exists(K id);
 
 }

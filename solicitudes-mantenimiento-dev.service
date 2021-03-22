@@ -1,0 +1,11 @@
+[Unit]
+Description=solicitudes-mantenimiento-dev
+After=docker.service
+Requieres=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStart=/usr/bin/docker-compose -f /path/to/project/solicitudes-mantenimiento/solicitudes-mantenimiento-api/docker-compose.dev.yml up -d
+
+[Install]
+WantedBy=multi-user.target

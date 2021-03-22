@@ -4,6 +4,7 @@
 package com.co.app.auth.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -21,10 +22,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.co.app.auth.domain.AuthUser;
-import com.co.app.auth.dto.AuthUserDto;
-import com.co.app.auth.services.user.AuthUserService;
+import com.co.app.auth.services.AuthUserService;
 import com.co.app.commons.controllers.BasePagedController;
+import com.co.app.commons.domain.AuthUser;
+import com.co.app.commons.dto.AuthUserDto;
 import com.querydsl.core.types.Predicate;
 
 /**
@@ -33,35 +34,37 @@ import com.querydsl.core.types.Predicate;
  */
 @RestController
 @RequestMapping("/users")
-public class AuthUserController implements BasePagedController<AuthUserDto> {
+public class AuthUserController implements BasePagedController<AuthUserDto, String> {
 
 	@Autowired
-	private AuthUserService service;
+	private AuthUserService authUserService;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	@PreAuthorize("customHasPermission('read:users')")
-	public Page<AuthUserDto> getAll(@QuerydslPredicate(root = AuthUser.class) Predicate predicate, Pageable pageable,
-			@RequestParam(required = false) boolean isPaged) {
-		Page<AuthUser> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
+	public Page<AuthUserDto> getAll(@QuerydslPredicate(root = AuthUser.class) Predicate predicate,
+			@RequestParam Map<String, String> requestParams, Pageable pageable) {
+		Page<AuthUser> page = authUserService.getAll(predicate, pageable);
 
 		return new PageImpl<>(
-				page.getContent().stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList()),
+				page.getContent().stream().map(AuthUserDto.CONVERTER_DTO).collect(Collectors.<AuthUserDto>toList()),
 				pageable, page.getTotalElements());
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('read:users')")
-	public List<AuthUserDto> getAll(Predicate predicate) {
-		return service.getAll(predicate).stream().map(AuthUserDto.CONVERTER).collect(Collectors.<AuthUserDto>toList());
+	public List<AuthUserDto> getAll(@QuerydslPredicate(root = AuthUser.class) Predicate predicate,
+			@RequestParam Map<String, String> requestParams) {
+		return authUserService.getAll(predicate).stream().map(AuthUserDto.CONVERTER_DTO)
+				.collect(Collectors.<AuthUserDto>toList());
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('read:user')")
 	public AuthUserDto get(@PathVariable String id) {
-		return AuthUserDto.CONVERTER.apply(service.get(id));
+		return AuthUserDto.CONVERTER_DTO.apply(authUserService.get(id));
 	}
 
 	@Override
@@ -69,20 +72,22 @@ public class AuthUserController implements BasePagedController<AuthUserDto> {
 	public AuthUserDto create(@Valid @RequestBody AuthUserDto dto) {
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-		return AuthUserDto.CONVERTER.apply(service.create(AuthUser.CONVERTER.apply(dto)));
+		return AuthUserDto.CONVERTER_DTO.apply(authUserService.create(AuthUserDto.CONVERTER_ENTITY.apply(dto)));
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('update:user')")
 	public AuthUserDto update(@PathVariable String id, @Valid @RequestBody AuthUserDto dto) {
 		dto.setNickname(id);
-		return AuthUserDto.CONVERTER.apply(service.update(AuthUser.CONVERTER.apply(dto)));
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+		return AuthUserDto.CONVERTER_DTO.apply(authUserService.update(AuthUserDto.CONVERTER_ENTITY.apply(dto)));
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('delete:user')")
 	public void delete(@PathVariable String id) {
-		service.delete(id);
+		authUserService.delete(id);
 	}
 
 }

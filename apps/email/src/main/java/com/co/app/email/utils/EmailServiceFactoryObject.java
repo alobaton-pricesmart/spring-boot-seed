@@ -5,7 +5,9 @@ package com.co.app.email.utils;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 import com.co.app.email.service.EmailService;
 import com.co.app.email.service.impl.SmtpEmailServiceImpl;
@@ -22,6 +24,9 @@ public class EmailServiceFactoryObject {
 	 */
 	public static final String SMTP_EMAIL_SERVICE_IMPL = "smtp";
 
+	@Autowired
+	private SpringTemplateEngine templateEngine;
+
 	/**
 	 * 
 	 * @param impl Identificacion de la implementacion
@@ -30,7 +35,7 @@ public class EmailServiceFactoryObject {
 	public EmailService emailService(@NotNull String impl) {
 		switch (impl) {
 		case SMTP_EMAIL_SERVICE_IMPL:
-			return new SmtpEmailServiceImpl();
+			return new SmtpEmailServiceImpl(templateEngine);
 		default:
 			return null;
 		}

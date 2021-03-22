@@ -30,13 +30,15 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-import com.co.app.auth.dao.AuthPasswordTokenRepository;
-import com.co.app.auth.dao.AuthUserRepository;
 import com.co.app.auth.granters.password.PasswordGranter;
 import com.co.app.auth.granters.password.PasswordGranterBuilder;
-import com.co.app.auth.services.client.impl.CustomClientDetailsService;
-import com.co.app.auth.services.encoder.HashEncoder;
-import com.co.app.auth.services.user.impl.CustomUserDetailsService;
+import com.co.app.auth.repository.AuthPasswordTokenRepository;
+import com.co.app.auth.repository.AuthUserRepository;
+import com.co.app.auth.services.HashEncoder;
+import com.co.app.auth.services.impl.CustomClientDetailsService;
+import com.co.app.auth.services.impl.CustomUserDetailsService;
+import com.co.app.message.constants.MessageConstants;
+import com.co.app.message.service.MessageService;
 
 /**
  * @author alobaton
@@ -67,6 +69,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 	@Qualifier("authenticationManagerBean")
 	private AuthenticationManager authenticationManager;
 
+	@Autowired
+	private MessageService messageService;
+
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		return new JwtAccessTokenConverter();
@@ -90,8 +95,13 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 				StringWriter sw = new StringWriter();
 				PrintWriter pw = new PrintWriter(sw);
 				e.printStackTrace(pw);
-
 				LOGGER.error(sw.toString());
+
+				if (e instanceof OAuth2Exception) {
+					OAuth2Exception oAuth2Exception = (OAuth2Exception) e;
+					return ResponseEntity.status(oAuth2Exception.getHttpErrorCode()).body(new OAuth2Exception(
+							messageService.getMessage(MessageConstants.ERROR_AUTH_INVALID_EMAIL_OR_PASSWORD)));
+				}
 
 				return super.translate(e);
 			}

@@ -19,12 +19,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.co.app.auth.domain.AuthPermission;
-import com.co.app.auth.domain.AuthRole;
-import com.co.app.auth.domain.AuthUser;
 import com.co.app.auth.domain.CustomUserDetails;
-import com.co.app.auth.services.role.AuthRoleService;
-import com.co.app.auth.services.user.AuthUserService;
+import com.co.app.auth.services.AuthUserService;
+import com.co.app.commons.domain.AuthRole;
+import com.co.app.commons.domain.AuthUser;
+import com.co.app.commons.domain.AuthUserRole;
+import com.co.app.commons.exception.ApiException;
 
 /**
  * This class provide the mechanism to handle your custom pre authorize logic.
@@ -41,14 +41,11 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot
 	private Object returnObject;
 
 	private AuthUserService userService;
-	private AuthRoleService roleService;
 
-	public CustomMethodSecurityExpressionRoot(Authentication authentication, AuthUserService userService,
-			AuthRoleService roleService) {
+	public CustomMethodSecurityExpressionRoot(Authentication authentication, AuthUserService userService) {
 		super(authentication);
 
 		this.userService = userService;
-		this.roleService = roleService;
 	}
 
 	/**
@@ -59,6 +56,10 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot
 	 */
 	@Transactional
 	public boolean customHasPermission(@NotNull String scope) {
+		if (RequestContextHolder.getRequestAttributes() == null) {
+			throw new ApiException("requestAttributes can't be null");
+		}
+
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
 				.getRequest();
 
@@ -78,14 +79,16 @@ public class CustomMethodSecurityExpressionRoot extends SecurityExpressionRoot
 			throw new UnauthorizedUserException("user can't be null");
 		}
 
-		// Validate against role's permissions.
-		for (String roleId : user.getRoles()) {
-			AuthRole role = roleService.get(roleId);
-
-			List<String> permissionsIdList = role.getPermissions().stream().map(AuthPermission::getId)
-					.collect(Collectors.toList());
-			if (permissionsIdList.contains(scope)) {
-				return Boolean.TRUE;
+		if (user.getAuthUserRoleList() != null && !user.getAuthUserRoleList().isEmpty()) {
+			// Validate against role's permissions.
+			for (AuthUserRole authUserRole : user.getAuthUserRoleList()) {
+				AuthRole role = authUserRole.getAuthRole();
+				List<String> permissionsIdList = role.getAuthRolePermissionList().stream()
+						.map(authRolePermission -> authRolePermission.getAuthRolePermissionPk().getPermissionId())
+						.collect(Collectors.toList());
+				if (permissionsIdList.contains(scope)) {
+					return Boolean.TRUE;
+				}
 			}
 		}
 

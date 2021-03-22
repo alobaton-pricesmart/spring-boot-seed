@@ -10,8 +10,7 @@ import org.springframework.security.authentication.AuthenticationTrustResolver;
 import org.springframework.security.authentication.AuthenticationTrustResolverImpl;
 import org.springframework.security.core.Authentication;
 
-import com.co.app.auth.services.role.AuthRoleService;
-import com.co.app.auth.services.user.AuthUserService;
+import com.co.app.auth.services.AuthUserService;
 
 /**
  * This class handles the method security context.
@@ -23,12 +22,10 @@ public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurity
 	private AuthenticationTrustResolver trustResolver = new AuthenticationTrustResolverImpl();
 
 	private AuthUserService userService;
-	private AuthRoleService roleService;
 
-	public CustomMethodSecurityExpressionHandler(AuthUserService userService, AuthRoleService roleService) {
+	public CustomMethodSecurityExpressionHandler(AuthUserService userService) {
 		super();
 		this.userService = userService;
-		this.roleService = roleService;
 	}
 
 	/**
@@ -37,8 +34,7 @@ public class CustomMethodSecurityExpressionHandler extends DefaultMethodSecurity
 	@Override
 	protected MethodSecurityExpressionOperations createSecurityExpressionRoot(Authentication authentication,
 			MethodInvocation invocation) {
-		CustomMethodSecurityExpressionRoot root = new CustomMethodSecurityExpressionRoot(authentication, userService,
-				roleService);
+		CustomMethodSecurityExpressionRoot root = new CustomMethodSecurityExpressionRoot(authentication, userService);
 		root.setPermissionEvaluator(getPermissionEvaluator());
 		root.setTrustResolver(this.trustResolver);
 		root.setRoleHierarchy(getRoleHierarchy());

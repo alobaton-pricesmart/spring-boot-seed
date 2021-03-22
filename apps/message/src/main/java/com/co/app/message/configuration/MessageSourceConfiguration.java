@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 
-import com.co.app.message.MessageConstants;
+import com.co.app.message.constants.MessageConstants;
 
 /**
  * @author alobaton
@@ -22,7 +22,7 @@ import com.co.app.message.MessageConstants;
 @Configuration
 public class MessageSourceConfiguration {
 	private static final String[] BASENAMES = new String[] { "classpath:messages/error/messages",
-			"classpath:messages/templates/messages" };
+			"classpath:messages/general/messages", "classpath:messages/templates/messages" };
 
 	/**
 	 * 

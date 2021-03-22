@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,14 +22,15 @@ import org.springframework.security.oauth2.provider.TokenRequest;
 import org.springframework.security.oauth2.provider.token.AbstractTokenGranter;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
-import com.co.app.auth.dao.AuthPasswordTokenRepository;
-import com.co.app.auth.dao.AuthUserRepository;
-import com.co.app.auth.domain.AuthPasswordToken;
-import com.co.app.auth.domain.AuthPasswordTokenId;
-import com.co.app.auth.domain.AuthUser;
 import com.co.app.auth.domain.CustomUserDetails;
-import com.co.app.auth.services.encoder.HashEncoder;
+import com.co.app.auth.repository.AuthPasswordTokenRepository;
+import com.co.app.auth.repository.AuthUserRepository;
+import com.co.app.auth.services.HashEncoder;
+import com.co.app.commons.domain.AuthPasswordToken;
+import com.co.app.commons.domain.AuthPasswordTokenId;
+import com.co.app.commons.domain.AuthUser;
 import com.co.app.commons.exception.RegisterNotFoundException;
+import com.co.app.message.constants.MessageConstants;
 
 /**
  * @author alobaton
@@ -110,15 +110,17 @@ public class PasswordGranter extends AbstractTokenGranter {
 		AuthPasswordToken passwordToken = new AuthPasswordToken();
 		passwordToken.setId(id);
 
-		passwordToken = passwordTokenRepopsitory.findOne(Example.of(passwordToken)).orElseThrow(
-				() -> new RegisterNotFoundException(AuthPasswordToken.class, Strings.EMPTY, id.toString()));
+		passwordToken = passwordTokenRepopsitory.findOne(Example.of(passwordToken))
+				.orElseThrow(() -> new RegisterNotFoundException(MessageConstants.ERROR_GENERAL_REGISTER_NOT_FOUND,
+						MessageConstants.AUTH_PASSWPRD_TOKEN, id.toString()));
 		if (passwordToken.isExpired()) {
 			throw new UnauthorizedUserException("Authorization code has expired.");
 		}
 
 		String nickname = passwordToken.getId().getNickname();
 		AuthUser user = userRepository.findById(nickname)
-				.orElseThrow(() -> new RegisterNotFoundException(AuthUser.class, Strings.EMPTY, nickname));
+				.orElseThrow(() -> new RegisterNotFoundException(MessageConstants.ERROR_GENERAL_REGISTER_NOT_FOUND,
+						MessageConstants.AUTH_USER_NAME, nickname));
 		if (user == null) {
 			throw new UsernameNotFoundException(
 					String.format("Username %s not found", passwordToken.getId().getNickname()));
@@ -128,9 +130,7 @@ public class PasswordGranter extends AbstractTokenGranter {
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
 				userDetails.getPassword(), userDetails.getAuthorities());
-		OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(tokenRequest.createOAuth2Request(client),
-				authentication);
-		return oAuth2Authentication;
+		return new OAuth2Authentication(tokenRequest.createOAuth2Request(client), authentication);
 	}
 
 }

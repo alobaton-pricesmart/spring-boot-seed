@@ -3,26 +3,47 @@
  */
 package com.co.app.auth.controllers;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.security.Principal;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.util.OAuth2Utils;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
+import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.co.app.auth.domain.AuthUser;
+import com.co.app.auth.constants.AuthConstants;
 import com.co.app.auth.domain.CustomUserDetails;
-import com.co.app.auth.dto.AuthPasswordDto;
-import com.co.app.auth.dto.AuthUserDto;
-import com.co.app.auth.services.user.AuthUserService;
+import com.co.app.auth.services.AuthUserService;
+import com.co.app.auth.utils.LoggedUserUtil;
+import com.co.app.commons.domain.AuthRole;
+import com.co.app.commons.domain.AuthUser;
+import com.co.app.commons.domain.AuthUserRole;
+import com.co.app.commons.domain.AuthUserRolePk;
+import com.co.app.commons.dto.AuthPasswordDto;
+import com.co.app.commons.dto.AuthUserDto;
+import com.co.app.commons.dto.AuthUserRegisterDto;
+import com.co.app.commons.exception.ApiException;
+import com.co.app.commons.utils.StringUtil;
+import com.co.app.message.constants.MessageConstants;
 
 /**
  * @author alobaton
@@ -32,11 +53,27 @@ import com.co.app.auth.services.user.AuthUserService;
 @RequestMapping("/oauth")
 public class AuthController {
 
+	private static final Log LOGGER = LogFactory.getLog(AuthController.class);
+
 	@Autowired
-	private AuthUserService service;
+	private AuthUserService authUserService;
 
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
+
+	@Autowired
+	private ConsumerTokenServices tokenServices;
+
+	@Autowired
+	private TokenEndpoint tokenEndpoint;
+
+	@DeleteMapping("/logout")
+	public void revokeToken() {
+		String token = LoggedUserUtil.getToken();
+		if (token != null && !token.isEmpty()) {
+			tokenServices.revokeToken(token);
+		}
+	}
 
 	@GetMapping("/user-info")
 	public @ResponseBody AuthUserDto userInfo(OAuth2Authentication authentication) {
@@ -48,12 +85,13 @@ public class AuthController {
 			nickname = (String) authentication.getPrincipal();
 		}
 
-		return AuthUserDto.CONVERTER.apply(service.get(nickname));
+		return AuthUserDto.CONVERTER_DTO.apply(authUserService.get(nickname));
 	}
 
-	@GetMapping("/recovery-password")
-	public void recoveryPassword(@Valid @RequestParam String nickname) {
-		service.resetPassword(nickname);
+	@PostMapping("/recovery-password")
+	public void recoveryPassword(@RequestBody Map<String, String> body) {
+		String email = body.get("email");
+		authUserService.recoveryPassword(email);
 	}
 
 	@PostMapping("/reset-password")
@@ -68,18 +106,63 @@ public class AuthController {
 			nickname = (String) authentication.getPrincipal();
 		}
 
-		AuthUser user = service.get(nickname);
+		AuthUser user = authUserService.get(nickname);
 		user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
 
-		return AuthUserDto.CONVERTER.apply(service.update(user));
+		return AuthUserDto.CONVERTER_DTO.apply(authUserService.update(user));
 	}
 
-	@PostMapping("/update-password/{id}")
-	public @ResponseBody AuthUserDto resetPassword(@PathVariable @NotNull String id,
-			@Valid @RequestBody AuthPasswordDto passwordDto) {
-		AuthUser user = service.get(id);
-		user.setPassword(passwordEncoder.encode(passwordDto.getPassword()));
+	@PostMapping("/register")
+	@Transactional
+	public @ResponseBody AuthUserRegisterDto register(HttpServletRequest request, Principal principal,
+			OAuth2Authentication authentication, @Valid @RequestBody AuthUserRegisterDto dto) {
+		AuthUser user = AuthUserRegisterDto.CONVERTER_ENTITY.apply(dto);
 
-		return AuthUserDto.CONVERTER.apply(service.update(user));
+		// Extract nickname
+		String email = dto.getEmail();
+		int endIndex = email.indexOf(StringUtil.AT_SIGN);
+		String nickname = dto.getEmail().substring(0, endIndex).replaceAll("\\.+$", StringUtil.EMPTY);
+		user.setNickname(nickname);
+
+		// Encode password
+		user.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+		// Setup default role...
+		AuthRole authRole = new AuthRole();
+		authRole.setId(AuthConstants.DEFAULT_ROLE);
+		AuthUserRole authUserRole = new AuthUserRole();
+		AuthUserRolePk authUserRolePk = new AuthUserRolePk();
+		authUserRolePk.setNickname(nickname);
+		authUserRolePk.setRoleId(AuthConstants.DEFAULT_ROLE);
+		authUserRole.setAuthUserRolePk(authUserRolePk);
+		authUserRole.setAuthRole(authRole);
+		authUserRole.setAuthUser(user);
+		user.setAuthUserRoleList(Arrays.asList(authUserRole));
+
+		// Enabled by default.
+		user.setEnabled(true);
+		user.setLocked(false);
+		authUserService.createAndFlush(user);
+
+		// Make auto login
+		HashMap<String, String> requestParameters = new HashMap<>();
+		requestParameters.put(AuthConstants.USERNAME, user.getNickname());
+		requestParameters.put(AuthConstants.PASSWORD, dto.getPassword());
+		requestParameters.put(OAuth2Utils.GRANT_TYPE, AuthConstants.PASSWORD);
+
+		ResponseEntity<OAuth2AccessToken> responseEntityOAuth2AccessToken = null;
+		try {
+			responseEntityOAuth2AccessToken = tokenEndpoint.postAccessToken(principal, requestParameters);
+		} catch (Exception e) {
+			LOGGER.error(e);
+		}
+
+		if (null == responseEntityOAuth2AccessToken || null == responseEntityOAuth2AccessToken.getBody()) {
+			throw new ApiException(MessageConstants.ERROR_GENERAL_ERROR);
+		}
+
+		OAuth2AccessToken oAuth2AccessToken = responseEntityOAuth2AccessToken.getBody();
+		dto.setToken(oAuth2AccessToken);
+		return dto;
 	}
 }

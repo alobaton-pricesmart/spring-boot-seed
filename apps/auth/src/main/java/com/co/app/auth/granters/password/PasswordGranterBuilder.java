@@ -9,9 +9,9 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.OAuth2RequestFactory;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 
-import com.co.app.auth.dao.AuthPasswordTokenRepository;
-import com.co.app.auth.dao.AuthUserRepository;
-import com.co.app.auth.services.encoder.HashEncoder;
+import com.co.app.auth.repository.AuthPasswordTokenRepository;
+import com.co.app.auth.repository.AuthUserRepository;
+import com.co.app.auth.services.HashEncoder;
 
 /**
  * @author alobaton

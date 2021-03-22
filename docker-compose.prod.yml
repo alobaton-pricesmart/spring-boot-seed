@@ -1,27 +1,57 @@
 version: "2.2"
 
 services:
-  api:
+  auth:
     build:
       context: .
-      dockerfile: ./.docker/Dockerfile_prod
-    container_name: spring-boot-seed-prod
+      dockerfile: ./.docker/Dockerfile_auth_prod
+    container_name: solicitudes-mantenimiento-api-auth-prod
     hostname: api.prod.local
     depends_on:
       - db
-    image: spring-boot-seed/prod
+      - gateway
+    image: solicitudes-mantenimiento-api-auth-prod
     volumes:
-      - ./apps:/home/spring-boot-seed/apps
+      - ./apps:/home/solicitudes-mantenimiento-api/apps
     ports:
-      - ${API_PORT}:8080
-      - 10001:10001
+      - 8082:8082
+    mem_limit: 768m
+    cpu_percent: 60
+
+  gateway:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile_gateway_prod
+    container_name: solicitudes-mantenimiento-api-gateway-prod
+    hostname: api.prod.local
+    depends_on:
+      - eureka
+    image: solicitudes-mantenimiento-api-gateway-prod
+    volumes:
+      - ./apps:/home/solicitudes-mantenimiento-api/apps
+    ports:
+      - 8080:8080
+    mem_limit: 768m
+    cpu_percent: 60
+
+  eureka:
+    build:
+      context: .
+      dockerfile: ./.docker/Dockerfile_eureka_prod
+    container_name: solicitudes-mantenimiento-api-eureka-prod
+    hostname: api.prod.local
+    image: solicitudes-mantenimiento-api-aureka-prod
+    volumes:
+      - ./apps:/home/solicitudes-mantenimiento-api/apps
+    ports:
+      - 8081:8081
     mem_limit: 768m
     cpu_percent: 60
 
   db:
-    image: mysql:8.0.13
-    container_name: spring-boot-seed-db-prod
+    container_name: solicitudes-mantenimiento-api-db-prod
     hostname: db.prod.local
+    image: mysql:8.0.13
     environment:
       - MYSQL_ROOT_PASSWORD=root-password
       - MYSQL_ROOT_HOST=%
@@ -33,4 +63,4 @@ services:
       - ./mysql-prod/dmp:/var/lib/mydmp
       - ./mysql-prod/init:/docker-entrypoint-initdb.d
     ports:
-      - ${DB_PORT}:3306
+      - 3306:3306

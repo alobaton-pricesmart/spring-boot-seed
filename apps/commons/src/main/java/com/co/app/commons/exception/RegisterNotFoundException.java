@@ -3,20 +3,26 @@
  */
 package com.co.app.commons.exception;
 
-import javax.validation.constraints.NotNull;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+import com.netflix.hystrix.exception.ExceptionNotWrappedByHystrix;
 
 /**
  * @author alobaton
  * @param <T>
  *
  */
-public class RegisterNotFoundException extends ApiException {
-	private static final long serialVersionUID = -7500322046753778196L;
+@ResponseStatus(HttpStatus.NOT_FOUND)
+public class RegisterNotFoundException extends ApiException implements ExceptionNotWrappedByHystrix {
 
-	private static final String CODE = "exception.registerNotFoud";
+	private static final long serialVersionUID = 1L;
 
-	public <T> RegisterNotFoundException(@NotNull Class<T> clazz, @NotNull String key, @NotNull String id) {
-		super(CODE, new String[] { clazz.getName(), key, id },
-				String.format("Could not find %s '%s'", clazz.getName(), id));
+	public RegisterNotFoundException(String code) {
+		super(code);
+	}
+
+	public RegisterNotFoundException(String code, String... args) {
+		super(code, args);
 	}
 }

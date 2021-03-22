@@ -64,7 +64,7 @@
 	</profiles>
 
 	<build>
-		<finalName>admin-${project.version}-${spring.profiles.active}</finalName>
+		<finalName>gateway-${project.version}-${spring.profiles.active}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

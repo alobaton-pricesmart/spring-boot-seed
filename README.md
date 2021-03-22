@@ -1,25 +1,8 @@
-# spring-boot-seed
+# solicitudes-mantenimiento-api
 
-[![Build Status](https://travis-ci.org/alobaton/spring-boot-seed.svg?branch=master)](https://travis-ci.org/alobaton/spring-boot-seed)
-[![codecov](https://codecov.io/gh/alobaton/spring-boot-seed/branch/master/graph/badge.svg)](https://codecov.io/gh/alobaton/spring-boot-seed)
+## Como iniciar?
 
-Provides fast, reliable and extensible starter for the development of Java projects using Spring Boot.
-
-`spring-boot-seed` provides the following features:
-
-- Modularized Maven project.
-- i18n support.
-- Spring Security module.
-- Application masters module.
-- Application loader module.
-- Distributed memory module.
-- Production and development builds.
-- Provides full Docker support for both development and production environment.
-- Swagger UI documentation at http://localhost:8080/swagger-ui.html
-
-## How to start?
-
-Update your /etc/hosts file with:
+Antes de iniciar actualice el archivo /etc/hosts:
 
 ```bash
 # tools
@@ -28,74 +11,92 @@ Update your /etc/hosts file with:
 127.0.0.1       api.dev.local
 127.0.0.1       api.prod.local
 ```
-In order to start the seed use:
-
+Clone el repositorio:
 ```bash
-$ git clone --depth 1 https://github.com/alobaton/spring-boot-seed.git
+$ git clone --depth 1 https://github.com/soportesolicitudesmantenimiento/solicitudes-mantenimiento.git
+$ cd solicitudes-mantenimiento/solicitudes-mantenimiento-api
+```
 
-$ cd spring-boot-seed
+Inicie la Base de Datos de pruebas:
+```bash
 $ docker-compose -f docker-compose.dev.yml up -d db
+```
 
+Compile el proyecto:
+```bash
 $ cd apps
 $ mvn clean install -Dspring.profiles.active=dev -DskipTests=true
+```
 
-# remember to execute loader once
+Ejecute el loader:
+```bash
 $ cd loader
 $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
+```
 
-# execute core application
+Ejecute el servicio de Autenticación y Autorización:
+```bash
+$ cd ..
+$ cd auth
+$ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
+```
+El servicio de Autenticación y Autorización se encuentra disponible en http://localhost:8082.
+
+Ejecute la aplicación:
+```bash
 $ cd ..
 $ cd core
 $ mvn spring-boot:run -Dspring.profiles.active=dev -DskipTests=true
+```
+La aplicación se encuentra disponible en http://localhost:8083.
 
-# without maven
+Para ejecutar los anteriores proyectos sin Maven use:
+```bash
 $ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -DskipTests=true -jar /app.jar
 ```
 
-## How to test?
+## Como probar?
 
-In order to test the seed user:
-
+Para probar el proyecto use:
 ```bash
 $ cd apps
 $ mvn clean install -Dspring.profiles.active=dev
 ```
 
-## Dockerization
+## Dockerización
 
-The application provides full Docker support. You can use it for both development and production builds and deployments.
+La aplicación provee soporte completo para Docker. Puedes usarlo para construcción y despliegue de desarrollo y producción.
 
-### Development build and deployment
+### Construcción y despliegue de desarrollo
 
-To start the container, use:
+__NOTA__ El entorno dev no utiliza la arquitectura Netflix, razón por la cual deberá modificar los `application-dev.properties` donde se haga referencia a `api.dev.local` o `localhost` y reemplazarlo por la respectiva etiqueta del contenedor. Ej. `jdbc:mysql://db:3306/prod-db` donde `db` es la etiqueta del contenedor de base de datos en el archivo `docker-compose.dev.yml`.
 
+Para iniciar los contenedores use:
 ```bash
 $ cp .env.dev .env
 $ docker-compose -f docker-compose.dev.yml up -d
 ```
 
-Now open your browser at http://localhost:8080
+El servicio de Autenticación y Autorización se encuentra disponible en http://localhost:8082. La aplicación se encuentra disponible en http://localhost:8083.
 
-### Production build and deployment
+Para iniciar los contenedores automaticamente al iniciar un servidor Linux, puede utilizar el archivo `solicitudes-mantenimiento-dev.service`. Debe actualizar la ruta el proyecto y moverlo a la ruta `/etc/systemd/system/` y ejecutando los siguientes comandos:
+```bash
+$ sudo systemctl enable solicitudes-mantenimiento-dev.service
+$ sudo systemctl start solicitudes-mantenimiento-dev
+```
 
-It is self-contained, and can therefore be pushed to a Docker registry to be deployed somewhere else easily.
+### Construcción y despliegue de producción
 
-To start the container, use:
-
+Para iniciar los contenedores use:
 ```bash
 $ cp .env.prod .env
 $ docker-compose -f docker-compose.prod.yml up -d
 ```
 
-Now open your browser at http://localhost:8080
+Ahora abra su navegador en http://localhost:8081/#/eureka ó http://localhost:8081/admin#/applications.
 
-## Contributors
-
-[<img alt="alobaton" src="https://avatars1.githubusercontent.com/u/9356067?s=460&v=4" width="117">](https://github.com/alobaton)
-[<img alt="luisColmenarez" src="https://avatars0.githubusercontent.com/u/16671391?s=400&v=4" width="117">](https://github.com/LuisColmenarez)
-
-## Change Log
-
-## License
-
-[MIT](https://github.com/alobaton/sprin-boot-seed/blob/master/LICENSE)
+Para iniciar los contenedores automaticamente al iniciar un servidor Linux, puede utilizar el archivo `solicitudes-mantenimiento-prod.service`. Debe actualizar la ruta el proyecto y moverlo a la ruta `/etc/systemd/system/` y ejecutando los siguientes comandos:
+```bash
+$ sudo systemctl enable solicitudes-mantenimiento-prod.service
+$ sudo systemctl start solicitudes-mantenimiento-prod
+```

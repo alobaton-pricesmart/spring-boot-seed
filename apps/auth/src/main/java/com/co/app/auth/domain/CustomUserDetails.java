@@ -13,22 +13,25 @@ import javax.validation.constraints.NotNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.co.app.commons.domain.AuthUser;
+import com.co.app.commons.domain.AuthUserRole;
+
 /**
  * @author alobaton
  *
  */
 public class CustomUserDetails implements UserDetails {
-	private static final long serialVersionUID = -4402146711326898924L;
+	private static final long serialVersionUID = -1L;
 
-	private AuthUser user;
+	private AuthUser authUser;
 
 	/**
 	 * Create custom user details from AuthUser
 	 * 
 	 * @param user
 	 */
-	public CustomUserDetails(@NotNull AuthUser user) {
-		this.user = user;
+	public CustomUserDetails(@NotNull AuthUser authUser) {
+		this.authUser = authUser;
 	}
 
 	/*
@@ -39,12 +42,14 @@ public class CustomUserDetails implements UserDetails {
 	 */
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<String> roles = this.user.getRoles();
-		if (roles == null) {
+		List<AuthUserRole> authUserRoleList = this.authUser.getAuthUserRoleList();
+		if (authUserRoleList == null || authUserRoleList.isEmpty()) {
 			return Collections.emptyList();
 		}
 
-		return roles.stream().map(role -> (GrantedAuthority) () -> role).collect(Collectors.toList());
+		return authUserRoleList.stream()
+				.map(authUserRole -> (GrantedAuthority) () -> authUserRole.getAuthUserRolePk().getRoleId())
+				.collect(Collectors.toList());
 	}
 
 	/*
@@ -54,7 +59,7 @@ public class CustomUserDetails implements UserDetails {
 	 */
 	@Override
 	public String getPassword() {
-		return user.getPassword();
+		return authUser.getPassword();
 	}
 
 	/*
@@ -64,7 +69,7 @@ public class CustomUserDetails implements UserDetails {
 	 */
 	@Override
 	public String getUsername() {
-		return user.getNickname();
+		return authUser.getNickname();
 	}
 
 	/*
@@ -88,7 +93,7 @@ public class CustomUserDetails implements UserDetails {
 	 */
 	@Override
 	public boolean isAccountNonLocked() {
-		return !this.user.isLocked();
+		return !this.authUser.isLocked();
 	}
 
 	/*
@@ -109,7 +114,7 @@ public class CustomUserDetails implements UserDetails {
 	 */
 	@Override
 	public boolean isEnabled() {
-		return this.user.isEnabled();
+		return this.authUser.isEnabled();
 	}
 
 }

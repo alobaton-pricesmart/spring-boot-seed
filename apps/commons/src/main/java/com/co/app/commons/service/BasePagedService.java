@@ -12,9 +12,9 @@ import com.querydsl.core.types.Predicate;
  * @author alobaton
  * 
  * @param <T>
- * @param <I>
+ * @param <K>
  */
-public interface BasePagedService<T, I> extends BaseService<T, I> {
+public interface BasePagedService<T, K> extends BaseService<T, K> {
 	/**
 	 * Get all <T>
 	 * 

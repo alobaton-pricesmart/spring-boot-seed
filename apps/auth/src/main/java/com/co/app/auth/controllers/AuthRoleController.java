@@ -4,6 +4,7 @@
 package com.co.app.auth.controllers;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -17,12 +18,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.co.app.auth.domain.AuthRole;
-import com.co.app.auth.dto.AuthRoleDto;
-import com.co.app.auth.services.role.AuthRoleService;
+import com.co.app.auth.services.AuthRoleService;
 import com.co.app.commons.controllers.BasePagedController;
+import com.co.app.commons.domain.AuthRole;
+import com.co.app.commons.dto.AuthRoleDto;
 import com.querydsl.core.types.Predicate;
 
 /**
@@ -31,7 +33,7 @@ import com.querydsl.core.types.Predicate;
  */
 @RestController
 @RequestMapping("/roles")
-public class AuthRoleController implements BasePagedController<AuthRoleDto> {
+public class AuthRoleController implements BasePagedController<AuthRoleDto, String> {
 
 	@Autowired
 	private AuthRoleService service;
@@ -44,23 +46,25 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	@Override
 	@PreAuthorize("customHasPermission('read:role')")
 	public AuthRoleDto get(@PathVariable String id) {
-		return AuthRoleDto.CONVERTER.apply(service.get(id));
+		return AuthRoleDto.CONVERTER_DTO.apply(service.get(id));
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('read:roles')")
-	public List<AuthRoleDto> getAll(@QuerydslPredicate(root = AuthRole.class) Predicate predicate) {
-		return service.getAll(predicate).stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList());
+	public List<AuthRoleDto> getAll(@QuerydslPredicate(root = AuthRole.class) Predicate predicate,
+			@RequestParam Map<String, String> requestParams) {
+		return service.getAll(predicate).stream().map(AuthRoleDto.CONVERTER_DTO)
+				.collect(Collectors.<AuthRoleDto>toList());
 	}
 
 	@Override
 	@PreAuthorize("customHasPermission('read:roles')")
-	public Page<AuthRoleDto> getAll(@QuerydslPredicate(root = AuthRole.class) Predicate predicate, Pageable pageable,
-			boolean isPaged) {
-		Page<AuthRole> page = service.getAll(predicate, isPaged ? pageable : Pageable.unpaged());
+	public Page<AuthRoleDto> getAll(@QuerydslPredicate(root = AuthRole.class) Predicate predicate,
+			@RequestParam Map<String, String> requestParams, Pageable pageable) {
+		Page<AuthRole> page = service.getAll(predicate, pageable);
 
 		return new PageImpl<>(
-				page.getContent().stream().map(AuthRoleDto.CONVERTER).collect(Collectors.<AuthRoleDto>toList()),
+				page.getContent().stream().map(AuthRoleDto.CONVERTER_DTO).collect(Collectors.<AuthRoleDto>toList()),
 				pageable, page.getTotalElements());
 	}
 
@@ -72,7 +76,7 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	@Override
 	@PreAuthorize("customHasPermission('craete:role')")
 	public AuthRoleDto create(@Valid @RequestBody AuthRoleDto dto) {
-		return AuthRoleDto.CONVERTER.apply(service.create(AuthRole.CONVERTER.apply(dto)));
+		return AuthRoleDto.CONVERTER_DTO.apply(service.create(AuthRoleDto.CONVERTER_ENTITY.apply(dto)));
 	}
 
 	/*
@@ -85,7 +89,7 @@ public class AuthRoleController implements BasePagedController<AuthRoleDto> {
 	@PreAuthorize("customHasPermission('update:role')")
 	public AuthRoleDto update(@PathVariable String id, @Valid @RequestBody AuthRoleDto dto) {
 		dto.setId(id);
-		return AuthRoleDto.CONVERTER.apply(service.update(AuthRole.CONVERTER.apply(dto)));
+		return AuthRoleDto.CONVERTER_DTO.apply(service.update(AuthRoleDto.CONVERTER_ENTITY.apply(dto)));
 	}
 
 	/*

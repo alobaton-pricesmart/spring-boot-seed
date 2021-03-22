@@ -44,6 +44,7 @@
 		<jooq.version>3.11.7</jooq.version>
 		<mysql-connector-java.version>8.0.16</mysql-connector-java.version>
 		<flyway.version>5.2.4</flyway.version>
+		<spring-boot-starter-data-rest.version>2.4.3</spring-boot-starter-data-rest.version>
 		<!-- Use - insted of . Any custom maven property starting with prefix flyway 
 			causing migration to fail. -->
 		<flyway-spring-test.version>5.2.1</flyway-spring-test.version>
@@ -63,6 +64,7 @@
 		<querydsl-jpa.version>4.1.3</querydsl-jpa.version>
 		<lombok.version>1.18.16</lombok.version>
 		<h2.version>1.4.200</h2.version>
+		<spring-cloud-starter-feign.version>1.4.7.RELEASE</spring-cloud-starter-feign.version>
 	</properties>
 	<modules>
 		<module>eureka</module>
@@ -370,7 +372,18 @@
 				<version>${h2.version}</version>
 				<scope>test</scope>
 			</dependency>
-
+			<!-- https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-feign -->
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-feign</artifactId>
+				<version>${spring-cloud-starter-feign.version}</version>
+			</dependency>
+			<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-rest -->
+			<dependency>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-starter-data-rest</artifactId>
+				<version>${spring-boot-starter-data-rest.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>

@@ -4,6 +4,7 @@
 package com.co.app.commons.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,7 +26,7 @@ import com.querydsl.core.types.Predicate;
  * @param <T> DTO
  */
 @RestController
-public interface BaseController<T> {
+public interface BaseController<T, K> {
 	/**
 	 * Creates a <T>.
 	 * 
@@ -41,15 +43,16 @@ public interface BaseController<T> {
 	 * @return The <T> information.
 	 */
 	@GetMapping("/{id}")
-	public @ResponseBody T get(@PathVariable String id);
+	public @ResponseBody T get(@PathVariable K id);
 
 	/**
 	 * Get <T>.
 	 * 
 	 * @param parameters
 	 */
-	@GetMapping
-	public @ResponseBody List<T> getAll(@QuerydslPredicate Predicate predicate);
+	@GetMapping("search/list")
+	public @ResponseBody List<T> getAll(@QuerydslPredicate Predicate predicate,
+			@RequestParam Map<String, String> requestParams);
 
 	/**
 	 * Update <T>.
@@ -59,7 +62,7 @@ public interface BaseController<T> {
 	 * @return The updated <T>.
 	 */
 	@PatchMapping("/{id}")
-	public @ResponseBody T update(@PathVariable String id, @Valid @RequestBody T dto);
+	public @ResponseBody T update(@PathVariable K id, @Valid @RequestBody T dto);
 
 	/**
 	 * Delete <T>.
@@ -67,5 +70,5 @@ public interface BaseController<T> {
 	 * @param id The <T> id.
 	 */
 	@DeleteMapping("/{id}")
-	public void delete(@PathVariable String id);
+	public void delete(@PathVariable K id);
 }
