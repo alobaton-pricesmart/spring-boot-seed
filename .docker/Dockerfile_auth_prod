@@ -1,6 +1,6 @@
 FROM openjdk:8-jdk
 
-WORKDIR /home/spring-boot-seed
+WORKDIR /home/solicitudes-mantenimiento-api
 
 RUN DEBIAN_FRONTEND=noninteractive \
     apt-get update && \
@@ -14,8 +14,8 @@ VOLUME /tmp
 COPY apps ./apps/
 
 RUN cd apps && \
-    mvn clean install -Dspring.profiles.active=dev -DskipTests=true --batch-mode --errors --debug && \
-    mv ./core/target/core*.jar /app.jar
+    mvn clean install -Dspring.profiles.active=prod -DskipTests=true --batch-mode --errors --debug && \
+    mv ./auth/target/auth*.jar /auth.jar
 
 # Fix DNS resolution issues when nss is not installed
 RUN echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
@@ -24,4 +24,4 @@ ENV JAVA_OPTS="-XX:+UseG1GC \
 	-d64 \
 	-server"
 
-ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -jar /app.jar" ]
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/prod/./urandom -Dspring.profiles.active=prod -jar /auth.jar" ]

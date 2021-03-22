@@ -1,0 +1,27 @@
+FROM openjdk:8-jdk
+
+WORKDIR /home/solicitudes-mantenimiento-api
+
+RUN DEBIAN_FRONTEND=noninteractive \
+    apt-get update && \
+    apt-get install -y gettext-base maven && \
+    apt-get clean && \
+    apt-get autoremove
+
+# Needed volume for embebed Spring Boot Tomcat.
+VOLUME /tmp
+
+COPY apps ./apps/
+
+RUN cd apps && \
+    mvn clean install -Dspring.profiles.active=prod -DskipTests=true --batch-mode --errors --debug && \
+    mv ./eureka/target/eureka*.jar /eureka.jar
+
+# Fix DNS resolution issues when nss is not installed
+RUN echo 'hosts: files mdns4_minimal [NOTFOUND=return] dns mdns4' >> /etc/nsswitch.conf
+
+ENV JAVA_OPTS="-XX:+UseG1GC \
+	-d64 \
+	-server"
+
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/prod/./urandom -Dspring.profiles.active=prod -jar /eureka.jar" ]

@@ -60,7 +60,7 @@ To start the projects without Maven use:
 $ java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -Dspring.profiles.active=dev -DskipTests=true -jar /app.jar
 ```
 
-## CHow to test?
+## How to test?
 
 To test the project use:
 ```bash
