@@ -18,8 +18,8 @@ Before start update the /etc/hosts file:
 ```
 Clone the repository:
 ```bash
-$ git clone --depth 1 https://github.com/soportesolicitudesmantenimiento/app-name.git
-$ cd app-name/app-name-api
+$ git clone --depth 1 https://github.com/alobaton/spring-boot-seed.git
+$ cd spring-boot-seed
 ```
 
 Start the database:
