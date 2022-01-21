@@ -63,7 +63,7 @@
 		<querydsl-apt.version>4.1.3</querydsl-apt.version>
 		<querydsl-jpa.version>4.1.3</querydsl-jpa.version>
 		<lombok.version>1.18.16</lombok.version>
-		<h2.version>1.4.200</h2.version>
+		<h2.version>2.1.210</h2.version>
 		<spring-cloud-starter-feign.version>1.4.7.RELEASE</spring-cloud-starter-feign.version>
 	</properties>
 	<modules>
