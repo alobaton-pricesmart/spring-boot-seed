@@ -1,0 +1,48 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+name: Run auth Unit Tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Check if changes are in apps/auth
+        id: check_changes
+        run: |
+          git diff --name-only HEAD^..HEAD > files.txt
+          while IFS= read -r file
+          do
+            echo $file
+            if [[ $file != apps/auth/* ]]; then
+              echo "::set-output name=changed::false"
+              break
+            else
+              echo "::set-output name=changed::true"
+            fi
+          done &lt; files.txt
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '8'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Run Unit Tests for auth
+        if: steps.check_changes.outputs.changed == 'true'
+        working-directory: apps/auth
+        run: ./mvnw test
