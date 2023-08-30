@@ -5,7 +5,7 @@
 # They are provided by a third-party and are governed by
 # separate terms of service, privacy policy, and support
 # documentation.
-name: Run auth Unit Tests
+name: Run commons Unit Tests
 
 on:
   pull_request:
@@ -20,13 +20,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check if changes are in apps/auth
+      - name: Check if changes are in apps/commons
         uses: dorny/paths-filter@v2
         id: check_changes
         with:
           filters: |
             changed:
-              - 'apps/auth/**'
+              - 'apps/commons/**'
 
       - name: Set up JDK
         uses: actions/setup-java@v3
@@ -35,7 +35,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Unit Tests for auth
+      - name: Run Unit Tests for commons
         if: steps.check_changes.outputs.changed == 'true'
-        working-directory: apps/auth
+        working-directory: apps/commons
         run: ./mvnw test
